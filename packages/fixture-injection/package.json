@@ -1,0 +1,47 @@
+{
+  "name": "fixture-injection",
+  "description": "A JavaScript test helper to inject fixtures",
+  "version": "0.1.0",
+  "main": "index.js",
+  "scripts": {
+    "pre-commit": "lint-staged"
+  },
+  "lint-staged": {
+    "linters": {
+      "*.js": [
+        "prettier-eslint --write",
+        "eslint",
+        "git add"
+      ]
+    },
+    "ignore": [
+      "*.config.js",
+      ".eslintrc.js"
+    ]
+  },
+  "engines": {
+    "node": ">=8"
+  },
+  "repository": "https://github.com/yatsu/fixture-injection.git",
+  "author": "fixture-injection Development Team",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/yatsu/fixture-injection/issues"
+  },
+  "homepage": "https://github.com/yatsu/fixture-injection",
+  "keywords": [
+    "test",
+    "fixture"
+  ],
+  "dependencies": {
+    "es-arguments": "^1.0.2"
+  },
+  "devDependencies": {
+    "eslint": "^5.9.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-node": "^8.0.0",
+    "lint-staged": "^8.0.4",
+    "prettier-eslint-cli": "^4.7.1"
+  }
+}

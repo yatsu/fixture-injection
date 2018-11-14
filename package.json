@@ -1,0 +1,24 @@
+{
+  "license": "MIT",
+  "scripts": {
+    "lint": "eslint packages/*/*.js",
+    "format": "prettier-eslint --write 'packages/*/*.js'",
+    "add:core": "scripty",
+    "add:jasmine": "scripty",
+    "add:jasmine-example": "scripty"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lerna run --concurrency 1 --stream pre-commit"
+    }
+  },
+  "scripty": {
+    "silent": true
+  },
+  "devDependencies": {
+    "husky": "^1.1.4",
+    "lerna": "^3.4.3",
+    "prettier-eslint-cli": "^4.7.1",
+    "scripty": "^1.8.0"
+  }
+}
