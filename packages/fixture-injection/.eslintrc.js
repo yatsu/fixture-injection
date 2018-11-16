@@ -3,12 +3,14 @@ module.exports = {
   rules: {
     'class-methods-use-this': 'off',
     'comma-dangle': ['error', 'never'],
+    'global-require': 'off',
     'no-console': 'off',
     'no-mixed-operators': 'off',
     'no-param-reassign': ['error', { props: false }],
     'no-shadow': 'off',
     'no-template-curly-in-string': 'off',
     'no-underscore-dangle': 'off',
-    semi: ['error', 'never']
+    semi: ['error', 'never'],
+    'import/no-dynamic-require': 'off',
   }
 }

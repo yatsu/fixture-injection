@@ -2,28 +2,24 @@ const path = require('path')
 const getArguments = require('es-arguments')
 
 class FixtureInjector {
-  constructor(beforeAll, afterAll) {
-    this.beforeAll = beforeAll
-    this.afterAll = afterAll
-    this.map = new Map()
+  constructor() {
     this.fixtures = {}
   }
 
   load(globalFixtures, fixtures) {
     if (path.isAbsolute(fixtures)) {
-      this.fixtures = require(fixtures) // eslint-disable-line
+      this.fixtures = require(fixtures)
     } else {
-      // eslint-disable-next-line
       this.fixtures = require(path.join(path.dirname(require.main.filename), fixtures))
     }
   }
 
-  useFixture(fn) {
+  useFixture(fn, beforeAll, afterAll) {
     let finish
-    this.beforeAll(async () => {
+    beforeAll(async () => {
       finish = await this.callWithFixtures(fn)
     })
-    this.afterAll(async () => {
+    afterAll(async () => {
       await finish()
     })
   }
