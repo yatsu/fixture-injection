@@ -5,13 +5,12 @@ class FixtureInjectionReporter {
 
   jasmineStarted() {
     const { globalFixtures, fixtures } = this.options
-    global.fixtureContext.config(this.options)
-    global.fixtureContext.load(globalFixtures, fixtures)
-    global.fixtureContext.setup()
+    global.fixtureInjector.load(globalFixtures, fixtures)
+    global.fixtureInjector.setup()
   }
 
   jasmineDone() {
-    global.fixtureContext.teardown()
+    global.fixtureInjector.teardown()
   }
 }
 

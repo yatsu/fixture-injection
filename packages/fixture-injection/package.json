@@ -2,7 +2,6 @@
   "name": "fixture-injection",
   "description": "A JavaScript test helper to inject fixtures",
   "version": "0.1.0",
-  "main": "index.js",
   "scripts": {
     "pre-commit": "lint-staged"
   },

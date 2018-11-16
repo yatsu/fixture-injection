@@ -1,6 +1,6 @@
 {
-  "name": "jasmine-fixture-injection",
-  "description": "fixture-injection helper for Jasmine",
+  "name": "jest-fixture-injection",
+  "description": "fixture-injection helper for Jest",
   "version": "0.1.0",
   "scripts": {
     "pre-commit": "lint-staged"
@@ -30,16 +30,17 @@
   "bugs": {
     "url": "https://github.com/yatsu/fixture-injection/issues"
   },
-  "homepage": "https://github.com/yatsu/fixture-injection",
+  "homepage": "https://github.com/yatsu/fixture-injection/packages/jest-fixture-injection",
   "keywords": [
     "test",
     "fixture",
-    "jasmine"
+    "jest"
   ],
   "peerDependencies": {
-    "jasmine": ">=3 <4"
+    "jest": ">=22 <24"
   },
   "dependencies": {
+    "eslint-plugin-jest": "^22.0.0",
     "fixture-injection": "^0.1.0"
   },
   "devDependencies": {
@@ -48,7 +49,9 @@
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-jasmine": "^2.10.1",
     "eslint-plugin-node": "^8.0.0",
+    "jest": "^23.6.0",
     "lint-staged": "^8.0.4",
-    "prettier-eslint-cli": "^4.7.1"
+    "prettier-eslint-cli": "^4.7.1",
+    "scripty": "^1.8.0"
   }
 }

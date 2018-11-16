@@ -1,22 +1,22 @@
 module.exports = {
-  plugins: ['jasmine'],
+  plugins: ['jest'],
   env: {
-    jasmine: true
+    'jest/globals': true
   },
-  extends: ['airbnb-base', 'plugin:jasmine/recommended'],
   globals: {
     useFixture: true
   },
+  extends: ['airbnb-base', 'plugin:jest/recommended', 'plugin:node/recommended'],
   rules: {
     'class-methods-use-this': 'off',
     'comma-dangle': ['error', 'never'],
+    'func-names': ['error', 'as-needed', { generators: 'never' }],
     'no-console': 'off',
     'no-mixed-operators': 'off',
     'no-param-reassign': ['error', { props: false }],
     'no-shadow': 'off',
     semi: ['error', 'never'],
-    'import/no-extraneous-dependencies': ['error', { devDependencies: ['**/*.spec.js', '**/scripts/test'] }],
-    'import/prefer-default-export': 'off',
-    'jasmine/no-suite-callback-args': 'off' // required by fixture injection
+    'import/no-extraneous-dependencies': ['error', { devDependencies: ['**/*.js'] }],
+    'import/prefer-default-export': 'off'
   }
 }

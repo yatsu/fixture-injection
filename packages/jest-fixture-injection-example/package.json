@@ -1,8 +1,11 @@
 {
-  "name": "jasmine-fixture-injection",
-  "description": "fixture-injection helper for Jasmine",
+  "name": "jest-fixture-injection-example",
+  "description": "Example: Node + Express + Jest + jest-fixture-injection",
   "version": "0.1.0",
+  "main": "index.js",
   "scripts": {
+    "start": "scripty",
+    "test": "scripty",
     "pre-commit": "lint-staged"
   },
   "lint-staged": {
@@ -18,37 +21,29 @@
       ".eslintrc.js"
     ]
   },
-  "engines": {
-    "node": ">=8"
-  },
+  "private": true,
   "scripty": {
     "silent": true
   },
-  "repository": "https://github.com/yatsu/fixture-injection.git",
+  "engines": {
+    "node": ">=8"
+  },
   "author": "fixture-injection Development Team",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/yatsu/fixture-injection/issues"
-  },
-  "homepage": "https://github.com/yatsu/fixture-injection",
-  "keywords": [
-    "test",
-    "fixture",
-    "jasmine"
-  ],
-  "peerDependencies": {
-    "jasmine": ">=3 <4"
-  },
   "dependencies": {
-    "fixture-injection": "^0.1.0"
+    "eslint-plugin-jest": "^22.0.0",
+    "express": "^4.16.4"
   },
   "devDependencies": {
-    "eslint": "^5.9.0",
+    "eslint": "^5.8.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-jasmine": "^2.10.1",
     "eslint-plugin-node": "^8.0.0",
+    "jest": "^23.6.0",
+    "jest-fixture-injection": "^0.1.0",
     "lint-staged": "^8.0.4",
-    "prettier-eslint-cli": "^4.7.1"
+    "prettier-eslint-cli": "^4.7.1",
+    "scripty": "^1.8.0"
   }
 }

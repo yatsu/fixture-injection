@@ -1,29 +1,29 @@
 const path = require('path')
 const getArguments = require('es-arguments')
 
-class FixtureContext {
-  constructor(env) {
-    this.env = env
+class FixtureInjector {
+  constructor(beforeAll, afterAll) {
+    this.beforeAll = beforeAll
+    this.afterAll = afterAll
     this.map = new Map()
-    this.options = {}
     this.fixtures = {}
   }
 
-  config(opts = {}) {
-    this.options = opts
-  }
-
   load(globalFixtures, fixtures) {
-    const dir = path.dirname(require.main.filename)
-    this.fixtures = require(path.join(dir, fixtures)) // eslint-disable-line
+    if (path.isAbsolute(fixtures)) {
+      this.fixtures = require(fixtures) // eslint-disable-line
+    } else {
+      // eslint-disable-next-line
+      this.fixtures = require(path.join(path.dirname(require.main.filename), fixtures))
+    }
   }
 
   useFixture(fn) {
     let finish
-    this.env.beforeAll(async () => {
+    this.beforeAll(async () => {
       finish = await this.callWithFixtures(fn)
     })
-    this.env.afterAll(async () => {
+    this.afterAll(async () => {
       await finish()
     })
   }
@@ -79,4 +79,4 @@ class FixtureContext {
   }
 }
 
-module.exports = FixtureContext
+module.exports = FixtureInjector

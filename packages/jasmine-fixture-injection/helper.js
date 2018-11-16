@@ -1,8 +1,10 @@
-const FixtureContext = require('fixture-injection')
+const FixtureInjector = require('fixture-injection')
 
-global.fixtureContext = new FixtureContext(jasmine.getEnv())
+const env = jasmine.getEnv()
 
-global.useFixture = fn => global.fixtureContext.useFixture(fn)
+global.fixtureInjector = new FixtureInjector(env.beforeAll, env.afterAll)
 
-global.it = global.fixtureContext.injectableRunnable(global.it)
-global.xit = global.fixtureContext.injectableRunnable(global.xit)
+global.useFixture = fn => global.fixtureInjector.useFixture(fn)
+
+global.it = global.fixtureInjector.injectableRunnable(global.it)
+global.xit = global.fixtureInjector.injectableRunnable(global.xit)

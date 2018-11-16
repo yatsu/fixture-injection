@@ -5,7 +5,9 @@
     "format": "prettier-eslint --write 'packages/*/*.js'",
     "add:core": "scripty",
     "add:jasmine": "scripty",
-    "add:jasmine-example": "scripty"
+    "add:jasmine-example": "scripty",
+    "add:jest": "scripty",
+    "add:jest-example": "scripty"
   },
   "husky": {
     "hooks": {
