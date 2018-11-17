@@ -25,8 +25,8 @@ class FixtureInjector {
   }
 
   injectableRunnable(origFn) {
-    return (desc, fn) => origFn(desc, async (...args) => {
-      const finish = await this.callWithFixtures(fn, ...args)
+    return (desc, fn) => origFn(desc, async () => {
+      const finish = await this.callWithFixtures(fn)
       await finish()
     })
   }

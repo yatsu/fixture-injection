@@ -1,3 +1,3 @@
 module.exports = {
-  testEnvironment: 'jest-fixture-injection/env'
+  testEnvironment: 'jest-fixture-injection/jsdom'
 }
