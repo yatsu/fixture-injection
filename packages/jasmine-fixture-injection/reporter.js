@@ -1,16 +1,21 @@
+const path = require('path')
+
 class FixtureInjectionReporter {
   constructor(options = {}) {
     this.options = options
   }
 
-  jasmineStarted() {
+  async jasmineStarted() {
     const { globalFixtures, fixtures } = this.options
-    global.fixtureInjector.load(globalFixtures, fixtures)
-    global.fixtureInjector.setup()
+    global.fixtureInjector.load(
+      path.resolve(path.dirname(require.main.filename), globalFixtures),
+      path.resolve(path.dirname(require.main.filename), fixtures)
+    )
+    await global.fixtureInjector.setup()
   }
 
-  jasmineDone() {
-    global.fixtureInjector.teardown()
+  async jasmineDone() {
+    await global.fixtureInjector.teardown()
   }
 }
 

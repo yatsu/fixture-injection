@@ -15,7 +15,7 @@ jasmine.loadConfig({
 jasmine.jasmine.DEFAULT_TIMEOUT_INTERVAL = 15000
 
 const fixtureReporter = new FixtureReporter({
-  globalFixtures: '../spec/global_fixtures',
+  globalFixtures: '../spec/globalFixtures',
   fixtures: '../spec/fixtures'
 })
 

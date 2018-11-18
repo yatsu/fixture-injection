@@ -11,6 +11,6 @@ module.exports = {
     'no-template-curly-in-string': 'off',
     'no-underscore-dangle': 'off',
     semi: ['error', 'never'],
-    'import/no-dynamic-require': 'off',
+    'import/no-dynamic-require': 'off'
   }
 }
