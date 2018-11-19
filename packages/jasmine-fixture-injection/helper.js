@@ -1,8 +1,9 @@
+const process = require('process')
 const FixtureInjector = require('fixture-injection')
 
 const env = jasmine.getEnv()
 
-global.fixtureInjector = new FixtureInjector()
+global.fixtureInjector = new FixtureInjector(process.cwd())
 
 global.useFixture = fn => global.fixtureInjector.useFixture(fn, env.beforeAll, env.afterAll)
 

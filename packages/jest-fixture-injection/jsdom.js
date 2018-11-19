@@ -7,6 +7,7 @@ const { replaceRootDirInPath } = require('./utils')
 class fixtureInjectionEnvironment extends JSDOMEnvironment {
   constructor(config) {
     super(config)
+
     this.rootDir = config.rootDir
   }
 
@@ -14,7 +15,7 @@ class fixtureInjectionEnvironment extends JSDOMEnvironment {
     await super.setup()
 
     const { globalFixtures, fixtures } = await readConfig()
-    this.fixtureInjector = new FixtureInjector(true)
+    this.fixtureInjector = new FixtureInjector(this.rootDir, true)
 
     this.fixtureInjector.load(
       replaceRootDirInPath(this.rootDir, globalFixtures),

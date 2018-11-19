@@ -6,27 +6,27 @@ function sleep(msec) {
   })
 }
 
-// const gfoo = () => '-FOO-'
+// const gfoo = () => '-GFOO-'
 
 const gfoo = async (provide) => {
-  console.log('setup gfoo')
+  // console.log('setup gfoo')
   await sleep(100)
-  await provide('-gfoo-')
-  console.log('teardown gfoo')
+  await provide('-GFOO-')
+  // console.log('teardown gfoo')
   await sleep(100)
 }
 
-// const gbar = () => '-BAR-'
+// const gbar = () => '-GBAR-'
 
 const gbar = async (provide) => {
-  console.log('setup gbar')
+  // console.log('setup gbar')
   await sleep(100)
-  await provide('-gbar-')
-  console.log('teardown gbar')
+  await provide('-GBAR-')
+  // console.log('teardown gbar')
   await sleep(100)
 }
 
-const gbaz = '-BAZ-'
+const gbaz = '-GBAZ-'
 
 module.exports = {
   gfoo,

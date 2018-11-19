@@ -7,14 +7,15 @@ function sleep(msec) {
 }
 
 describe('Foo', () => {
-  useFixture((foo) => {
+  useFixture((gfoo, foo) => {
+    this.gfoo = gfoo
     this.foo = foo
   })
 
   it('Foo.bar/baz', async (bar, baz) => {
-    const { foo } = this
+    const { gfoo, foo } = this
     await sleep(100)
-    console.log('Foo.bar', foo, bar, baz)
+    console.log('Foo.bar', gfoo, foo, bar, baz)
     await sleep(100)
   })
 

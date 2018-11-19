@@ -33,7 +33,8 @@
     "fixture"
   ],
   "dependencies": {
-    "es-arguments": "^1.0.2"
+    "es-arguments": "^1.0.2",
+    "node-ipc": "^9.1.1"
   },
   "devDependencies": {
     "eslint": "^5.9.0",

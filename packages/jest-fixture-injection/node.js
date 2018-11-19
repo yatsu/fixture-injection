@@ -1,35 +1,33 @@
-const path = require('path')
 const vm = require('vm')
 // eslint-disable-next-line import/no-extraneous-dependencies, node/no-extraneous-require
 const NodeEnvironment = require('jest-environment-node')
 const FixtureInjector = require('fixture-injection')
-
-function replaceRootDirInPath(rootDir, filePath) {
-  if (!/^<rootDir>/.test(filePath)) {
-    return filePath
-  }
-  return path.resolve(rootDir, path.normalize(`./${filePath.substr('<rootDir>'.length)}`))
-}
+const readConfig = require('./config')
+const { replaceRootDirInPath } = require('./utils')
 
 class fixtureInjectionEnvironment extends NodeEnvironment {
   constructor(config) {
     super(config)
 
-    const { rootDir } = config
-    const { globalFixtures, fixtures } = config.testEnvironmentOptions.fixtureInjection
-    this.fiConfig = { rootDir, globalFixtures, fixtures }
+    this.rootDir = config.rootDir
   }
 
   async setup() {
     await super.setup()
 
-    const { rootDir, globalFixtures, fixtures } = this.fiConfig
-    this.fixtureInjector = new FixtureInjector(true)
+    const { globalFixtures, fixtures } = await readConfig()
+    this.fixtureInjector = new FixtureInjector(this.rootDir, true)
 
     this.fixtureInjector.load(
-      replaceRootDirInPath(rootDir, globalFixtures),
-      replaceRootDirInPath(rootDir, fixtures)
+      replaceRootDirInPath(this.rootDir, globalFixtures),
+      replaceRootDirInPath(this.rootDir, fixtures)
     )
+  }
+
+  async teardown() {
+    await super.teardown()
+
+    await this.fixtureInjector.teardown()
   }
 
   runScript(script) {
