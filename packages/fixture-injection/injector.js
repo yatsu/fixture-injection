@@ -9,6 +9,7 @@ class FixtureInjector {
     this.useGlobalFixtureServer = useGlobalFixtureServer
     this.globalFixtures = {}
     this.fixtures = {}
+    this.inlineFixtures = []
     this.globalFinishPromises = []
     this.finished = false
     this.globalFixtureObjects = {}
@@ -26,11 +27,29 @@ class FixtureInjector {
         this.globalFixtures = require(path.resolve(this.rootDir, globalFixtures))
       }
     }
+
     if (path.isAbsolute(fixtures)) {
       this.fixtures = require(fixtures)
     } else {
       this.fixtures = require(path.resolve(this.rootDir, fixtures))
     }
+  }
+
+  localFixtures() {
+    return Object.assign({}, this.fixtures, this.inlineFixtures)
+  }
+
+  defineFixture(name, fn, beforeAll, afterAll) {
+    beforeAll(async () => {
+      this.inlineFixtures[name] = fn
+    })
+    afterAll(async () => {
+      delete this.inlineFixtures[name]
+    })
+  }
+
+  clearInlineFixtures() {
+    this.inlineFixtures = {}
   }
 
   useFixture(fn, beforeAll, afterAll) {
@@ -99,7 +118,7 @@ class FixtureInjector {
     const fixtureObjects = await Promise.all(
       getArguments(fn).map(
         arg => new Promise((resolve) => {
-          if (!(arg in this.fixtures) && arg in this.globalFixtureObjects) {
+          if (!(arg in this.localFixtures()) && arg in this.globalFixtureObjects) {
             resolve(this.globalFixtureObjects[arg])
             return
           }
@@ -113,7 +132,7 @@ class FixtureInjector {
             return this.globalFinish
           }
           const { initializedFixture, isGlobal } = this.initFixture(arg, provide, globalProvide)
-          if (initializedFixture.then instanceof Function) {
+          if (typeof initializedFixture.then === 'function') {
             // it is a promise
             if (isGlobal) {
               this.globalFinishPromises.push(initializedFixture)
@@ -140,7 +159,7 @@ class FixtureInjector {
   }
 
   initFixture(name, provide, globalProvide) {
-    const localFixtureDef = this.fixtures[name]
+    const localFixtureDef = this.localFixtures()[name]
     if (localFixtureDef !== undefined) {
       return {
         initializedFixture: fixtureObjectOrPromise(localFixtureDef, provide),

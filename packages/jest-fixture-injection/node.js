@@ -22,6 +22,8 @@ class fixtureInjectionEnvironment extends NodeEnvironment {
       replaceRootDirInPath(this.rootDir, globalFixtures),
       replaceRootDirInPath(this.rootDir, fixtures)
     )
+
+    await this.fixtureInjector.setup()
   }
 
   async teardown() {
@@ -37,6 +39,8 @@ class fixtureInjectionEnvironment extends NodeEnvironment {
     }
 
     // eslint-disable-next-line max-len
+    const fixture = (name, fn) => this.fixtureInjector.defineFixture(name, fn, this.global.beforeAll, this.global.afterAll)
+    // eslint-disable-next-line max-len
     const useFixture = fn => this.fixtureInjector.useFixture(fn, this.global.beforeAll, this.global.afterAll)
     const it = this.fixtureInjector.injectableRunnable(this.global.it)
     it.skip = this.fixtureInjector.injectableRunnable(this.global.it.skip)
@@ -47,6 +51,7 @@ class fixtureInjectionEnvironment extends NodeEnvironment {
     return script.runInContext(
       vm.createContext(
         Object.assign({}, this.global, {
+          fixture,
           useFixture,
           it,
           test,

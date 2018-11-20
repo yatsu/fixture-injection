@@ -1,5 +1,5 @@
 function fixtureObjectOrPromise(fixtureDef, provide) {
-  if (fixtureDef instanceof Function) {
+  if (typeof fixtureDef === 'function') {
     return fixtureDef(provide)
   }
   return fixtureDef

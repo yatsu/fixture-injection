@@ -1,21 +1,18 @@
-function sleep(msec) {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve()
-    }, msec)
-  })
-}
+const { sleep } = require('./helper')
 
 describe('Foo', () => {
-  useFixture((gfoo, foo) => {
-    this.gfoo = gfoo
+  fixture('qux', async (provide) => {
+    await provide('QUX2')
+  })
+
+  useFixture((foo) => {
     this.foo = foo
   })
 
-  it('Foo.bar/baz', async (bar, baz) => {
-    const { gfoo, foo } = this
+  it('Foo.bar/qux', async (bar, qux) => {
+    const { foo } = this
     await sleep(100)
-    console.log('Foo.bar', gfoo, foo, bar, baz)
+    console.log('Foo.bar', foo, bar, qux)
     await sleep(100)
   })
 

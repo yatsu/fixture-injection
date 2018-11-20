@@ -5,6 +5,7 @@ module.exports = {
   },
   extends: ['airbnb-base', 'plugin:jasmine/recommended'],
   globals: {
+    fixture: true,
     useFixture: true
   },
   rules: {
