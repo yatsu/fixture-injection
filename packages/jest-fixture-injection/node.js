@@ -1,7 +1,7 @@
 const vm = require('vm')
 // eslint-disable-next-line import/no-extraneous-dependencies, node/no-extraneous-require
 const NodeEnvironment = require('jest-environment-node')
-const FixtureInjector = require('fixture-injection')
+const { FixtureInjector } = require('fixture-injection')
 const readConfig = require('./config')
 const { replaceRootDirInPath } = require('./utils')
 

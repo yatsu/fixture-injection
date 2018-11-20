@@ -1,6 +1,6 @@
 // eslint-disable-next-line import/no-extraneous-dependencies, node/no-extraneous-require
 const JSDOMEnvironment = require('jest-environment-jsdom')
-const FixtureInjector = require('fixture-injection')
+const { FixtureInjector } = require('fixture-injection')
 const readConfig = require('./config')
 const { replaceRootDirInPath } = require('./utils')
 

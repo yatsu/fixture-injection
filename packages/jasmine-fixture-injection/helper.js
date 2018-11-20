@@ -1,5 +1,5 @@
 const process = require('process')
-const FixtureInjector = require('fixture-injection')
+const { FixtureInjector } = require('fixture-injection')
 
 const env = jasmine.getEnv()
 
