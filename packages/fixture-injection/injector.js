@@ -1,10 +1,7 @@
 const path = require('path')
 const getArguments = require('es-arguments')
 const ipc = require('node-ipc')
-const { fixtureObjectOrPromise } = require('./common')
-
-const IPC_SERVER_ID = 'fixture-injection-server'
-const IPC_CLIENT_ID = 'fixture-injection-client'
+const { fixtureObjectOrPromise, IPC_SERVER_ID, IPC_CLIENT_ID } = require('./common')
 
 class FixtureInjector {
   constructor(rootDir, useGlobalFixtureServer = false) {

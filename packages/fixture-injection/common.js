@@ -6,5 +6,7 @@ function fixtureObjectOrPromise(fixtureDef, provide) {
 }
 
 module.exports = {
+  IPC_SERVER_ID: 'fixture-injection-server',
+  IPC_CLIENT_ID: 'fixture-injection-client',
   fixtureObjectOrPromise
 }

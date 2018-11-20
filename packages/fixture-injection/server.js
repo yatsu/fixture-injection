@@ -1,6 +1,6 @@
 const path = require('path')
 const ipc = require('node-ipc')
-const { fixtureObjectOrPromise } = require('./common')
+const { fixtureObjectOrPromise, IPC_SERVER_ID, IPC_CLIENT_ID } = require('./common')
 
 class FixtureServer {
   constructor(rootDir) {
@@ -75,6 +75,22 @@ class FixtureServer {
       ipc.server.start()
     })
     await promise
+  }
+
+  static async teardown() {
+    await new Promise((resolve) => {
+      ipc.config.id = IPC_CLIENT_ID
+      ipc.config.silent = true
+      ipc.connectTo(IPC_SERVER_ID, () => {
+        ipc.of[IPC_SERVER_ID].on('connect', () => {
+          ipc.of[IPC_SERVER_ID].emit('teardown')
+          ipc.disconnect(IPC_SERVER_ID)
+        })
+        ipc.of[IPC_SERVER_ID].on('disconnect', () => {
+          resolve()
+        })
+      })
+    })
   }
 }
 
