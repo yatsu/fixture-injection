@@ -1,72 +1,74 @@
 const { sleep } = require("./helper");
 
 describe("Foo", () => {
+  let fixtures = {};
+
   fixture("qux", async provide => {
     await provide("QUX1");
   });
 
-  let foo_;
-
   useFixture(foo => {
-    foo_ = foo;
+    fixtures.foo = foo;
   });
 
   it("Foo.bar/qux", async (bar, qux) => {
+    const { foo } = fixtures;
     await sleep(100);
-    console.log("Foo.bar", foo_, bar, qux);
+    console.log("Foo.bar", foo, bar, qux);
     await sleep(100);
   });
 
   it("Foo.baz", baz => {
-    console.log("Foo.baz", foo_, baz);
+    const { foo } = fixtures;
+    console.log("Foo.baz", foo, baz);
   });
 
   describe("Foo.Bar", () => {
-    let bar_;
-
     useFixture(bar => {
-      bar_ = bar;
+      fixtures.bar = bar;
     });
 
     it("Foo.Bar.baz", baz => {
-      console.log("Foo.Bar.baz", foo_, bar_, baz);
+      const { foo, bar } = fixtures;
+      console.log("Foo.Bar.baz", foo, bar, baz);
     });
   });
 });
 
 describe("Bar", () => {
-  let bar_;
+  let fixtures = {};
 
   useFixture(bar => {
-    bar_ = bar;
+    fixtures.bar = bar;
   });
 
   describe("Bar.Foo", () => {
-    let foo_;
-
     useFixture(foo => {
-      foo_ = foo;
+      fixtures.foo = foo;
     });
 
     it("Bar.Foo.baz", baz => {
-      console.log("Bar.Foo.baz", bar_, foo_, baz);
+      const { foo, bar } = fixtures;
+      console.log("Bar.Foo.baz", bar, foo, baz);
     });
   });
 });
 
 describe("Baz", () => {
-  let baz_;
+  let fixtures = {};
 
   useFixture(baz => {
-    baz_ = baz;
+    fixtures.baz = baz;
   });
 
   it("Baz.bar", bar => {
-    console.log("Baz.bar", baz_, bar);
+    const { baz } = fixtures;
+    console.log("Baz.bar", baz, bar);
   });
 
   // eslint-disable-next-line
   xit("Baz.skip", foo => {
-    console.log("Baz.skip", baz_, foo);
+    const { baz } = fixtures;
+    console.log("Baz.skip", baz, foo);
   });
 });

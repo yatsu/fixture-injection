@@ -1,68 +1,74 @@
 const { sleep } = require('./helper')
 
 describe('Foo', () => {
+  const fixtures = {}
+
   fixture('qux', async (provide) => {
-    await provide('QUX2')
+    await provide('QUX1')
   })
 
   useFixture((foo) => {
-    this.foo = foo
+    fixtures.foo = foo
   })
 
   it('Foo.bar/qux', async (bar, qux) => {
-    const { foo } = this
+    const { foo } = fixtures
     await sleep(100)
     console.log('Foo.bar', foo, bar, qux)
     await sleep(100)
   })
 
   it('Foo.baz', (baz) => {
-    const { foo } = this
+    const { foo } = fixtures
     console.log('Foo.baz', foo, baz)
   })
 
   describe('Foo.Bar', () => {
     useFixture((bar) => {
-      this.bar = bar
+      fixtures.bar = bar
     })
 
     it('Foo.Bar.baz', (baz) => {
-      const { foo, bar } = this
+      const { foo, bar } = fixtures
       console.log('Foo.Bar.baz', foo, bar, baz)
     })
   })
 })
 
 describe('Bar', () => {
+  const fixtures = {}
+
   useFixture((bar) => {
-    this.bar = bar
+    fixtures.bar = bar
   })
 
   describe('Bar.Foo', () => {
     useFixture((foo) => {
-      this.foo = foo
+      fixtures.foo = foo
     })
 
     it('Bar.Foo.baz', (baz) => {
-      const { foo, bar } = this
+      const { foo, bar } = fixtures
       console.log('Bar.Foo.baz', bar, foo, baz)
     })
   })
 })
 
 describe('Baz', () => {
+  const fixtures = {}
+
   useFixture((baz) => {
-    this.baz = baz
+    fixtures.baz = baz
   })
 
   it('Baz.bar', (bar) => {
-    const { baz } = this
+    const { baz } = fixtures
     console.log('Baz.bar', baz, bar)
   })
 
   // eslint-disable-next-line
   xit('Baz.skip', foo => {
-    const { baz } = this
+    const { baz } = fixtures
     console.log('Baz.skip', baz, foo)
   })
 })
