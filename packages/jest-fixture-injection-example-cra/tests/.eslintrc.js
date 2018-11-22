@@ -1,6 +1,7 @@
 module.exports = {
   globals: {
     fixture: true,
-    useFixture: true
+    useFixture: true,
+    nonuse: true
   }
 }

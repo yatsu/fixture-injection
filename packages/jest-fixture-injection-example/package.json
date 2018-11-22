@@ -6,7 +6,7 @@
   "scripts": {
     "start": "scripty",
     "test": "scripty",
-    "pre-commit": "lint-staged"
+    "pre-commit": "lint-staged && yarn test"
   },
   "lint-staged": {
     "linters": {
@@ -31,14 +31,13 @@
   "author": "fixture-injection Development Team",
   "license": "MIT",
   "dependencies": {
-    "eslint-plugin-jest": "^22.0.0",
     "express": "^4.16.4"
   },
   "devDependencies": {
     "eslint": "^5.8.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.14.0",
-    "eslint-plugin-jasmine": "^2.10.1",
+    "eslint-plugin-jest": "^22.0.0",
     "eslint-plugin-node": "^8.0.0",
     "jest": "^23.6.0",
     "jest-fixture-injection": "^0.1.0",

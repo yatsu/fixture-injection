@@ -1,0 +1,3 @@
+#!/bin/bash -eu
+
+jest -c jest.config.js $@

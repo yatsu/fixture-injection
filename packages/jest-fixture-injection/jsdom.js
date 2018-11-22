@@ -46,6 +46,7 @@ class fixtureInjectionEnvironment extends JSDOMEnvironment {
     this.global.it.only = this.fixtureInjector.injectableRunnable(this.global.it.only)
     this.global.test = this.fixtureInjector.injectableRunnable(this.global.test)
     this.global.xtest = this.fixtureInjector.injectableRunnable(this.global.xtest)
+    this.global.nonuse = () => null
 
     return this.dom.runVMScript(script)
   }

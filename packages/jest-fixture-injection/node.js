@@ -47,6 +47,7 @@ class fixtureInjectionEnvironment extends NodeEnvironment {
     it.only = this.fixtureInjector.injectableRunnable(this.global.it.only)
     const test = this.fixtureInjector.injectableRunnable(this.global.test)
     const xtest = this.fixtureInjector.injectableRunnable(this.global.xtest)
+    const nonuse = () => null
 
     return script.runInContext(
       vm.createContext(
@@ -55,7 +56,8 @@ class fixtureInjectionEnvironment extends NodeEnvironment {
           useFixture,
           it,
           test,
-          xtest
+          xtest,
+          nonuse
         })
       )
     )

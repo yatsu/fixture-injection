@@ -11,3 +11,5 @@ global.useFixture = fn => global.fixtureInjector.useFixture(fn, env.beforeAll, e
 
 global.it = global.fixtureInjector.injectableRunnable(global.it)
 global.xit = global.fixtureInjector.injectableRunnable(global.xit)
+
+global.nonuse = () => null

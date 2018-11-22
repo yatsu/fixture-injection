@@ -6,7 +6,7 @@
   "scripts": {
     "start": "scripty",
     "test": "scripty",
-    "pre-commit": "lint-staged"
+    "pre-commit": "lint-staged && yarn test"
   },
   "lint-staged": {
     "linters": {

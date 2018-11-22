@@ -1,5 +1,5 @@
 module.exports = {
-  plugins: ['jest'],
+  plugins: ['jest', 'node'],
   env: {
     'jest/globals': true
   },
@@ -17,11 +17,6 @@ module.exports = {
     'no-mixed-operators': 'off',
     'no-param-reassign': ['error', { props: false }],
     'no-shadow': 'off',
-    semi: ['error', 'never'],
-    'import/no-extraneous-dependencies': ['error', { devDependencies: ['**/*.js'] }],
-    'import/no-unresolved': ['error', { commonjs: true }],
-    'import/prefer-default-export': 'off',
-    'node/no-missing-require': ['error', { allowModules: ['jest-fixture-injection'] }],
-    'node/no-unpublished-require': ['error', { allowModules: ['jest-fixture-injection'] }]
+    semi: ['error', 'never']
   }
 }
