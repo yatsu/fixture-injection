@@ -1,5 +1,5 @@
 module.exports = {
-  plugins: ['jest'],
+  plugins: ['jest', 'node'],
   env: {
     'jest/globals': true
   },

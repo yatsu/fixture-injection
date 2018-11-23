@@ -16,7 +16,6 @@ module.exports = {
     'no-console': 'off',
     'no-mixed-operators': 'off',
     'no-param-reassign': ['error', { props: false }],
-    'no-shadow': 'off',
     semi: ['error', 'never'],
     'import/no-extraneous-dependencies': ['error', { devDependencies: ['**/*.js'] }],
     'import/no-unresolved': ['error', { commonjs: true }],

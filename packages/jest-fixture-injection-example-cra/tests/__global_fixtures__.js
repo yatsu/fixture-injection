@@ -1,13 +1,24 @@
-const { sleep } = require("./helper");
+const { nonuse } = require('jest-fixture-injection')
+const { sleep } = require('./helper')
 
-const foo = async provide => {
-  // console.log('setup foo')
-  await sleep(100);
-  await provide("-GLOBAL-FOO-");
+const quuux = async provide => {
+  // console.log('setup quuux')
+  await sleep(100)
+  await provide('-GLOBAL-QUUUX-')
+  // console.log('teardown quuux')
+  await sleep(100)
+}
+
+const foo = async (provide, quuux) => {
+  nonuse(quuux)
+  // console.log('setup foo', quuux)
+  await sleep(100)
+  await provide('-GLOBAL-FOO-')
   // console.log('teardown foo')
-  await sleep(100);
-};
+  await sleep(100)
+}
 
 module.exports = {
-  foo
-};
+  foo,
+  quuux
+}

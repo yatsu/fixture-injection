@@ -17,9 +17,11 @@ describe('fixtureObjectOrPromise()', () => {
   describe('when fixtureDef is a synchronous function', () => {
     it('returns the result of fixtureDef()', () => {
       const provide = jest.fn().mockResolvedValue(null)
+      const fixtureDef = jest.fn().mockReturnValue('b')
 
-      expect(fixtureObjectOrPromise(() => 'b', provide)).toEqual('b')
+      expect(fixtureObjectOrPromise(fixtureDef, provide, ['a'])).toEqual('b')
 
+      expect(fixtureDef).toHaveBeenCalledWith(provide, 'a')
       expect(provide).not.toBeCalled()
     })
   })
@@ -28,11 +30,12 @@ describe('fixtureObjectOrPromise()', () => {
     it('returns the result of fixtureDef() and it is a Promise', async () => {
       const provide = jest.fn().mockResolvedValue(null)
 
-      const fn = async (provide) => {
+      // eslint-disable-next-line no-shadow
+      const fixtureDef = async (provide) => {
         await provide('c')
       }
 
-      const result = fixtureObjectOrPromise(fn, provide)
+      const result = fixtureObjectOrPromise(fixtureDef, provide, ['a', 'b'])
       expect(result).toBeInstanceOf(Promise)
 
       await result

@@ -1,7 +1,5 @@
 module.exports = {
-  globals: {
-    fixture: true,
-    useFixture: true,
-    nonuse: true
+  rules: {
+    'no-shadow': 'off'
   }
 }

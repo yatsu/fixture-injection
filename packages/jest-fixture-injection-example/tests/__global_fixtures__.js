@@ -1,7 +1,17 @@
+const { nonuse } = require('jest-fixture-injection')
 const { sleep } = require('./helper')
 
-const foo = async (provide) => {
-  // console.log('setup foo')
+const quuux = async (provide) => {
+  // console.log('setup quuux')
+  await sleep(100)
+  await provide('-GLOBAL-QUUUX-')
+  // console.log('teardown quuux')
+  await sleep(100)
+}
+
+const foo = async (provide, quuux) => {
+  nonuse(quuux)
+  // console.log('setup foo', quuux)
   await sleep(100)
   await provide('-GLOBAL-FOO-')
   // console.log('teardown foo')
@@ -9,5 +19,6 @@ const foo = async (provide) => {
 }
 
 module.exports = {
-  foo
+  foo,
+  quuux
 }

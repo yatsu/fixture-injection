@@ -15,9 +15,11 @@ module.exports = {
     'no-console': 'off',
     'no-mixed-operators': 'off',
     'no-param-reassign': ['error', { props: false }],
-    'no-shadow': 'off',
     semi: ['error', 'never'],
-    'import/no-extraneous-dependencies': ['error', { devDependencies: ['**/*.spec.js', '**/scripts/test'] }],
+    'import/no-extraneous-dependencies': [
+      'error',
+      { devDependencies: ['**/*.spec.js', '**/spec/*[Ff]ixtures.js', '**/scripts/test'] }
+    ],
     'import/prefer-default-export': 'off',
     'jasmine/no-suite-callback-args': 'off' // required by fixture injection
   }

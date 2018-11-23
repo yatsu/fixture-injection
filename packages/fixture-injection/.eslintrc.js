@@ -1,5 +1,9 @@
 module.exports = {
-  extends: ['airbnb-base', 'plugin:node/recommended'],
+  plugins: ['jest', 'node'],
+  env: {
+    'jest/globals': true
+  },
+  extends: ['airbnb-base', 'plugin:jest/recommended', 'plugin:node/recommended'],
   rules: {
     'class-methods-use-this': 'off',
     'comma-dangle': ['error', 'never'],
@@ -7,7 +11,6 @@ module.exports = {
     'no-console': 'off',
     'no-mixed-operators': 'off',
     'no-param-reassign': ['error', { props: false }],
-    'no-shadow': 'off',
     'no-template-curly-in-string': 'off',
     'no-underscore-dangle': 'off',
     semi: ['error', 'never'],

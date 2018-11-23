@@ -1,17 +1,23 @@
 const path = require('path')
-const getArguments = require('es-arguments')
 const ipc = require('node-ipc')
-const { fixtureObjectOrPromise, IPC_SERVER_ID, IPC_CLIENT_ID } = require('./common')
+const {
+  constructDependencyMap,
+  fixtureArguments,
+  fixtureObjectOrPromise,
+  fixtureObjects,
+  IPC_SERVER_ID,
+  IPC_CLIENT_ID
+} = require('./common')
 
 class FixtureInjector {
   constructor(rootDir, useGlobalFixtureServer = false) {
     this.rootDir = rootDir
     this.useGlobalFixtureServer = useGlobalFixtureServer
-    this.globalFixtures = {}
     this.fixtures = {}
+    this.dependencyMap = []
     this.inlineFixtures = []
+    this.globalFixtures = {}
     this.globalFinishPromises = []
-    this.finished = false
     this.globalFixtureObjects = {}
     this.globalFinish = new Promise((resolve) => {
       this.globalFinished = resolve
@@ -35,8 +41,12 @@ class FixtureInjector {
     }
   }
 
-  localFixtures() {
+  nonGlobalFixtures() {
     return Object.assign({}, this.fixtures, this.inlineFixtures)
+  }
+
+  allFixtureDependencyMap() {
+    return Object.assign({}, this.dependencyMap, constructDependencyMap(this.inlineFixtures))
   }
 
   defineFixture(name, fn, beforeAll, afterAll) {
@@ -71,27 +81,41 @@ class FixtureInjector {
 
   setup() {
     if (this.useGlobalFixtureServer) {
-      return new Promise((resolve) => {
+      return new Promise((connectionResolve) => {
         ipc.config.id = IPC_CLIENT_ID
         ipc.config.silent = true
         ipc.connectTo(IPC_SERVER_ID, () => {
           ipc.of[IPC_SERVER_ID].on('connect', () => {
-            resolve()
+            ipc.of[IPC_SERVER_ID].emit('message', { type: 'dependencies' })
           })
-          ipc.of[IPC_SERVER_ID].on('message', ({ name, fixture, error }) => {
-            this.ipcResolvers[name].forEach((resolve) => {
-              if (error) {
-                resolve(new Error(error))
-              } else {
-                resolve(fixture)
-              }
-            })
-            this.ipcResolvers[name] = []
+          ipc.of[IPC_SERVER_ID].on('message', ({ type, payload }) => {
+            if (type === 'dependencies') {
+              const { dependencyMap } = payload
+              this.dependencyMap = Object.assign(
+                {},
+                dependencyMap,
+                constructDependencyMap(this.fixtures)
+              )
+              connectionResolve()
+            } else if (type === 'fixture') {
+              const { name, fixture, error } = payload
+              this.ipcResolvers[name].forEach((fixtureResolve) => {
+                if (error) {
+                  fixtureResolve(new Error(error))
+                } else {
+                  fixtureResolve(fixture)
+                }
+              })
+              this.ipcResolvers[name] = []
+            }
           })
         })
       })
     }
 
+    this.dependencyMap = constructDependencyMap(
+      Object.assign({}, this.globalFixtures, this.fixtures)
+    )
     return Promise.resolve()
   }
 
@@ -110,59 +134,73 @@ class FixtureInjector {
   }
 
   async callWithFixtures(fn, ...args) {
-    let finished
-    const finish = new Promise((resolve) => {
-      finished = resolve
+    let fnFinished
+    const fnFinish = new Promise((resolve) => {
+      fnFinished = resolve
     })
-    const promises = []
-    const fixtureObjects = await Promise.all(
-      getArguments(fn).map(
-        arg => new Promise((resolve) => {
-          if (!(arg in this.localFixtures()) && arg in this.globalFixtureObjects) {
-            resolve(this.globalFixtureObjects[arg])
-            return
-          }
-          const provide = (fixture) => {
-            resolve(fixture)
-            return finish
-          }
-          const globalProvide = (fixture) => {
-            this.globalFixtureObjects[arg] = fixture
-            resolve(fixture)
-            return this.globalFinish
-          }
-          const { initializedFixture, isGlobal } = this.initFixture(arg, provide, globalProvide)
-          if (typeof initializedFixture.then === 'function') {
-            // it is a promise
-            if (isGlobal) {
-              this.globalFinishPromises.push(initializedFixture)
-            } else {
-              promises.push(initializedFixture)
-            }
-            // fixture object will be resolved later
+    const finishPromises = []
+
+    const dependencyMap = this.allFixtureDependencyMap()
+    const fixtureNames = fixtureArguments(fn, dependencyMap)
+
+    const constructFixturePromise = (fname, dependenciesPromise) => new Promise((resolve) => {
+      if (!(fname in this.nonGlobalFixtures()) && fname in this.globalFixtureObjects) {
+        resolve(this.globalFixtureObjects[fname])
+        return
+      }
+      dependenciesPromise.then((dependencies) => {
+        const provide = (fixture) => {
+          resolve(fixture)
+          return fnFinish
+        }
+        const globalProvide = (fixture) => {
+          this.globalFixtureObjects[fname] = fixture
+          resolve(fixture)
+          return this.globalFinish
+        }
+        const { initializedFixture, isGlobal } = this.initFixture(
+          fname,
+          provide,
+          globalProvide,
+          dependencies
+        )
+        if (typeof initializedFixture.then === 'function') {
+          // it is a promise
+          if (isGlobal) {
+            this.globalFinishPromises.push(initializedFixture)
           } else {
-            // it is a fixture object
-            if (isGlobal) {
-              this.globalFixtureObjects[arg] = initializedFixture
-            }
-            // resolve fixture object immediately
-            resolve(initializedFixture)
+            finishPromises.push(initializedFixture)
           }
-        })
-      )
-    )
-    await fn(...fixtureObjects, ...args)
+          // fixture object will be resolved later
+        } else {
+          // it is a fixture object
+          if (isGlobal) {
+            this.globalFixtureObjects[fname] = initializedFixture
+          }
+          // resolve fixture object immediately
+          resolve(initializedFixture)
+        }
+      })
+    })
+
+    const objects = await fixtureObjects(fixtureNames, dependencyMap, constructFixturePromise)
+
+    await fn(...objects, ...args)
     return async () => {
-      finished()
-      await Promise.all(promises)
+      fnFinished()
+      await Promise.all(finishPromises)
     }
   }
 
-  initFixture(name, provide, globalProvide) {
-    const localFixtureDef = this.localFixtures()[name]
+  initFixture(name, provide, globalProvide, dependencies) {
+    const localFixtureDef = this.nonGlobalFixtures()[name]
     if (localFixtureDef !== undefined) {
       return {
-        initializedFixture: fixtureObjectOrPromise(localFixtureDef, provide),
+        initializedFixture: fixtureObjectOrPromise(
+          localFixtureDef,
+          provide,
+          fixtureArguments(localFixtureDef).map(n => dependencies.find(d => d.name === n).fixture)
+        ),
         isGlobal: false
       }
     }
@@ -180,7 +218,7 @@ class FixtureInjector {
           resolve(fixture)
         })
       })
-      ipc.of[IPC_SERVER_ID].emit('message', { name })
+      ipc.of[IPC_SERVER_ID].emit('message', { type: 'fixture', payload: { name } })
       return { initializedFixture: promise, isGlobal: true }
     }
 
@@ -189,7 +227,11 @@ class FixtureInjector {
       throw Error(`Undefined fixture '${name}'`)
     }
     return {
-      initializedFixture: fixtureObjectOrPromise(globalFixtureDef, globalProvide),
+      initializedFixture: fixtureObjectOrPromise(
+        globalFixtureDef,
+        globalProvide,
+        fixtureArguments(globalFixtureDef).map(n => dependencies.find(d => d.name === n).fixture)
+      ),
       isGlobal: true
     }
   }
