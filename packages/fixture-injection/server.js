@@ -87,6 +87,7 @@ class FixtureServer {
                 } else {
                   // it is a fixture object
                   // resolve fixture object immediately
+                  cachedObjects[name] = initializedFixture
                   fixtureResolve(initializedFixture)
                 }
               })

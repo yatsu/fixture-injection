@@ -10,7 +10,11 @@ function fixtureArguments(fixtureDef) {
 
 function fixtureObjectOrPromise(fixtureDef, provide, dependencies) {
   if (typeof fixtureDef === 'function') {
-    return fixtureDef(provide, ...dependencies)
+    const index = getArguments(fixtureDef).indexOf('provide')
+    if (index < 0) {
+      return fixtureDef(...dependencies)
+    }
+    return fixtureDef(...dependencies.slice(0, index), provide, ...dependencies.slice(index))
   }
   return fixtureDef
 }

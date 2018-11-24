@@ -17,32 +17,73 @@ describe('fixtureObjectOrPromise()', () => {
   describe('when fixtureDef is a synchronous function', () => {
     it('returns the result of fixtureDef()', () => {
       const provide = jest.fn().mockResolvedValue(null)
-      const fixtureDef = jest.fn().mockReturnValue('b')
+      const fixtureDef = a => `b-${a}`
 
-      expect(fixtureObjectOrPromise(fixtureDef, provide, ['a'])).toEqual('b')
+      expect(fixtureObjectOrPromise(fixtureDef, provide, ['a'])).toEqual('b-a')
 
-      expect(fixtureDef).toHaveBeenCalledWith(provide, 'a')
       expect(provide).not.toBeCalled()
     })
   })
 
   describe('when fixtureDef is an asynchronous function', () => {
-    it('returns the result of fixtureDef() and it is a Promise', async () => {
-      const provide = jest.fn().mockResolvedValue(null)
+    describe('when `provide` is the first argument', () => {
+      it('returns the result of fixtureDef() and it is a Promise', async () => {
+        const provide = jest.fn().mockResolvedValue(null)
 
-      // eslint-disable-next-line no-shadow
-      const fixtureDef = async (provide) => {
-        await provide('c')
-      }
+        // eslint-disable-next-line no-shadow
+        const fixtureDef = async (provide) => {
+          await provide('x')
+        }
 
-      const result = fixtureObjectOrPromise(fixtureDef, provide, ['a', 'b'])
-      expect(result).toBeInstanceOf(Promise)
+        const result = fixtureObjectOrPromise(fixtureDef, provide, [])
+        expect(result).toBeInstanceOf(Promise)
 
-      await result
+        await result
 
-      expect(result).resolves.toBe(undefined)
+        expect(result).resolves.toBe(undefined)
 
-      expect(provide).toHaveBeenCalledWith('c')
+        expect(provide).toHaveBeenCalledWith('x')
+      })
+    })
+
+    describe('when `provide` is the second argument', () => {
+      it('returns the result of fixtureDef() and it is a Promise', async () => {
+        const provide = jest.fn().mockResolvedValue(null)
+
+        // eslint-disable-next-line no-shadow
+        const fixtureDef = async (a, provide, b) => {
+          await provide(`${a}-${b}-c`)
+        }
+
+        const result = fixtureObjectOrPromise(fixtureDef, provide, ['a', 'b'])
+        expect(result).toBeInstanceOf(Promise)
+
+        await result
+
+        expect(result).resolves.toBe(undefined)
+
+        expect(provide).toHaveBeenCalledWith('a-b-c')
+      })
+    })
+
+    describe('when `provide` is the last argument', () => {
+      it('returns the result of fixtureDef() and it is a Promise', async () => {
+        const provide = jest.fn().mockResolvedValue(null)
+
+        // eslint-disable-next-line no-shadow
+        const fixtureDef = async (a, b, provide) => {
+          await provide(`${a}-${b}-c`)
+        }
+
+        const result = fixtureObjectOrPromise(fixtureDef, provide, ['a', 'b'])
+        expect(result).toBeInstanceOf(Promise)
+
+        await result
+
+        expect(result).resolves.toBe(undefined)
+
+        expect(provide).toHaveBeenCalledWith('a-b-c')
+      })
     })
   })
 })
