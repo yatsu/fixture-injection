@@ -1,4 +1,4 @@
-const { fixtureObjectOrPromise } = require('../common')
+const { fixtureObjectOrPromise, dependencyGraph } = require('../common')
 
 describe('fixtureObjectOrPromise()', () => {
   describe('when fixtureDef is not a function', () => {
@@ -44,5 +44,57 @@ describe('fixtureObjectOrPromise()', () => {
 
       expect(provide).toHaveBeenCalledWith('c')
     })
+  })
+})
+
+describe('dependencyGraph()', () => {
+  it('constructs a graph from a dependency map', () => {
+    const depMap = {
+      a: [],
+      b: [],
+      c: [],
+      d: ['a', 'b'],
+      e: [],
+      f: ['c'],
+      g: ['c', 'd'],
+      h: [],
+      i: ['d', 'e'],
+      j: ['e'],
+      k: ['f', 'h'],
+      l: ['h', 'j']
+    }
+
+    let graph = dependencyGraph(['a'], depMap)
+    expect(graph.topologicalSort).toBeInstanceOf(Function)
+    expect(graph.nodes()).toEqual(['a'])
+    expect(graph.adjacent('a')).toEqual([])
+
+    graph = dependencyGraph(['d'], depMap)
+    expect(graph.nodes().sort()).toEqual(['a', 'b', 'd'])
+    expect(graph.adjacent('a')).toEqual(['d'])
+    expect(graph.adjacent('b')).toEqual(['d'])
+    expect(graph.adjacent('d')).toEqual([])
+
+    graph = dependencyGraph(['g'], depMap)
+    expect(graph.nodes().sort()).toEqual(['a', 'b', 'c', 'd', 'g'])
+    expect(graph.adjacent('a')).toEqual(['d'])
+    expect(graph.adjacent('b')).toEqual(['d'])
+    expect(graph.adjacent('c')).toEqual(['g'])
+    expect(graph.adjacent('d')).toEqual(['g'])
+    expect(graph.adjacent('g')).toEqual([])
+
+    graph = dependencyGraph(['i', 'k', 'l'], depMap)
+    expect(graph.nodes().sort()).toEqual(['a', 'b', 'c', 'd', 'e', 'f', 'h', 'i', 'j', 'k', 'l'])
+    expect(graph.adjacent('a')).toEqual(['d'])
+    expect(graph.adjacent('b')).toEqual(['d'])
+    expect(graph.adjacent('c')).toEqual(['f'])
+    expect(graph.adjacent('d')).toEqual(['i'])
+    expect(graph.adjacent('e')).toEqual(['i', 'j'])
+    expect(graph.adjacent('f')).toEqual(['k'])
+    expect(graph.adjacent('h')).toEqual(['k', 'l'])
+    expect(graph.adjacent('i')).toEqual([])
+    expect(graph.adjacent('j')).toEqual(['l'])
+    expect(graph.adjacent('k')).toEqual([])
+    expect(graph.adjacent('l')).toEqual([])
   })
 })

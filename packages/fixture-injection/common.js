@@ -26,13 +26,14 @@ function constructDependencyMap(fixtures) {
 
 function dependencyGraph(fixtureNames, dependencyMap) {
   const graph = new Graph()
-  fixtureNames.forEach((name) => {
+  const construct = (name) => {
     graph.addNode(name)
     dependencyMap[name].forEach((dep) => {
-      graph.addNode(dep)
+      construct(dep)
       graph.addEdge(dep, name)
     })
-  }, {})
+  }
+  fixtureNames.forEach(construct)
   return graph
 }
 
