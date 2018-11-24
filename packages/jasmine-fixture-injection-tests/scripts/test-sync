@@ -8,15 +8,15 @@ const FixtureReporter = require('jasmine-fixture-injection/reporter')
 
 const jasmine = new Jasmine()
 jasmine.loadConfig({
-  spec_dir: './spec',
-  spec_files: ['../spec/**/*[sS]pec.js'],
+  spec_dir: './sync',
+  spec_files: ['../sync/**/*[sS]pec.js'],
   helpers: ['../node_modules/jasmine-fixture-injection/helper.js']
 })
 jasmine.jasmine.DEFAULT_TIMEOUT_INTERVAL = 15000
 
 const fixtureReporter = new FixtureReporter({
-  globalFixtures: '../spec/globalFixtures',
-  fixtures: '../spec/fixtures'
+  globalFixtures: '../sync/globalFixtures',
+  fixtures: '../sync/fixtures'
 })
 
 const consoleReporter = new JasmineConsoleReporter({

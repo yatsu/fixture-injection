@@ -1,0 +1,4 @@
+#!/bin/bash -eu
+
+yarn test-sync
+yarn test-async
