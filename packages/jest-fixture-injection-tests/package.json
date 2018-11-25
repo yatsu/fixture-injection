@@ -6,6 +6,7 @@
     "test-all": "scripty",
     "test-sync": "scripty",
     "test-async": "scripty",
+    "test-reuse": "scripty",
     "pre-commit": "lint-staged && yarn test-all"
   },
   "lint-staged": {
@@ -31,7 +32,8 @@
   "author": "fixture-injection Development Team",
   "license": "MIT",
   "dependencies": {
-    "express": "^4.16.4"
+    "express": "^4.16.4",
+    "nanoid": "^2.0.0"
   },
   "devDependencies": {
     "eslint": "^5.8.0",

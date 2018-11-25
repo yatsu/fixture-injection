@@ -1,4 +1,5 @@
 #!/bin/bash -eu
 
-yarn test-sync
-yarn test-async
+yarn test-sync --verbose
+yarn test-async --verbose
+yarn test-reuse --verbose

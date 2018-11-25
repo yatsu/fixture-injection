@@ -1,6 +1,10 @@
 const getArguments = require('es-arguments')
 const Graph = require('graph-data-structure')
 
+function isObject(obj) {
+  return obj === Object(obj)
+}
+
 function fixtureArguments(fixtureDef) {
   if (typeof fixtureDef !== 'function') {
     return []
@@ -8,15 +12,17 @@ function fixtureArguments(fixtureDef) {
   return getArguments(fixtureDef).filter(name => name !== 'provide')
 }
 
-function fixtureObjectOrPromise(fixtureDef, provide, dependencies) {
+function fixtureObjectOrPromise(fixtureDef, provide, dependencies, freeze = false) {
   if (typeof fixtureDef === 'function') {
     const index = getArguments(fixtureDef).indexOf('provide')
-    if (index < 0) {
-      return fixtureDef(...dependencies)
-    }
-    return fixtureDef(...dependencies.slice(0, index), provide, ...dependencies.slice(index))
+    const obj = index < 0
+      ? fixtureDef(...dependencies)
+      : fixtureDef(...dependencies.slice(0, index), provide, ...dependencies.slice(index))
+    return freeze ? Object.freeze(obj) : obj
   }
-  return fixtureDef
+  // Value fixture defined as `foo = 'FOO'`
+  if (freeze) return Object.freeze(fixtureDef)
+  return isObject(fixtureDef) ? Object.assign({}, fixtureDef) : fixtureDef
 }
 
 function constructDependencyMap(fixtures) {

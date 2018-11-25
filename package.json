@@ -5,8 +5,10 @@
     "format": "prettier-eslint --write 'packages/*/*.js'",
     "add:core": "scripty",
     "add:jasmine": "scripty",
+    "add:jasmine-tests": "scripty",
     "add:jasmine-example": "scripty",
     "add:jest": "scripty",
+    "add:jest-tests": "scripty",
     "add:jest-example": "scripty",
     "add:jest-example-cra": "scripty"
   },

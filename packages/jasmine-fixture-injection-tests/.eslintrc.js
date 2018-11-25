@@ -22,6 +22,7 @@ module.exports = {
       { devDependencies: ['**/*.spec.js', '**/spec/*[Ff]ixtures.js', '**/scripts/test-*'] }
     ],
     'import/prefer-default-export': 'off',
+    'jasmine/no-suite-dupes': 'off',
     'jasmine/no-spec-dupes': 'off',
     'jasmine/no-suite-callback-args': 'off' // required by fixture injection
   }

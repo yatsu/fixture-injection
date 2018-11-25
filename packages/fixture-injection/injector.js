@@ -214,8 +214,10 @@ class FixtureInjector {
           if (fixture instanceof Error) {
             throw fixture
           }
-          globalProvide(fixture)
-          resolve(fixture)
+          // Global fixtures should be frozen even though Jest freezes them
+          const frozenFixture = Object.freeze(fixture)
+          globalProvide(frozenFixture)
+          resolve(frozenFixture)
         })
       })
       ipc.of[IPC_SERVER_ID].emit('message', { type: 'fixture', payload: { name } })
@@ -229,8 +231,10 @@ class FixtureInjector {
     return {
       initializedFixture: fixtureObjectOrPromise(
         globalFixtureDef,
-        globalProvide,
-        fixtureArguments(globalFixtureDef).map(n => dependencies.find(d => d.name === n).fixture)
+        // Global fixtures should be frozen in Jasmine
+        fixture => globalProvide(Object.freeze(fixture)),
+        fixtureArguments(globalFixtureDef).map(n => dependencies.find(d => d.name === n).fixture),
+        true
       ),
       isGlobal: true
     }
