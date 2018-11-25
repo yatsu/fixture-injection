@@ -1,22 +1,29 @@
 const { sleep } = require('./helper')
 
 describe('Single fixture in a test case', () => {
-  it('a', (a) => {
+  fixture('m', (b, j) => `M(${b},${j})`)
+
+  test('a', (a) => {
     expect(a).toEqual('A()')
   })
 
-  it('d', (d) => {
+  test('d', (d) => {
     expect(d).toEqual('D(A(),B())')
   })
 
-  it('g', async (g) => {
+  test('g', async (g) => {
     await sleep(1)
+
     expect(g).toEqual('G(C(),D(A(),B()))')
+  })
+
+  test('m', (m) => {
+    expect(m).toEqual('M(B(),J(E()))')
   })
 })
 
 describe('Multiple fixtures in a test case', () => {
-  it('i, k and l', (i, k, l) => {
+  test('i, k and l', (i, k, l) => {
     expect(i).toEqual('I(D(A(),B()),E())')
     expect(k).toEqual('K(F(C()),H())')
     expect(l).toEqual('L(H(),J(E()))')
@@ -39,8 +46,9 @@ describe('Single fixture in a test suite', () => {
     fixtures.g = g
   })
 
-  it('a, d and g', () => {
+  test('a, d and g', () => {
     const { a, d, g } = fixtures
+
     expect(a).toEqual('A()')
     expect(d).toEqual('D(A(),B())')
     expect(g).toEqual('G(C(),D(A(),B()))')
@@ -50,16 +58,23 @@ describe('Single fixture in a test suite', () => {
 describe('Multiple fixtures in a test suite', () => {
   const fixtures = {}
 
-  useFixture((i, k, l) => {
+  fixture('m', (b, j) => `M(${b},${j})`)
+
+  useFixture((i, k, l, m) => {
     fixtures.i = i
     fixtures.k = k
     fixtures.l = l
+    fixtures.m = m
   })
 
-  it('i, k and l', () => {
-    const { i, k, l } = fixtures
+  test('i, k, l and m', () => {
+    const {
+      i, k, l, m
+    } = fixtures
+
     expect(i).toEqual('I(D(A(),B()),E())')
     expect(k).toEqual('K(F(C()),H())')
     expect(l).toEqual('L(H(),J(E()))')
+    expect(m).toEqual('M(B(),J(E()))')
   })
 })
