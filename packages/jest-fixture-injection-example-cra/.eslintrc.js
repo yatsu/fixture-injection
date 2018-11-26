@@ -2,7 +2,6 @@ module.exports = {
   extends: ['react-app'],
   globals: {
     fixture: true,
-    useFixture: true,
     nonuse: true
   },
   rules: {

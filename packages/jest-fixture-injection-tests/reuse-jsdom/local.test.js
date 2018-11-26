@@ -2,7 +2,7 @@ describe('Local value fixture', () => {
   describe('when it is used in a suite', () => {
     const fixtures = {}
 
-    useFixture((d) => {
+    beforeAll((d) => {
       fixtures.d = d
     })
 
@@ -42,7 +42,7 @@ describe('Local synchronous function fixture', () => {
   describe('when it is used in a suite', () => {
     const fixtures = {}
 
-    useFixture((e) => {
+    beforeAll((e) => {
       fixtures.e = e
     })
 
@@ -82,7 +82,7 @@ describe('Local asynchronous function fixture', () => {
   describe('when it is used in a suite', () => {
     const fixtures = {}
 
-    useFixture((f) => {
+    beforeAll((f) => {
       fixtures.f = f
     })
 

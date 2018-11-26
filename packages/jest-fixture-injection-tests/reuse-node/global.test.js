@@ -1,11 +1,13 @@
 describe('Global value fixture', () => {
   describe('when it is used in a suite', () => {
+    const fixtures = {}
+
     beforeAll((a) => {
-      this.a = a
+      fixtures.a = a
     })
 
-    it('does not allow modification', () => {
-      const { a } = this
+    test('does not allow modification', () => {
+      const { a } = fixtures
       a.foo = 1
 
       expect(a.name).toEqual('a')
@@ -15,8 +17,10 @@ describe('Global value fixture', () => {
   })
 
   describe('when it is used in a test case', () => {
-    it('does not allow modification', (a) => {
-      this.lastA = a
+    const fixtures = {}
+
+    test('does not allow modification', (a) => {
+      fixtures.lastA = a
       a.foo = 1
 
       expect(a.name).toEqual('a')
@@ -24,8 +28,8 @@ describe('Global value fixture', () => {
       expect(a.foo).toBeUndefined()
     })
 
-    it('is identical among test cases', (a) => {
-      expect(a).toBe(this.lastA)
+    test('is identical among test cases', (a) => {
+      expect(a).toBe(fixtures.lastA)
       expect(a.name).toEqual('a')
       expect(a.id.length).toEqual(10)
       expect(a.foo).toBeUndefined()
@@ -35,12 +39,14 @@ describe('Global value fixture', () => {
 
 describe('Global synchronous function fixture', () => {
   describe('when it is used in a suite', () => {
+    const fixtures = {}
+
     beforeAll((b) => {
-      this.b = b
+      fixtures.b = b
     })
 
-    it('does not allow modification', () => {
-      const { b } = this
+    test('does not allow modification', () => {
+      const { b } = fixtures
       b.foo = 1
 
       expect(b.name).toEqual('b')
@@ -50,16 +56,18 @@ describe('Global synchronous function fixture', () => {
   })
 
   describe('when it is used in a test case', () => {
-    it('does not allow modification', (b) => {
-      this.lastB = b
+    const fixtures = {}
+
+    test('does not allow modification', (b) => {
+      fixtures.lastB = b
 
       expect(b.name).toEqual('b')
       expect(b.id.length).toEqual(10)
       expect(b.foo).toBeUndefined()
     })
 
-    it('is identical among test cases', (b) => {
-      expect(b).toBe(this.lastB)
+    test('is identical among test cases', (b) => {
+      expect(b).toBe(fixtures.lastB)
       expect(b.name).toEqual('b')
       expect(b.id.length).toEqual(10)
       expect(b.foo).toBeUndefined()
@@ -69,12 +77,14 @@ describe('Global synchronous function fixture', () => {
 
 describe('Global asynchronous function fixture', () => {
   describe('when it is used in a suite', () => {
+    const fixtures = {}
+
     beforeAll((c) => {
-      this.c = c
+      fixtures.c = c
     })
 
-    it('does not allow modification', () => {
-      const { c } = this
+    test('does not allow modification', () => {
+      const { c } = fixtures
       c.foo = 1
 
       expect(c.name).toEqual('c')
@@ -84,16 +94,18 @@ describe('Global asynchronous function fixture', () => {
   })
 
   describe('when it is used in a test case', () => {
-    it('does not allow modification', (c) => {
-      this.lastC = c
+    const fixtures = {}
+
+    test('does not allow modification', (c) => {
+      fixtures.lastC = c
 
       expect(c.name).toEqual('c')
       expect(c.id.length).toEqual(10)
       expect(c.foo).toBeUndefined()
     })
 
-    it('is identical among test cases', (c) => {
-      expect(c).toBe(this.lastC)
+    test('is identical among test cases', (c) => {
+      expect(c).toBe(fixtures.lastC)
       expect(c.name).toEqual('c')
       expect(c.id.length).toEqual(10)
       expect(c.foo).toBeUndefined()

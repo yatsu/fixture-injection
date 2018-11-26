@@ -38,10 +38,11 @@ class fixtureInjectionEnvironment extends JSDOMEnvironment {
     }
 
     if (!this.global.fixture) {
+      const { beforeAll } = this.global
       // eslint-disable-next-line max-len
       this.global.fixture = (name, fn) => this.fixtureInjector.defineFixture(name, fn, this.global.beforeAll, this.global.afterAll)
       // eslint-disable-next-line max-len
-      this.global.useFixture = fn => this.fixtureInjector.useFixture(fn, this.global.beforeAll, this.global.afterAll)
+      this.global.beforeAll = fn => this.fixtureInjector.beforeAll(fn, beforeAll, this.global.afterAll)
       this.global.it = this.fixtureInjector.injectableRunnable(this.global.it)
       this.global.it.skip = this.fixtureInjector.injectableRunnable(this.global.it.skip)
       this.global.it.only = this.fixtureInjector.injectableRunnable(this.global.it.only)

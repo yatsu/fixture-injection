@@ -2,7 +2,7 @@ describe('Global value fixture', () => {
   describe('when it is used in a suite', () => {
     const fixtures = {}
 
-    useFixture((a) => {
+    beforeAll((a) => {
       fixtures.a = a
     })
 
@@ -41,7 +41,7 @@ describe('Global synchronous function fixture', () => {
   describe('when it is used in a suite', () => {
     const fixtures = {}
 
-    useFixture((b) => {
+    beforeAll((b) => {
       fixtures.b = b
     })
 
@@ -79,7 +79,7 @@ describe('Global asynchronous function fixture', () => {
   describe('when it is used in a suite', () => {
     const fixtures = {}
 
-    useFixture((c) => {
+    beforeAll((c) => {
       fixtures.c = c
     })
 

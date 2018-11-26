@@ -41,7 +41,7 @@ class fixtureInjectionEnvironment extends NodeEnvironment {
     // eslint-disable-next-line max-len
     const fixture = (name, fn) => this.fixtureInjector.defineFixture(name, fn, this.global.beforeAll, this.global.afterAll)
     // eslint-disable-next-line max-len
-    const useFixture = fn => this.fixtureInjector.useFixture(fn, this.global.beforeAll, this.global.afterAll)
+    const beforeAll = fn => this.fixtureInjector.beforeAll(fn, this.global.beforeAll, this.global.afterAll)
     const it = this.fixtureInjector.injectableRunnable(this.global.it)
     it.skip = this.fixtureInjector.injectableRunnable(this.global.it.skip)
     it.only = this.fixtureInjector.injectableRunnable(this.global.it.only)
@@ -53,7 +53,7 @@ class fixtureInjectionEnvironment extends NodeEnvironment {
       vm.createContext(
         Object.assign({}, this.global, {
           fixture,
-          useFixture,
+          beforeAll,
           it,
           test,
           xtest,

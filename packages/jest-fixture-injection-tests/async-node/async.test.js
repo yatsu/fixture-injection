@@ -33,15 +33,15 @@ describe('Multiple fixtures in a test case', () => {
 describe('Single fixture in a test suite', () => {
   const fixtures = {}
 
-  useFixture((a) => {
+  beforeAll((a) => {
     fixtures.a = a
   })
 
-  useFixture((d) => {
+  beforeAll((d) => {
     fixtures.d = d
   })
 
-  useFixture(async (g) => {
+  beforeAll(async (g) => {
     await sleep(1)
     fixtures.g = g
   })
@@ -60,7 +60,7 @@ describe('Multiple fixtures in a test suite', () => {
 
   fixture('m', (b, j) => `M(${b},${j})`)
 
-  useFixture((i, k, l, m) => {
+  beforeAll((i, k, l, m) => {
     fixtures.i = i
     fixtures.k = k
     fixtures.l = l

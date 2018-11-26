@@ -62,7 +62,7 @@ class FixtureInjector {
     this.inlineFixtures = {}
   }
 
-  useFixture(fn, beforeAll, afterAll) {
+  beforeAll(fn, beforeAll, afterAll) {
     let finish
     beforeAll(async () => {
       finish = await this.callWithFixtures(fn)

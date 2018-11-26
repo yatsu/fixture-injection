@@ -5,7 +5,6 @@ module.exports = {
   },
   globals: {
     fixture: true,
-    useFixture: true,
     nonuse: true
   },
   extends: ['airbnb-base', 'plugin:jest/recommended', 'plugin:node/recommended'],

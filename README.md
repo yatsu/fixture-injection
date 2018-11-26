@@ -21,8 +21,6 @@ asynchronously. It can have (asynchronous) setup and teardown logic in it which 
 
 ## Examples
 
-### Jasmine
-
 fixtures.js:
 
 ```js
@@ -50,13 +48,14 @@ example.spec.js:
 
 ```js
 describe('My test suite', () => {
-  useFixture((foo) => { // Inject fixtures to *a suite* by useFixture()
-    this.foo = foo
+  let fixtures = {}
+
+  beforeAll((foo) => { // Inject fixtures to *a suite* by beforeAll()
+    fixtures.foo = foo
   })
-  // foo is initialized in beforeAll() of this block
 
   it('some test', (bar, baz) => { // Inject fixtures to *a test case* just as arguments
-    const { foo } = this // Get fixtures from the suite
+    const { foo } = fixtures // Get fixtures from the suite
     // bar and baz are initialized just before this block
     expect(foo).toEqual('FOO')
     expect(bar).toEqual('BAR')

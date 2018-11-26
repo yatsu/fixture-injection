@@ -3,27 +3,27 @@ const { sleep } = require('./helper')
 describe('Single fixture in a test case', () => {
   fixture('m', (b, j) => `M(${b},${j})`)
 
-  it('a', (a) => {
+  test('a', (a) => {
     expect(a).toEqual('A()')
   })
 
-  it('d', (d) => {
+  test('d', (d) => {
     expect(d).toEqual('D(A(),B())')
   })
 
-  it('g', async (g) => {
+  test('g', async (g) => {
     await sleep(1)
 
     expect(g).toEqual('G(C(),D(A(),B()))')
   })
 
-  it('m', (m) => {
+  test('m', (m) => {
     expect(m).toEqual('M(B(),J(E()))')
   })
 })
 
 describe('Multiple fixtures in a test case', () => {
-  it('i, k and l', (i, k, l) => {
+  test('i, k and l', (i, k, l) => {
     expect(i).toEqual('I(D(A(),B()),E())')
     expect(k).toEqual('K(F(C()),H())')
     expect(l).toEqual('L(H(),J(E()))')
@@ -31,22 +31,23 @@ describe('Multiple fixtures in a test case', () => {
 })
 
 describe('Single fixture in a test suite', () => {
+  const fixtures = {}
+
   beforeAll((a) => {
-    this.a = a
+    fixtures.a = a
   })
 
   beforeAll((d) => {
-    this.d = d
+    fixtures.d = d
   })
 
   beforeAll(async (g) => {
     await sleep(1)
-
-    this.g = g
+    fixtures.g = g
   })
 
-  it('a, d and g', () => {
-    const { a, d, g } = this
+  test('a, d and g', () => {
+    const { a, d, g } = fixtures
 
     expect(a).toEqual('A()')
     expect(d).toEqual('D(A(),B())')
@@ -55,19 +56,21 @@ describe('Single fixture in a test suite', () => {
 })
 
 describe('Multiple fixtures in a test suite', () => {
+  const fixtures = {}
+
   fixture('m', (b, j) => `M(${b},${j})`)
 
   beforeAll((i, k, l, m) => {
-    this.i = i
-    this.k = k
-    this.l = l
-    this.m = m
+    fixtures.i = i
+    fixtures.k = k
+    fixtures.l = l
+    fixtures.m = m
   })
 
-  it('i, k, l and m', () => {
+  test('i, k, l and m', () => {
     const {
       i, k, l, m
-    } = this
+    } = fixtures
 
     expect(i).toEqual('I(D(A(),B()),E())')
     expect(k).toEqual('K(F(C()),H())')

@@ -1,5 +1,9 @@
 #!/bin/bash -eu
 
-yarn test-sync --verbose
-yarn test-async --verbose
-yarn test-reuse --verbose
+yarn test-sync-jsdom --verbose
+yarn test-async-jsdom --verbose
+yarn test-reuse-jsdom --verbose
+
+yarn test-sync-node --verbose
+yarn test-async-node --verbose
+yarn test-reuse-node --verbose

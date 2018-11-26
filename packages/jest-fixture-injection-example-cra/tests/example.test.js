@@ -7,7 +7,7 @@ describe('Foo', () => {
     await provide('QUX1')
   })
 
-  useFixture(foo => {
+  beforeAll(foo => {
     fixtures.foo = foo
   })
 
@@ -24,7 +24,7 @@ describe('Foo', () => {
   })
 
   describe('Foo.Bar', () => {
-    useFixture(bar => {
+    beforeAll(bar => {
       fixtures.bar = bar
     })
 
@@ -38,12 +38,12 @@ describe('Foo', () => {
 describe('Bar', () => {
   const fixtures = {}
 
-  useFixture(bar => {
+  beforeAll(bar => {
     fixtures.bar = bar
   })
 
   describe('Bar.Foo', () => {
-    useFixture(foo => {
+    beforeAll(foo => {
       fixtures.foo = foo
     })
 
@@ -57,7 +57,7 @@ describe('Bar', () => {
 describe('Baz', () => {
   const fixtures = {}
 
-  useFixture(baz => {
+  beforeAll(baz => {
     fixtures.baz = baz
   })
 
