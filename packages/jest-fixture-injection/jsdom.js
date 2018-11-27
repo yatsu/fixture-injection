@@ -38,16 +38,20 @@ class fixtureInjectionEnvironment extends JSDOMEnvironment {
     }
 
     if (!this.global.fixture) {
-      const { beforeAll } = this.global
+      const {
+        it, test, xtest, beforeAll, afterAll
+      } = this.global
       // eslint-disable-next-line max-len
       this.global.fixture = (name, fn) => this.fixtureInjector.defineFixture(name, fn, this.global.beforeAll, this.global.afterAll)
       // eslint-disable-next-line max-len
-      this.global.beforeAll = fn => this.fixtureInjector.beforeAll(fn, beforeAll, this.global.afterAll)
-      this.global.it = this.fixtureInjector.injectableRunnable(this.global.it)
-      this.global.it.skip = this.fixtureInjector.injectableRunnable(this.global.it.skip)
-      this.global.it.only = this.fixtureInjector.injectableRunnable(this.global.it.only)
-      this.global.test = this.fixtureInjector.injectableRunnable(this.global.test)
-      this.global.xtest = this.fixtureInjector.injectableRunnable(this.global.xtest)
+      this.global.beforeAll = fn => this.fixtureInjector.beforeAll(fn, beforeAll, afterAll)
+      this.global.it = this.fixtureInjector.injectableRunnable(it)
+      this.global.it.skip = this.fixtureInjector.injectableRunnable(it.skip)
+      this.global.it.only = this.fixtureInjector.injectableRunnable(it.only)
+      this.global.test = this.fixtureInjector.injectableRunnable(test)
+      this.global.test.skip = this.fixtureInjector.injectableRunnable(test.skip)
+      this.global.test.only = this.fixtureInjector.injectableRunnable(test.only)
+      this.global.xtest = this.fixtureInjector.injectableRunnable(xtest)
       this.global.nonuse = () => null
     }
 

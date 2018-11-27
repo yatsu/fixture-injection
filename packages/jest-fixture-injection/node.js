@@ -46,6 +46,8 @@ class fixtureInjectionEnvironment extends NodeEnvironment {
     it.skip = this.fixtureInjector.injectableRunnable(this.global.it.skip)
     it.only = this.fixtureInjector.injectableRunnable(this.global.it.only)
     const test = this.fixtureInjector.injectableRunnable(this.global.test)
+    test.skip = this.fixtureInjector.injectableRunnable(this.global.test.skip)
+    test.only = this.fixtureInjector.injectableRunnable(this.global.test.only)
     const xtest = this.fixtureInjector.injectableRunnable(this.global.xtest)
     const nonuse = () => null
 

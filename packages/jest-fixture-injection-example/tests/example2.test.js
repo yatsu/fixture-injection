@@ -4,21 +4,21 @@ describe('Foo', () => {
   const fixtures = {}
 
   fixture('qux', async (provide) => {
-    await provide('QUX1')
+    await provide('QUX2')
   })
 
   beforeAll((foo) => {
     fixtures.foo = foo
   })
 
-  it('Foo.bar/qux', async (bar, qux) => {
+  test('Foo.bar/qux', async (bar, qux) => {
     const { foo } = fixtures
     await sleep(100)
     console.log('Foo.bar', foo, bar, qux)
     await sleep(100)
   })
 
-  it('Foo.baz', (baz) => {
+  test('Foo.baz', (baz) => {
     const { foo } = fixtures
     console.log('Foo.baz', foo, baz)
   })
@@ -28,7 +28,7 @@ describe('Foo', () => {
       fixtures.bar = bar
     })
 
-    it('Foo.Bar.baz', (baz) => {
+    test('Foo.Bar.baz', (baz) => {
       const { foo, bar } = fixtures
       console.log('Foo.Bar.baz', foo, bar, baz)
     })
@@ -47,7 +47,7 @@ describe('Bar', () => {
       fixtures.foo = foo
     })
 
-    it('Bar.Foo.baz', (baz) => {
+    test('Bar.Foo.baz', (baz) => {
       const { foo, bar } = fixtures
       console.log('Bar.Foo.baz', bar, foo, baz)
     })
@@ -61,13 +61,13 @@ describe('Baz', () => {
     fixtures.baz = baz
   })
 
-  it('Baz.bar', (bar) => {
+  test('Baz.bar', (bar) => {
     const { baz } = fixtures
     console.log('Baz.bar', baz, bar)
   })
 
   // eslint-disable-next-line
-  xit('Baz.skip', foo => {
+  test.skip('Baz.skip', foo => {
     const { baz } = fixtures
     console.log('Baz.skip', baz, foo)
   })

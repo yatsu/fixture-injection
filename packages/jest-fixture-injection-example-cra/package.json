@@ -28,6 +28,8 @@
       ".eslintrc.js"
     ]
   },
+  "author": "fixture-injection Development Team",
+  "license": "MIT",
   "engines": {
     "node": ">=8"
   },
