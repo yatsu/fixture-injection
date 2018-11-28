@@ -10,70 +10,7 @@ Fixtures are code that sets up test subjects and the testing environment, which
 are defined as a value or a function. These fixtures can be injected to
 `beforeAll()`, `it()`, `test()`, etc. as arguments.
 
-## Install/Setup
-
-### Jest
-
-Install `jest-fixture-injection` into your NPM project:
-
-```sh
-$ npm install --dev jest-fixture-injection
-```
-
-Or, if you use Yarn:
-
-```sh
-$ yarn add --dev jest-fixture-injection
-```
-
-Define `test` command in `package.json`:
-
-```json
-{
-  "scripts": {
-    "test": "jest -c jest.config.js"
-  }
-}
-```
-
-Create `jest.config.js`. You can choose `jsdom` or `node` as the test environment:
-
-```js
-module.exports = {
-  preset: 'jest-fixture-injection',
-  testEnvironment: 'jest-fixture-injection/jsdom'
-}
-```
-
-Or,
-
-```js
-module.exports = {
-  preset: 'jest-fixture-injection',
-  testEnvironment: 'jest-fixture-injection/node'
-}
-```
-
-Create `fixture-injection.config.js`:
-
-```js
-module.exports = {
-  fixtures: '<rootDir>/tests/__fixtures__',
-  globalFixtures: '<rootDir>/tests/__global_fixtures__'
-}
-```
-
-Write your fixtures in `tests/__fixtures__.js` and `tests/__global_fixtures__.js`.
-
-#### Create React App
-
-(TBD)
-
-### Jasmine
-
-(TBD)
-
-## Usage
+## Example
 
 `tests/__fixtures__.js`:
 
@@ -99,7 +36,7 @@ module.exports = {
 }
 ```
 
-example.spec.js:
+`example.spec.js`:
 
 ```js
 describe('My test suite', () => {
@@ -123,3 +60,19 @@ describe('My test suite', () => {
   // foo is released by hidden afterAll() of this block automatically
 })
 ```
+
+## Packages
+
+* fixture-injection
+  * Core package of fixture-injection
+* [jest-fixture-injection](https://github.com/yatsu/fixture-injection/tree/master/packages/jest-fixture-injection)
+  * Jest extension to use fixture-injection
+* [jasmine-fixture-injection](https://github.com/yatsu/fixture-injection/tree/master/packages/jasmine-fixture-injection)
+  * Jasmine extension to use fixture-injection
+
+## Install/Setup
+
+See the documentation of each test framework extension.
+
+* [jest-fixture-injection](https://github.com/yatsu/fixture-injection/tree/master/packages/jest-fixture-injection)
+* [jasmine-fixture-injection](https://github.com/yatsu/fixture-injection/tree/master/packages/jasmine-fixture-injection)
