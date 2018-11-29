@@ -10,7 +10,8 @@
     "add:jest": "scripty",
     "add:jest-tests": "scripty",
     "add:jest-example": "scripty",
-    "add:jest-example-cra": "scripty"
+    "add:jest-example-cra": "scripty",
+    "test": "scripty"
   },
   "husky": {
     "hooks": {

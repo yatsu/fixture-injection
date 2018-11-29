@@ -1,0 +1,4 @@
+#!/bin/bash -eu
+
+lerna run --concurrency 1 --stream --bail --ignore "jest-fixture-injection-example-cra" test
+lerna run --concurrency 1 --stream --bail --scope "jest-fixture-injection-example-cra" test -- --coverage

@@ -3,14 +3,14 @@
   "description": "jest-fixture-injection tests",
   "version": "0.1.0",
   "scripts": {
-    "test-all": "scripty",
+    "test": "scripty",
     "test-sync-jsdom": "scripty",
     "test-async-jsdom": "scripty",
     "test-reuse-jsdom": "scripty",
     "test-sync-node": "scripty",
     "test-async-node": "scripty",
     "test-reuse-node": "scripty",
-    "pre-commit": "lint-staged && yarn test-all"
+    "pre-commit": "lint-staged && yarn test"
   },
   "lint-staged": {
     "linters": {
