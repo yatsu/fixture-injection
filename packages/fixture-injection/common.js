@@ -72,6 +72,9 @@ async function fixtureObjects(fixtureNames, dependencyMap, constructFixturePromi
 module.exports = {
   IPC_SERVER_ID: 'fixture-injection-server',
   IPC_CLIENT_ID: 'fixture-injection-client',
+  IPC_DEFAULT_OPTIONS: {
+    silent: true
+  },
   fixtureArguments,
   fixtureObjectOrPromise,
   constructDependencyMap,

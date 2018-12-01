@@ -5,12 +5,14 @@ const {
   fixtureArguments,
   fixtureObjectOrPromise,
   IPC_SERVER_ID,
-  IPC_CLIENT_ID
+  IPC_CLIENT_ID,
+  IPC_DEFAULT_OPTIONS
 } = require('./common')
 
 class FixtureServer {
-  constructor(rootDir) {
+  constructor(rootDir, ipcOptions = {}) {
     this.rootDir = rootDir
+    this.ipcOptions = Object.assign({}, IPC_DEFAULT_OPTIONS, ipcOptions)
     this.fixtures = null
     this.dependencyMap = null
   }
@@ -36,8 +38,7 @@ class FixtureServer {
     const finishPromises = []
 
     const startupPromise = new Promise((startupResolve) => {
-      ipc.config.id = 'fixture-injection-server'
-      ipc.config.silent = true
+      Object.assign(ipc.config, this.ipcOptions, { id: IPC_SERVER_ID })
       ipc.serve(() => {
         ipc.server.on('message', ({ type, payload }, socket) => {
           if (type === 'dependencies') {

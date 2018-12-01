@@ -15,8 +15,8 @@ class fixtureInjectionEnvironment extends NodeEnvironment {
   async setup() {
     await super.setup()
 
-    const { globalFixtures, fixtures } = await readConfig()
-    this.fixtureInjector = new FixtureInjector(this.rootDir, true)
+    const { globalFixtures, fixtures, ipc } = await readConfig()
+    this.fixtureInjector = new FixtureInjector(this.rootDir, true, ipc)
 
     this.fixtureInjector.load(
       replaceRootDirInPath(this.rootDir, globalFixtures),

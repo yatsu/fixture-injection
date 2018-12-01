@@ -6,13 +6,15 @@ const {
   fixtureObjectOrPromise,
   fixtureObjects,
   IPC_SERVER_ID,
-  IPC_CLIENT_ID
+  IPC_CLIENT_ID,
+  IPC_DEFAULT_OPTIONS
 } = require('./common')
 
 class FixtureInjector {
-  constructor(rootDir, useGlobalFixtureServer = false) {
+  constructor(rootDir, useGlobalFixtureServer = false, ipcOptions = {}) {
     this.rootDir = rootDir
     this.useGlobalFixtureServer = useGlobalFixtureServer
+    this.ipcOptions = Object.assign({}, IPC_DEFAULT_OPTIONS, ipcOptions)
     this.fixtures = {}
     this.dependencyMap = []
     this.inlineFixtures = []
@@ -82,8 +84,7 @@ class FixtureInjector {
   setup() {
     if (this.useGlobalFixtureServer) {
       return new Promise((connectionResolve) => {
-        ipc.config.id = IPC_CLIENT_ID
-        ipc.config.silent = true
+        Object.assign(ipc.config, this.ipcOptions, { id: IPC_CLIENT_ID })
         ipc.connectTo(IPC_SERVER_ID, () => {
           ipc.of[IPC_SERVER_ID].on('connect', () => {
             ipc.of[IPC_SERVER_ID].emit('message', { type: 'dependencies' })
