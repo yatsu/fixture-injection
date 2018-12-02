@@ -68,17 +68,17 @@ jobs:
           command: yarn test-ci
       - store_test_results:
           path: packages/fixture-injection/reports/jest
-      - store_artificats:
+      - store_artifacts:
           path: packages/fixture-injection/reports/jest
       - store_test_results:
           path: packages/jasmine-fixture-injection-example/reports/jest
-      - store_artificats:
+      - store_artifacts:
           path: packages/jasmine-fixture-injection-example/reports/jest
       - store_test_results:
           path: packages/jest-fixture-injection-example/reports/jest
-      - store_artificats:
+      - store_artifacts:
           path: packages/jest-fixture-injection-example/reports/jest
       - store_test_results:
           path: packages/jest-fixture-injection-example-cra/reports/jest
-      - store_artificats:
+      - store_artifacts:
           path: packages/jest-fixture-injection-example-cra/reports/jest
