@@ -6,6 +6,7 @@
   "scripts": {
     "start": "scripty",
     "test": "scripty",
+    "test-ci": "scripty",
     "pre-commit": "lint-staged && yarn test"
   },
   "lint-staged": {
@@ -41,6 +42,7 @@
     "eslint-plugin-node": "^8.0.0",
     "jest": "^23.6.0",
     "jest-fixture-injection": "^0.1.0",
+    "jest-junit": "^5.2.0",
     "lint-staged": "^8.0.4",
     "prettier-eslint-cli": "^4.7.1",
     "scripty": "^1.8.0"

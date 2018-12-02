@@ -17,7 +17,7 @@ module.exports = {
     semi: ['error', 'never'],
     'import/no-extraneous-dependencies': [
       'error',
-      { devDependencies: ['**/*.spec.js', '**/spec/*[Ff]ixtures.js', '**/scripts/test'] }
+      { devDependencies: ['**/*.spec.js', '**/spec/*[Ff]ixtures.js', '**/scripts/*'] }
     ],
     'import/prefer-default-export': 'off',
     'jasmine/no-suite-callback-args': 'off' // required by fixture injection

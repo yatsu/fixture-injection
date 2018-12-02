@@ -1,0 +1,84 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/workspace
+    docker:
+      - image: circleci/node:8.11.4
+    steps:
+      - checkout
+      - restore_cache:
+          key: v1-main-modules-{{ checksum "yarn.lock" }}
+      - restore_cache:
+          key: v1-core-modules-{{ checksum "packages/fixture-injection/yarn.lock" }}
+      - restore_cache:
+          key: v1-jasmine-modules-{{ checksum "packages/jasmine-fixture-injection/yarn.lock" }}-
+      - restore_cache:
+          key: v1-jasmine-example-modules-{{ checksum "packages/jasmine-fixture-injection-example/yarn.lock" }}-
+      - restore_cache:
+          key: v1-jasmine-tests-modules-{{ checksum "packages/jasmine-fixture-injection-tests/yarn.lock" }}-
+      - restore_cache:
+          key: v1-jest-modules-{{ checksum "packages/jest-fixture-injection/yarn.lock" }}-
+      - restore_cache:
+          key: v1-jest-example-modules-{{ checksum "packages/jest-fixture-injection-example/yarn.lock" }}-
+      - restore_cache:
+          key: v1-jest-example-cra-modules-{{ checksum "packages/jest-fixture-injection-example-cra/yarn.lock" }}-
+      - restore_cache:
+          key: v1-jest-tests-modules-{{ checksum "packages/jest-fixture-injection-tests/yarn.lock" }}-
+      - run:
+          name: Install packages
+          command: yarn lerna bootstrap
+      - save_cache:
+          key: v1-main-modules-{{ checksum "yarn.lock" }}
+          paths:
+            - node_modules
+      - save_cache:
+          key: v1-core-modules-{{ checksum "packages/fixture-injection/yarn.lock" }}
+          paths:
+            - packages/fixture-injection/node_modules
+      - save_cache:
+          key: v1-jasmine-modules-{{ checksum "packages/jasmine-fixture-injection/yarn.lock" }}-
+          paths:
+            - packages/jasmine-fixture-injection/node_modules
+      - save_cache:
+          key: v1-jasmine-example-modules-{{ checksum "packages/jasmine-fixture-injection-example/yarn.lock" }}-
+          paths:
+            - packages/jasmine-fixture-injection-example/node_modules
+      - save_cache:
+          key: v1-jasmine-tests-modules-{{ checksum "packages/jasmine-fixture-injection-tests/yarn.lock" }}-
+          paths:
+            - packages/jasmine-fixture-injection-tests/node_modules
+      - save_cache:
+          key: v1-jest-modules-{{ checksum "packages/jest-fixture-injection/yarn.lock" }}-
+          paths:
+            - packages/jest-fixture-injection/node_modules
+      - save_cache:
+          key: v1-jest-example-modules-{{ checksum "packages/jest-fixture-injection-example/yarn.lock" }}-
+          paths:
+            - packages/jest-fixture-injection-example/node_modules
+      - save_cache:
+          key: v1-jest-example-cra-modules-{{ checksum "packages/jest-fixture-injection-example-cra/yarn.lock" }}-
+          paths:
+            - packages/jest-fixture-injection-example-cra/node_modules
+      - save_cache:
+          key: v1-jest-tests-modules-{{ checksum "packages/jest-fixture-injection-tests/yarn.lock" }}-
+          paths:
+            - packages/jest-fixture-injection-tests/node_modules
+      - run:
+          name: Test
+          command: yarn test-ci
+      - store_test_results:
+          path: packages/fixture-injection/reports/jest
+      - store_artificats:
+          path: packages/fixture-injection/reports/jest
+      - store_test_results:
+          path: packages/jasmine-fixture-injection-example/reports/jest
+      - store_artificats:
+          path: packages/jasmine-fixture-injection-example/reports/jest
+      - store_test_results:
+          path: packages/jest-fixture-injection-example/reports/jest
+      - store_artificats:
+          path: packages/jest-fixture-injection-example/reports/jest
+      - store_test_results:
+          path: packages/jest-fixture-injection-example-cra/reports/jest
+      - store_artificats:
+          path: packages/jest-fixture-injection-example-cra/reports/jest
