@@ -1,5 +1,7 @@
 # fixture-injection
 
+[![CircleCI](https://circleci.com/gh/yatsu/fixture-injection.svg?style=svg)](https://circleci.com/gh/yatsu/fixture-injection)
+
 __Note: fixture-injection is still in alpha stage.__
 
 fixture-injection is a test helper tool for [Jest](https://jestjs.io/) and
