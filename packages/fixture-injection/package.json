@@ -1,7 +1,7 @@
 {
   "name": "fixture-injection",
   "description": "A JavaScript test helper to inject fixtures",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "scripts": {
     "test": "scripty",
     "test-ci": "scripty",

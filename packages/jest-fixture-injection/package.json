@@ -1,7 +1,7 @@
 {
   "name": "jest-fixture-injection",
   "description": "fixture-injection helper for Jest",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "scripts": {
     "pre-commit": "lint-staged"
   },
@@ -41,7 +41,7 @@
   },
   "dependencies": {
     "eslint-plugin-jest": "^22.0.0",
-    "fixture-injection": "^0.1.0",
+    "fixture-injection": "^0.1.1",
     "node-ipc": "^9.1.1"
   },
   "devDependencies": {
