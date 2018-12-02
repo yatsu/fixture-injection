@@ -71,11 +71,11 @@ describe('My test suite', () => {
    code around `await provide()` 
 3. Fixtures are also available in other fixtures, and the dependencies are
    automatically resolved
-  * Asynchronous fixtures are initialized concurrently as much as possible
+   * Asynchronous fixtures are initialized concurrently as much as possible
 4. Local fixtures are initialized every time in each injected context
 5. Global fixtures are singletons and initialized only once
-  * [Jest] They are initialized by Jest runner and will be sent to individual
-    test workers via IPC
+   * [Jest] They are initialized by Jest runner and will be sent to individual
+     test workers via IPC
 6. In-line fixtures are also available by `fixture()` in each test file
 
 
