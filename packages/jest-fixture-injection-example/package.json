@@ -1,7 +1,7 @@
 {
   "name": "jest-fixture-injection-example",
   "description": "Example: Node + Express + Jest + jest-fixture-injection",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "main": "index.js",
   "scripts": {
     "start": "scripty",
@@ -41,7 +41,7 @@
     "eslint-plugin-jest": "^22.0.0",
     "eslint-plugin-node": "^8.0.0",
     "jest": "^23.6.0",
-    "jest-fixture-injection": "^0.1.1",
+    "jest-fixture-injection": "^0.1.2",
     "jest-junit": "^5.2.0",
     "lint-staged": "^8.0.4",
     "prettier-eslint-cli": "^4.7.1",
