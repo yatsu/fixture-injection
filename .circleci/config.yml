@@ -26,6 +26,9 @@ jobs:
           key: v1-jest-tests-modules-{{ checksum "packages/jest-fixture-injection-tests/yarn.lock" }}-
       - run:
           name: Install packages
+          command: yarn install
+      - run:
+          name: Bootstrap Learna
           command: yarn lerna bootstrap
       - save_cache:
           key: v1-main-modules-{{ checksum "yarn.lock" }}
