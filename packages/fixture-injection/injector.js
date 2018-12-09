@@ -15,6 +15,8 @@ class FixtureInjector {
     this.rootDir = rootDir
     this.useGlobalFixtureServer = useGlobalFixtureServer
     this.ipcOptions = Object.assign({}, IPC_DEFAULT_OPTIONS, ipcOptions)
+    this.fixturesPath = null
+    this.globalFixturesPath = null
     this.fixtures = {}
     this.dependencyMap = []
     this.inlineFixtures = []
@@ -30,17 +32,22 @@ class FixtureInjector {
   load(globalFixtures, fixtures) {
     if (!this.useGlobalFixtureServer) {
       if (path.isAbsolute(globalFixtures)) {
-        this.globalFixtures = require(globalFixtures)
+        this.globalFixturesPath = globalFixtures
       } else {
-        this.globalFixtures = require(path.resolve(this.rootDir, globalFixtures))
+        this.globalFixturesPath = path.resolve(this.rootDir, globalFixtures)
       }
+      delete require.cache[require.resolve(this.globalFixturesPath)]
+      this.globalFixtures = require(this.globalFixturesPath)
     }
 
     if (path.isAbsolute(fixtures)) {
-      this.fixtures = require(fixtures)
+      this.fixturesPath = fixtures
     } else {
-      this.fixtures = require(path.resolve(this.rootDir, fixtures))
+      this.fixturesPath = path.resolve(this.rootDir, fixtures)
     }
+
+    this.fixtures = require(this.fixturesPath)
+    delete require.cache[require.resolve(this.fixturesPath)]
   }
 
   nonGlobalFixtures() {

@@ -12,17 +12,18 @@ const {
 class FixtureServer {
   constructor(rootDir, ipcOptions = {}) {
     this.rootDir = rootDir
+    this.fixturesPath = null
     this.ipcOptions = Object.assign({}, IPC_DEFAULT_OPTIONS, ipcOptions)
     this.fixtures = null
     this.dependencyMap = null
   }
 
   load(fixturesPath) {
-    if (path.isAbsolute(fixturesPath)) {
-      this.fixtures = require(fixturesPath)
-    } else {
-      this.fixtures = require(path.resolve(this.rootDir, fixturesPath))
-    }
+    this.fixturesPath = path.isAbsolute(fixturesPath)
+      ? fixturesPath
+      : path.resolve(this.rootDir, fixturesPath)
+    delete require.cache[require.resolve(this.fixturesPath)]
+    this.fixtures = require(this.fixturesPath)
     this.dependencyMap = constructDependencyMap(this.fixtures)
   }
 
