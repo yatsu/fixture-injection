@@ -4,6 +4,7 @@
   "version": "0.1.2",
   "scripts": {
     "test": "scripty",
+    "test-ci": "scripty",
     "test-sync": "scripty",
     "test-async": "scripty",
     "test-reuse": "scripty",
