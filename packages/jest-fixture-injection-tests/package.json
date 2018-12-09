@@ -1,7 +1,7 @@
 {
   "name": "jest-fixture-injection-tests",
   "description": "jest-fixture-injection tests",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "scripts": {
     "test": "scripty",
     "test-ci": "scripty",
@@ -47,7 +47,7 @@
     "eslint-plugin-jest": "^22.0.0",
     "eslint-plugin-node": "^8.0.0",
     "jest": "^23.6.0",
-    "jest-fixture-injection": "^0.1.2",
+    "jest-fixture-injection": "^0.1.3",
     "lint-staged": "^8.0.4",
     "prettier-eslint-cli": "^4.7.1",
     "scripty": "^1.8.0"
