@@ -92,30 +92,30 @@ class FixtureInjector {
     if (this.useGlobalFixtureServer) {
       return new Promise((connectionResolve) => {
         Object.assign(ipc.config, this.ipcOptions, { id: IPC_CLIENT_ID })
+
         ipc.connectTo(IPC_SERVER_ID, () => {
           ipc.of[IPC_SERVER_ID].on('connect', () => {
-            ipc.of[IPC_SERVER_ID].emit('message', { type: 'dependencies' })
+            ipc.of[IPC_SERVER_ID].emit('dependencies')
           })
-          ipc.of[IPC_SERVER_ID].on('message', ({ type, payload }) => {
-            if (type === 'dependencies') {
-              const { dependencyMap } = payload
-              this.dependencyMap = Object.assign(
-                {},
-                dependencyMap,
-                constructDependencyMap(this.fixtures)
-              )
-              connectionResolve()
-            } else if (type === 'fixture') {
-              const { name, fixture, error } = payload
-              this.ipcResolvers[name].forEach((fixtureResolve) => {
-                if (error) {
-                  fixtureResolve(new Error(error))
-                } else {
-                  fixtureResolve(fixture)
-                }
-              })
-              this.ipcResolvers[name] = []
-            }
+
+          ipc.of[IPC_SERVER_ID].on('dependencies', (dependencyMap) => {
+            this.dependencyMap = Object.assign(
+              {},
+              dependencyMap,
+              constructDependencyMap(this.fixtures)
+            )
+            connectionResolve()
+          })
+
+          ipc.of[IPC_SERVER_ID].on('fixture', ({ name, fixture, error }) => {
+            this.ipcResolvers[name].forEach((fixtureResolve) => {
+              if (error) {
+                fixtureResolve(new Error(error))
+              } else {
+                fixtureResolve(fixture)
+              }
+            })
+            this.ipcResolvers[name] = []
           })
         })
       })
@@ -228,7 +228,7 @@ class FixtureInjector {
           resolve(frozenFixture)
         })
       })
-      ipc.of[IPC_SERVER_ID].emit('message', { type: 'fixture', payload: { name } })
+      ipc.of[IPC_SERVER_ID].emit('fixture', { name })
       return { initializedFixture: promise, isGlobal: true }
     }
 

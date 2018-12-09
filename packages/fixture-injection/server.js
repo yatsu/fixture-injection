@@ -40,79 +40,78 @@ class FixtureServer {
 
     const startupPromise = new Promise((startupResolve) => {
       Object.assign(ipc.config, this.ipcOptions, { id: IPC_SERVER_ID })
+
       ipc.serve(() => {
-        ipc.server.on('message', ({ type, payload }, socket) => {
-          if (type === 'dependencies') {
-            ipc.server.emit(socket, 'message', {
-              type: 'dependencies',
-              payload: {
-                dependencyMap: this.dependencyMap
+        ipc.server.on('dependencies', (_, socket) => {
+          ipc.server.emit(socket, 'dependencies', this.dependencyMap)
+        })
+
+        ipc.server.on('fixture', ({ name }, socket) => {
+          if (name in cachedObjects) {
+            ipc.server.emit(socket, 'fixture', {
+              name,
+              fixture: cachedObjects[name]
+            })
+            return
+          }
+
+          if (name in fixturePromises) {
+            fixturePromises[name].then((fixture) => {
+              ipc.server.emit(socket, 'fixture', {
+                name,
+                fixture
+              })
+            })
+            return
+          }
+
+          Promise.all(this.dependencyMap[name].map(n => fixturePromises[n])).then(() => {
+            fixturePromises[name] = new Promise((fixtureResolve) => {
+              const fixtureDef = this.fixtures[name]
+              const provide = (fixture) => {
+                cachedObjects[name] = fixture
+                fixtureResolve(fixture)
+                return runnerFinish
+              }
+              const initializedFixture = fixtureObjectOrPromise(
+                fixtureDef,
+                provide,
+                fixtureArguments(fixtureDef).map(n => cachedObjects[n])
+              )
+              if (typeof initializedFixture.then === 'function') {
+                // it is a promise
+                finishPromises.push(initializedFixture)
+                // fixture object will be resolved later
+              } else {
+                // it is a fixture object
+                // resolve fixture object immediately
+                cachedObjects[name] = initializedFixture
+                fixtureResolve(initializedFixture)
               }
             })
-          } else if (type === 'fixture') {
-            const { name } = payload
-            if (name in cachedObjects) {
-              ipc.server.emit(socket, 'message', {
-                type: 'fixture',
-                payload: { name, fixture: cachedObjects[name] }
-              })
-              return
-            }
 
-            if (name in fixturePromises) {
-              fixturePromises[name].then((fixture) => {
-                ipc.server.emit(socket, 'message', {
-                  type: 'fixture',
-                  payload: { name, fixture }
-                })
-              })
-              return
-            }
-
-            Promise.all(this.dependencyMap[name].map(n => fixturePromises[n])).then(() => {
-              fixturePromises[name] = new Promise((fixtureResolve) => {
-                const fixtureDef = this.fixtures[name]
-                const provide = (fixture) => {
-                  cachedObjects[name] = fixture
-                  fixtureResolve(fixture)
-                  return runnerFinish
-                }
-                const initializedFixture = fixtureObjectOrPromise(
-                  fixtureDef,
-                  provide,
-                  fixtureArguments(fixtureDef).map(n => cachedObjects[n])
-                )
-                if (typeof initializedFixture.then === 'function') {
-                  // it is a promise
-                  finishPromises.push(initializedFixture)
-                  // fixture object will be resolved later
-                } else {
-                  // it is a fixture object
-                  // resolve fixture object immediately
-                  cachedObjects[name] = initializedFixture
-                  fixtureResolve(initializedFixture)
-                }
-              })
-
-              fixturePromises[name].then((fixture) => {
-                ipc.server.emit(socket, 'message', {
-                  type: 'fixture',
-                  payload: { name, fixture }
-                })
+            fixturePromises[name].then((fixture) => {
+              ipc.server.emit(socket, 'fixture', {
+                name,
+                fixture
               })
             })
-          }
+          })
         })
+
         ipc.server.on('teardown', () => {
           runnerFinished()
           Promise.all(finishPromises).then(() => {
             ipc.server.stop()
           })
         })
+
         startupResolve()
       })
+
       ipc.server.start()
     })
+
     await startupPromise
   }
 
