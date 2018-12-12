@@ -1,6 +1,14 @@
 const getArguments = require('es-arguments')
 const Graph = require('graph-data-structure')
 
+const IPC_SERVER_ID = 'fixture-injection-server'
+
+const IPC_CLIENT_ID = 'fixture-injection-client'
+
+const IPC_DEFAULT_OPTIONS = {
+  silent: true
+}
+
 function isObject(obj) {
   return obj === Object(obj)
 }
@@ -12,17 +20,87 @@ function fixtureArguments(fixtureDef) {
   return getArguments(fixtureDef).filter(name => name !== 'provide')
 }
 
-function fixtureObjectOrPromise(fixtureDef, provide, dependencies, freeze = false) {
-  if (typeof fixtureDef === 'function') {
-    const index = getArguments(fixtureDef).indexOf('provide')
-    const obj = index < 0
-      ? fixtureDef(...dependencies)
-      : fixtureDef(...dependencies.slice(0, index), provide, ...dependencies.slice(index))
-    return freeze ? Object.freeze(obj) : obj
+function freezeOrCopy(obj, freeze) {
+  if (freeze) {
+    return Object.freeze(obj)
   }
+  if (isObject(obj)) {
+    return Object.assign({}, obj)
+  }
+  return obj
+}
+
+function fixturePromise(
+  fixtureDef,
+  provide,
+  dependencies,
+  freeze = false,
+  onSetupStart = null,
+  onSetupEnd = null,
+  onTeardownStart = null,
+  onTeardownEnd = null
+) {
+  if (onSetupStart) onSetupStart()
+
+  if (typeof fixtureDef === 'function') {
+    const provideWithLogging = (fixture) => {
+      const fnFinish = provide(fixture)
+      fnFinish.then(() => {
+        if (onTeardownStart) onTeardownStart()
+      })
+      return fnFinish
+    }
+    const index = getArguments(fixtureDef).indexOf('provide')
+    const result = index < 0
+      ? fixtureDef(...dependencies)
+      : fixtureDef(
+        ...dependencies.slice(0, index),
+        provideWithLogging,
+        ...dependencies.slice(index)
+      )
+
+    if (onSetupEnd) onSetupEnd()
+
+    if (typeof result.then === 'function') {
+      if (index < 0) {
+        return new Promise((resolve) => {
+          result.then((fo) => {
+            provideWithLogging(fo).then(() => {
+              if (onTeardownEnd) onTeardownEnd()
+              resolve()
+            })
+          })
+        })
+      }
+      return new Promise((resolve) => {
+        result.then(() => {
+          if (onTeardownEnd) onTeardownEnd()
+          resolve()
+        })
+      })
+    }
+
+    const obj = freezeOrCopy(result, freeze)
+    return new Promise((resolve) => {
+      provide(obj).then(() => {
+        if (onTeardownStart) onTeardownStart()
+        if (onTeardownEnd) onTeardownEnd()
+        resolve(obj)
+      })
+    })
+  }
+
+  if (onSetupEnd) onSetupEnd()
+
   // Value fixture defined as `foo = 'FOO'`
-  if (freeze) return Object.freeze(fixtureDef)
-  return isObject(fixtureDef) ? Object.assign({}, fixtureDef) : fixtureDef
+  const obj = freezeOrCopy(fixtureDef, freeze)
+  return new Promise((resolve) => {
+    provide(obj).then(() => {
+      if (onTeardownStart) onTeardownStart()
+      if (onTeardownEnd) onTeardownEnd()
+      resolve(obj)
+    })
+  })
 }
 
 function constructDependencyMap(fixtures) {
@@ -70,13 +148,11 @@ async function fixtureObjects(fixtureNames, dependencyMap, constructFixturePromi
 }
 
 module.exports = {
-  IPC_SERVER_ID: 'fixture-injection-server',
-  IPC_CLIENT_ID: 'fixture-injection-client',
-  IPC_DEFAULT_OPTIONS: {
-    silent: true
-  },
+  IPC_SERVER_ID,
+  IPC_CLIENT_ID,
+  IPC_DEFAULT_OPTIONS,
   fixtureArguments,
-  fixtureObjectOrPromise,
+  fixturePromise,
   constructDependencyMap,
   dependencyGraph,
   fixtureObjects

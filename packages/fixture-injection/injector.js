@@ -1,13 +1,13 @@
 const path = require('path')
 const ipc = require('node-ipc')
 const {
-  constructDependencyMap,
-  fixtureArguments,
-  fixtureObjectOrPromise,
-  fixtureObjects,
   IPC_SERVER_ID,
   IPC_CLIENT_ID,
-  IPC_DEFAULT_OPTIONS
+  IPC_DEFAULT_OPTIONS,
+  constructDependencyMap,
+  fixtureArguments,
+  fixturePromise,
+  fixtureObjects
 } = require('./common')
 
 class FixtureInjector {
@@ -172,21 +172,10 @@ class FixtureInjector {
           globalProvide,
           dependencies
         )
-        if (typeof initializedFixture.then === 'function') {
-          // it is a promise
-          if (isGlobal) {
-            this.globalFinishPromises.push(initializedFixture)
-          } else {
-            finishPromises.push(initializedFixture)
-          }
-          // fixture object will be resolved later
+        if (isGlobal) {
+          this.globalFinishPromises.push(initializedFixture)
         } else {
-          // it is a fixture object
-          if (isGlobal) {
-            this.globalFixtureObjects[fname] = initializedFixture
-          }
-          // resolve fixture object immediately
-          resolve(initializedFixture)
+          finishPromises.push(initializedFixture)
         }
       })
     })
@@ -204,10 +193,23 @@ class FixtureInjector {
     const localFixtureDef = this.nonGlobalFixtures()[name]
     if (localFixtureDef !== undefined) {
       return {
-        initializedFixture: fixtureObjectOrPromise(
+        initializedFixture: fixturePromise(
           localFixtureDef,
           provide,
-          fixtureArguments(localFixtureDef).map(n => dependencies.find(d => d.name === n).fixture)
+          fixtureArguments(localFixtureDef).map(n => dependencies.find(d => d.name === n).fixture),
+          false,
+          () => {
+            this.fixtureLog('SETUP', 'START', 'L', name)
+          },
+          () => {
+            this.fixtureLog('SETUP', 'END', 'L', name)
+          },
+          () => {
+            this.fixtureLog('TEARDOWN', 'START', 'L', name)
+          },
+          () => {
+            this.fixtureLog('TEARDOWN', 'END', 'L', name)
+          }
         ),
         isGlobal: false
       }
@@ -232,20 +234,47 @@ class FixtureInjector {
       return { initializedFixture: promise, isGlobal: true }
     }
 
+    // Local global fixtures for Jasmine
     const globalFixtureDef = this.globalFixtures[name]
     if (globalFixtureDef === undefined) {
       throw Error(`Undefined fixture '${name}'`)
     }
     return {
-      initializedFixture: fixtureObjectOrPromise(
+      initializedFixture: fixturePromise(
         globalFixtureDef,
         // Global fixtures should be frozen in Jasmine
         fixture => globalProvide(Object.freeze(fixture)),
         fixtureArguments(globalFixtureDef).map(n => dependencies.find(d => d.name === n).fixture),
-        true
+        true,
+        () => {
+          this.fixtureLog('SETUP', 'START', 'G', name)
+        },
+        () => {
+          this.fixtureLog('SETUP', 'END', 'G', name)
+        },
+        () => {
+          this.fixtureLog('TEARDOWN', 'START', 'G', name)
+        },
+        () => {
+          this.fixtureLog('TEARDOWN', 'END', 'G', name)
+        }
       ),
       isGlobal: true
     }
+  }
+
+  fixtureLog(operation, event, scope, name) {
+    if (!this.useGlobalFixtureServer) return
+
+    ipc.of[IPC_SERVER_ID].emit('log', {
+      type: 'fixture',
+      payload: {
+        operation,
+        event,
+        scope,
+        name
+      }
+    })
   }
 }
 

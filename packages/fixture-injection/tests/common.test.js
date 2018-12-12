@@ -1,27 +1,30 @@
-const { fixtureObjectOrPromise, dependencyGraph } = require('../common')
+const { fixturePromise, dependencyGraph } = require('../common')
 
-describe('fixtureObjectOrPromise()', () => {
-  describe('when fixtureDef is not a function', () => {
-    it('returns the fixtureDef as the result', () => {
+describe('fixturePromise()', () => {
+  describe('when fixtureDef is a value', () => {
+    it('returns a Promise of the value', () => {
       const provide = jest.fn().mockResolvedValue(null)
 
-      expect(fixtureObjectOrPromise('a', provide)).toEqual('a')
-      expect(fixtureObjectOrPromise(true, provide)).toBe(true)
-      expect(fixtureObjectOrPromise(null, provide)).toBe(null)
-      expect(fixtureObjectOrPromise(1.5, provide)).toEqual(1.5)
+      expect(fixturePromise('a', provide)).resolves.toBe('a')
+      expect(fixturePromise(true, provide)).resolves.toBe(true)
+      expect(fixturePromise(null, provide)).resolves.toBe(null)
+      expect(fixturePromise(1.5, provide)).resolves.toBe(1.5)
 
-      expect(provide).not.toBeCalled()
+      expect(provide).toHaveBeenCalledWith('a')
+      expect(provide).toHaveBeenCalledWith(true)
+      expect(provide).toHaveBeenCalledWith(null)
+      expect(provide).toHaveBeenCalledWith(1.5)
     })
   })
 
   describe('when fixtureDef is a synchronous function', () => {
-    it('returns the result of fixtureDef()', () => {
+    it('returns a Promise of fixtureDef()', () => {
       const provide = jest.fn().mockResolvedValue(null)
       const fixtureDef = a => `b-${a}`
 
-      expect(fixtureObjectOrPromise(fixtureDef, provide, ['a'])).toEqual('b-a')
+      expect(fixturePromise(fixtureDef, provide, ['a'])).resolves.toBe('b-a')
 
-      expect(provide).not.toBeCalled()
+      expect(provide).toHaveBeenCalledWith('b-a')
     })
   })
 
@@ -35,7 +38,7 @@ describe('fixtureObjectOrPromise()', () => {
           await provide('x')
         }
 
-        const result = fixtureObjectOrPromise(fixtureDef, provide, [])
+        const result = fixturePromise(fixtureDef, provide, [])
         expect(result).toBeInstanceOf(Promise)
 
         await result
@@ -55,7 +58,7 @@ describe('fixtureObjectOrPromise()', () => {
           await provide(`${a}-${b}-c`)
         }
 
-        const result = fixtureObjectOrPromise(fixtureDef, provide, ['a', 'b'])
+        const result = fixturePromise(fixtureDef, provide, ['a', 'b'])
         expect(result).toBeInstanceOf(Promise)
 
         await result
@@ -75,7 +78,7 @@ describe('fixtureObjectOrPromise()', () => {
           await provide(`${a}-${b}-c`)
         }
 
-        const result = fixtureObjectOrPromise(fixtureDef, provide, ['a', 'b'])
+        const result = fixturePromise(fixtureDef, provide, ['a', 'b'])
         expect(result).toBeInstanceOf(Promise)
 
         await result

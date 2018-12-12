@@ -1,12 +1,13 @@
 const path = require('path')
+const process = require('process')
 const ipc = require('node-ipc')
 const {
-  constructDependencyMap,
-  fixtureArguments,
-  fixtureObjectOrPromise,
   IPC_SERVER_ID,
   IPC_CLIENT_ID,
-  IPC_DEFAULT_OPTIONS
+  IPC_DEFAULT_OPTIONS,
+  constructDependencyMap,
+  fixtureArguments,
+  fixturePromise
 } = require('./common')
 
 class FixtureServer {
@@ -16,6 +17,8 @@ class FixtureServer {
     this.ipcOptions = Object.assign({}, IPC_DEFAULT_OPTIONS, ipcOptions)
     this.fixtures = null
     this.dependencyMap = null
+    this.fixtureTimestamps = { SETUP: {}, TEARDOWN: {} }
+    this.funcTimestamps = {}
   }
 
   load(fixturesPath) {
@@ -73,21 +76,26 @@ class FixtureServer {
                 fixtureResolve(fixture)
                 return runnerFinish
               }
-              const initializedFixture = fixtureObjectOrPromise(
+              const initializedFixture = fixturePromise(
                 fixtureDef,
                 provide,
-                fixtureArguments(fixtureDef).map(n => cachedObjects[n])
+                fixtureArguments(fixtureDef).map(n => cachedObjects[n]),
+                false,
+                () => {
+                  this.fixtureLog('SETUP', 'START', 'G', name)
+                },
+                () => {
+                  this.fixtureLog('SETUP', 'END', 'G', name)
+                },
+                () => {
+                  this.fixtureLog('TEARDOWN', 'START', 'G', name)
+                },
+                () => {
+                  this.fixtureLog('TEARDOWN', 'END', 'G', name)
+                }
               )
-              if (typeof initializedFixture.then === 'function') {
-                // it is a promise
-                finishPromises.push(initializedFixture)
-                // fixture object will be resolved later
-              } else {
-                // it is a fixture object
-                // resolve fixture object immediately
-                cachedObjects[name] = initializedFixture
-                fixtureResolve(initializedFixture)
-              }
+              finishPromises.push(initializedFixture)
+              // fixture object will be resolved later
             })
 
             fixturePromises[name].then((fixture) => {
@@ -97,6 +105,25 @@ class FixtureServer {
               })
             })
           })
+        })
+
+        ipc.server.on('log', ({ type, payload }) => {
+          if (type === 'fixture') {
+            const {
+              operation, event, scope, name
+            } = payload
+            this.fixtureLog(operation, event, scope, name)
+          } else {
+            const { event, desc } = payload
+            if (event === 'START') {
+              this.funcTimestamps[desc] = Date.now()
+              console.log(`[${this.funcTimestamps[desc]}] ${event} ${desc}`)
+            } else {
+              const time = Date.now()
+              const diff = Math.floor((time - this.funcTimestamps[desc]) / 1000)
+              console.log(`[${time}] ${event} ${desc} (${diff}ms)`)
+            }
+          }
         })
 
         ipc.server.on('teardown', () => {
@@ -113,6 +140,18 @@ class FixtureServer {
     })
 
     await startupPromise
+  }
+
+  fixtureLog(operation, event, scope, name) {
+    if (process.env.FI_LOGGING !== '1') return
+    const time = Date.now()
+    if (event === 'START') {
+      this.fixtureTimestamps[operation][name] = time
+      console.log(`[${time}] ${operation} ${event} [${scope}] ${name}`)
+    } else {
+      const diff = time - this.fixtureTimestamps[operation][name]
+      console.log(`[${time}] ${operation} ${event} [${scope}] ${name} (${diff}ms)`)
+    }
   }
 
   static async teardown() {
