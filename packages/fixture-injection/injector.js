@@ -71,19 +71,39 @@ class FixtureInjector {
     this.inlineFixtures = {}
   }
 
-  beforeAll(fn, beforeAll, afterAll) {
+  beforeAll(fn, beforeAll, afterAll, ancestors) {
+    const fixtures = fixtureArguments(fn)
     let finish
     beforeAll(async () => {
-      finish = await this.callWithFixtures(fn)
+      finish = await this.callWithFixtures(
+        fn,
+        () => {
+          this.beforeAllLog(ancestors, fixtures, 'START')
+        },
+        () => {
+          this.beforeAllLog(ancestors, fixtures, 'END')
+        }
+      )
     })
     afterAll(async () => {
+      this.afterAllLog(ancestors, fixtures, 'START')
       await finish()
+      this.afterAllLog(ancestors, fixtures, 'END')
     })
   }
 
-  injectableRunnable(origFn) {
+  injectableFn(origFn, ancestors = []) {
     return (desc, fn) => origFn(desc, async () => {
-      const finish = await this.callWithFixtures(fn)
+      const fixtures = fixtureArguments(fn)
+      const finish = await this.callWithFixtures(
+        fn,
+        () => {
+          this.testLog(desc, ancestors, fixtures, 'START')
+        },
+        () => {
+          this.testLog(desc, ancestors, fixtures, 'END')
+        }
+      )
       await finish()
     })
   }
@@ -141,7 +161,7 @@ class FixtureInjector {
     return Promise.all(this.globalFinishPromises)
   }
 
-  async callWithFixtures(fn, ...args) {
+  async callWithFixtures(fn, onStart = null, onEnd = null) {
     let fnFinished
     const fnFinish = new Promise((resolve) => {
       fnFinished = resolve
@@ -182,7 +202,10 @@ class FixtureInjector {
 
     const objects = await fixtureObjects(fixtureNames, dependencyMap, constructFixturePromise)
 
-    await fn(...objects, ...args)
+    if (onStart) onStart()
+    await fn(...objects)
+    if (onEnd) onEnd()
+
     return async () => {
       fnFinished()
       await Promise.all(finishPromises)
@@ -275,6 +298,33 @@ class FixtureInjector {
         name
       }
     })
+  }
+
+  fnLog(label, desc, ancestors, fixtures, event) {
+    if (!this.useGlobalFixtureServer) return
+
+    ipc.of[IPC_SERVER_ID].emit('log', {
+      type: 'function',
+      payload: {
+        label,
+        desc,
+        ancestors,
+        fixtures,
+        event
+      }
+    })
+  }
+
+  testLog(desc, ancestors, fixtures, event) {
+    this.fnLog('T', desc, ancestors, fixtures, event)
+  }
+
+  beforeAllLog(ancestors, fixtures, event) {
+    this.fnLog('B', 'beforeAll', ancestors, fixtures, event)
+  }
+
+  afterAllLog(ancestors, fixtures, event) {
+    this.fnLog('B', 'afterAll', ancestors, fixtures, event)
   }
 }
 

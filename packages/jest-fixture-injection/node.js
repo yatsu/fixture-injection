@@ -10,59 +10,62 @@ class fixtureInjectionEnvironment extends NodeEnvironment {
     super(config)
 
     this.rootDir = config.rootDir
+    this.fixtureContext = null
+    this.ancestors = []
   }
 
   async setup() {
     await super.setup()
 
     const { globalFixtures, fixtures, ipc } = await readConfig()
-    this.fixtureInjector = new FixtureInjector(this.rootDir, true, ipc)
+    this.injector = new FixtureInjector(this.rootDir, true, ipc)
 
-    this.fixtureInjector.load(
+    this.injector.load(
       replaceRootDirInPath(this.rootDir, globalFixtures),
       replaceRootDirInPath(this.rootDir, fixtures)
     )
 
-    await this.fixtureInjector.setup()
+    await this.injector.setup()
   }
 
   async teardown() {
     await super.teardown()
 
-    await this.fixtureInjector.teardown()
+    await this.injector.teardown()
   }
 
   runScript(script) {
-    if (!this.global.it) {
+    if (!this.global.expect) {
       // The test env is not initialized yet
       return super.runScript(script)
     }
 
-    // eslint-disable-next-line max-len
-    const fixture = (name, fn) => this.fixtureInjector.defineFixture(name, fn, this.global.beforeAll, this.global.afterAll)
-    // eslint-disable-next-line max-len
-    const beforeAll = fn => this.fixtureInjector.beforeAll(fn, this.global.beforeAll, this.global.afterAll)
-    const it = this.fixtureInjector.injectableRunnable(this.global.it)
-    it.skip = this.fixtureInjector.injectableRunnable(this.global.it.skip)
-    it.only = this.fixtureInjector.injectableRunnable(this.global.it.only)
-    const test = this.fixtureInjector.injectableRunnable(this.global.test)
-    test.skip = this.fixtureInjector.injectableRunnable(this.global.test.skip)
-    test.only = this.fixtureInjector.injectableRunnable(this.global.test.only)
-    const xtest = this.fixtureInjector.injectableRunnable(this.global.xtest)
-    const nonuse = () => null
+    if (!this.fixtureContext) {
+      const {
+        describe, it, test, xtest, beforeAll, afterAll
+      } = this.global
+      const context = vm.createContext(Object.assign({}, this.global))
+      context.fixture = (name, fn) => this.injector.defineFixture(name, fn, beforeAll, afterAll)
+      context.nonuse = () => null
+      context.describe = (desc, fn) => {
+        this.ancestors.push(desc)
+        // eslint-disable-next-line max-len
+        context.beforeAll = f => this.injector.beforeAll(f, beforeAll, afterAll, this.ancestors.slice())
+        context.it = this.injector.injectableFn(it, this.ancestors.slice())
+        context.it.skip = this.injector.injectableFn(it.skip, this.ancestors.slice())
+        context.it.only = this.injector.injectableFn(it.only, this.ancestors.slice())
+        context.test = this.injector.injectableFn(test, this.ancestors.slice())
+        context.test.skip = this.injector.injectableFn(test.skip, this.ancestors.slice())
+        context.test.only = this.injector.injectableFn(test.only, this.ancestors.slice())
+        context.xtest = this.injector.injectableFn(xtest, this.ancestors.slice())
+        // eslint-disable-next-line jest/valid-describe
+        describe(desc, fn)
+        this.ancestors.pop()
+      }
+      this.fixtureContext = context
+    }
 
-    return script.runInContext(
-      vm.createContext(
-        Object.assign({}, this.global, {
-          fixture,
-          beforeAll,
-          it,
-          test,
-          xtest,
-          nonuse
-        })
-      )
-    )
+    return script.runInContext(this.fixtureContext)
   }
 }
 

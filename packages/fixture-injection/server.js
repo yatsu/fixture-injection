@@ -1,5 +1,6 @@
 const path = require('path')
 const process = require('process')
+const microtime = require('microtime')
 const ipc = require('node-ipc')
 const {
   IPC_SERVER_ID,
@@ -19,6 +20,8 @@ class FixtureServer {
     this.dependencyMap = null
     this.fixtureTimestamps = { SETUP: {}, TEARDOWN: {} }
     this.funcTimestamps = {}
+    this.startTime = null
+    this.logs = []
   }
 
   load(fixturesPath) {
@@ -31,6 +34,8 @@ class FixtureServer {
   }
 
   async start() {
+    this.startTime = microtime.now()
+
     const cachedObjects = {}
 
     let runnerFinished
@@ -114,21 +119,18 @@ class FixtureServer {
             } = payload
             this.fixtureLog(operation, event, scope, name)
           } else {
-            const { event, desc } = payload
-            if (event === 'START') {
-              this.funcTimestamps[desc] = Date.now()
-              console.log(`[${this.funcTimestamps[desc]}] ${event} ${desc}`)
-            } else {
-              const time = Date.now()
-              const diff = Math.floor((time - this.funcTimestamps[desc]) / 1000)
-              console.log(`[${time}] ${event} ${desc} (${diff}ms)`)
-            }
+            const {
+              label, desc, ancestors, fixtures, event
+            } = payload
+            this.fnLog(label, desc, ancestors, fixtures, event)
           }
         })
 
-        ipc.server.on('teardown', () => {
+        ipc.server.on('teardown', (_, socket) => {
           runnerFinished()
           Promise.all(finishPromises).then(() => {
+            const logs = this.logs.sort((x, y) => x[0] - y[0]).map(x => x[1])
+            ipc.server.emit(socket, 'logs', logs)
             ipc.server.stop()
           })
         })
@@ -144,30 +146,77 @@ class FixtureServer {
 
   fixtureLog(operation, event, scope, name) {
     if (process.env.FI_LOGGING !== '1') return
-    const time = Date.now()
+
+    const time = microtime.now()
+    let duration
     if (event === 'START') {
       this.fixtureTimestamps[operation][name] = time
-      console.log(`[${time}] ${operation} ${event} [${scope}] ${name}`)
     } else {
-      const diff = time - this.fixtureTimestamps[operation][name]
-      console.log(`[${time}] ${operation} ${event} [${scope}] ${name} (${diff}ms)`)
+      duration = time - this.fixtureTimestamps[operation][name]
     }
+    this.logs.push([
+      time,
+      {
+        time: time - this.startTime,
+        type: 'fixture',
+        payload: {
+          operation,
+          event,
+          scope,
+          name,
+          duration
+        }
+      }
+    ])
+  }
+
+  fnLog(label, desc, ancestors, fixtures, event) {
+    if (process.env.FI_LOGGING !== '1') return
+
+    const time = microtime.now()
+    const testPath = [ancestors.join(' -> '), desc].join(' -> ')
+    let duration
+    if (event === 'START') {
+      this.funcTimestamps[testPath] = time
+    } else {
+      duration = time - this.funcTimestamps[testPath]
+    }
+    this.logs.push([
+      time,
+      {
+        time: time - this.startTime,
+        type: 'function',
+        payload: {
+          label,
+          desc,
+          ancestors,
+          fixtures,
+          event,
+          duration
+        }
+      }
+    ])
   }
 
   static async teardown() {
+    let logRecords
     await new Promise((resolve) => {
       ipc.config.id = IPC_CLIENT_ID
       ipc.config.silent = true
       ipc.connectTo(IPC_SERVER_ID, () => {
         ipc.of[IPC_SERVER_ID].on('connect', () => {
           ipc.of[IPC_SERVER_ID].emit('teardown')
-          ipc.disconnect(IPC_SERVER_ID)
+          ipc.of[IPC_SERVER_ID].on('logs', (logs) => {
+            logRecords = logs
+            ipc.disconnect(IPC_SERVER_ID)
+          })
         })
         ipc.of[IPC_SERVER_ID].on('disconnect', () => {
           resolve()
         })
       })
     })
+    return logRecords
   }
 }
 
