@@ -3,6 +3,7 @@
   "scripts": {
     "lint": "eslint packages/*/*.js",
     "format": "prettier-eslint --write 'packages/*/*.js'",
+    "changelog": "scripty",
     "add:core": "scripty",
     "add:jasmine": "scripty",
     "add:jasmine-tests": "scripty",
@@ -22,10 +23,17 @@
   "scripty": {
     "silent": true
   },
+  "engines": {
+    "node": ">=8"
+  },
+  "repository": "https://github.com/yatsu/fixture-injection.git",
+  "author": "fixture-injection Development Team",
+  "license": "MIT",
   "devDependencies": {
     "eslint": "^5.6.0",
     "husky": "^1.1.4",
     "lerna": "^3.4.3",
+    "lerna-changelog": "^0.8.2",
     "prettier-eslint-cli": "^4.7.1",
     "scripty": "^1.8.0"
   }
