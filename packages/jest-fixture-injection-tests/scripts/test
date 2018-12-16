@@ -8,6 +8,8 @@ yarn test-sync-node --verbose
 yarn test-async-node --verbose
 yarn test-reuse-node --verbose
 
+yarn test-early-teardown --verbose
+
 JEST_CIRCUS=1 yarn test-sync-jsdom --verbose
 JEST_CIRCUS=1 yarn test-async-jsdom --verbose
 JEST_CIRCUS=1 yarn test-reuse-jsdom --verbose
@@ -15,3 +17,5 @@ JEST_CIRCUS=1 yarn test-reuse-jsdom --verbose
 JEST_CIRCUS=1 yarn test-sync-node --verbose
 JEST_CIRCUS=1 yarn test-async-node --verbose
 JEST_CIRCUS=1 yarn test-reuse-node --verbose
+
+JEST_CIRCUS=1 yarn test-early-teardown --verbose

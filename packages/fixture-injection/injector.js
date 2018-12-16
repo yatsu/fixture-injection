@@ -150,10 +150,12 @@ class FixtureInjector {
   teardown() {
     if (this.useGlobalFixtureServer) {
       return new Promise((resolve) => {
-        ipc.of[IPC_SERVER_ID].on('disconnect', () => {
-          resolve()
+        ipc.connectTo(IPC_SERVER_ID, () => {
+          ipc.of[IPC_SERVER_ID].on('disconnect', () => {
+            resolve()
+          })
+          ipc.disconnect(IPC_SERVER_ID)
         })
-        ipc.disconnect(IPC_SERVER_ID)
       })
     }
 
