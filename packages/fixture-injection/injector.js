@@ -14,6 +14,7 @@ class FixtureInjector {
   constructor(rootDir, useGlobalFixtureServer = false, ipcOptions = {}) {
     this.rootDir = rootDir
     this.useGlobalFixtureServer = useGlobalFixtureServer
+    this.connectionPromise = null
     this.ipcOptions = Object.assign({}, IPC_DEFAULT_OPTIONS, ipcOptions)
     this.fixturesPath = null
     this.globalFixturesPath = null
@@ -110,7 +111,7 @@ class FixtureInjector {
 
   setup() {
     if (this.useGlobalFixtureServer) {
-      return new Promise((connectionResolve) => {
+      this.connectionPromise = new Promise((connectionResolve) => {
         Object.assign(ipc.config, this.ipcOptions, { id: IPC_CLIENT_ID })
 
         ipc.connectTo(IPC_SERVER_ID, () => {
@@ -139,6 +140,7 @@ class FixtureInjector {
           })
         })
       })
+      return this.connectionPromise
     }
 
     this.dependencyMap = constructDependencyMap(
@@ -150,10 +152,12 @@ class FixtureInjector {
   teardown() {
     if (this.useGlobalFixtureServer) {
       return new Promise((resolve) => {
-        ipc.of[IPC_SERVER_ID].on('disconnect', () => {
-          resolve()
+        this.connectionPromise.then(() => {
+          ipc.of[IPC_SERVER_ID].on('disconnect', () => {
+            resolve()
+          })
+          ipc.disconnect(IPC_SERVER_ID)
         })
-        ipc.disconnect(IPC_SERVER_ID)
       })
     }
 
