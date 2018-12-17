@@ -1,4 +1,0 @@
-#!/bin/bash -eu
-
-FIXTURE_INJECTION_CONFIG=reuse-jsdom/fixture-injection.config.js \
-jest -c reuse-jsdom/jest.config.js $@

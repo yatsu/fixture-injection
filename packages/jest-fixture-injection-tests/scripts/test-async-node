@@ -1,4 +1,0 @@
-#!/bin/bash -eu
-
-FIXTURE_INJECTION_CONFIG=async-node/fixture-injection.config.js \
-jest -c async-node/jest.config.js $@

@@ -38,27 +38,54 @@ class fixtureInjectionEnvironment extends JSDOMEnvironment {
       return super.runScript(script)
     }
 
+    // Define fixture-injection globals and verride Jest globals here
+    // Jest globals: https://jestjs.io/docs/en/api
+    // See also: jest-jasmine2/src/index.js
+    //           jest-circus/src/index.js
+
     if (!this.global.fixture) {
       const {
-        describe, it, test, xtest, beforeAll, afterAll
+        describe,
+        fdescribe,
+        xdescribe,
+        beforeAll,
+        afterAll,
+        test,
+        it,
+        xtest,
+        fit,
+        xit
       } = this.global
+
       this.global.fixture = (name, fn) => this.injector.defineFixture(name, fn, beforeAll, afterAll)
       this.global.nonuse = () => null
-      this.global.describe = (desc, fn) => {
+
+      const defineDesc = origDesc => (desc, fn) => {
         this.ancestors.push(desc)
+
         // eslint-disable-next-line max-len
         this.global.beforeAll = f => this.injector.beforeAll(f, beforeAll, afterAll, this.ancestors.slice())
-        this.global.it = this.injector.injectableFn(it, this.ancestors.slice())
-        this.global.it.skip = this.injector.injectableFn(it.skip, this.ancestors.slice())
-        this.global.it.only = this.injector.injectableFn(it.only, this.ancestors.slice())
-        this.global.test = this.injector.injectableFn(test, this.ancestors.slice())
-        this.global.test.skip = this.injector.injectableFn(test.skip, this.ancestors.slice())
-        this.global.test.only = this.injector.injectableFn(test.only, this.ancestors.slice())
-        this.global.xtest = this.injector.injectableFn(xtest, this.ancestors.slice())
-        // eslint-disable-next-line jest/valid-describe
-        describe(desc, fn)
+
+        const defineTest = origFn => this.injector.injectableFn(origFn, this.ancestors.slice())
+
+        this.global.test = defineTest(test)
+        this.global.test.only = defineTest(test.only)
+        this.global.test.skip = defineTest(test.skip)
+        this.global.it = defineTest(it)
+        this.global.it.only = defineTest(it.only)
+        this.global.it.skip = defineTest(it.skip)
+        this.global.xtest = defineTest(xtest)
+        this.global.fit = defineTest(fit)
+        this.global.xit = defineTest(xit)
+
+        origDesc(desc, fn)
+
         this.ancestors.pop()
       }
+
+      this.global.describe = defineDesc(describe)
+      this.global.fdescribe = defineDesc(fdescribe)
+      this.global.xdescribe = defineDesc(xdescribe)
     }
 
     return this.dom.runVMScript(script)

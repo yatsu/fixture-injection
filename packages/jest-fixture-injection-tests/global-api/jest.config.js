@@ -4,12 +4,12 @@ module.exports = {
     {
       displayName: 'jsdom',
       testEnvironment: 'jest-fixture-injection/jsdom',
-      testMatch: ['<rootDir>/**/*.test.js']
+      testMatch: ['<rootDir>/jsdom/**/*.test.js']
     },
     {
       displayName: 'node',
       testEnvironment: 'jest-fixture-injection/node',
-      testMatch: ['<rootDir>/**/*.test.js']
+      testMatch: ['<rootDir>/node/**/*.test.js']
     }
   ]
 }
