@@ -1,17 +1,13 @@
 #!/bin/bash -eu
 
-yarn test-sync-jsdom --verbose
-yarn test-async-jsdom --verbose
-yarn test-reuse-jsdom --verbose
+yarn test-sync --verbose --runInBand
+yarn test-async --verbose --runInBand
+yarn test-reuse --verbose --runInBand
+yarn test-early-teardown --verbose --runInBand
+yarn test-global-api --verbose --runInBand
 
-yarn test-sync-node --verbose
-yarn test-async-node --verbose
-yarn test-reuse-node --verbose
-
-JEST_CIRCUS=1 yarn test-sync-jsdom --verbose
-JEST_CIRCUS=1 yarn test-async-jsdom --verbose
-JEST_CIRCUS=1 yarn test-reuse-jsdom --verbose
-
-JEST_CIRCUS=1 yarn test-sync-node --verbose
-JEST_CIRCUS=1 yarn test-async-node --verbose
-JEST_CIRCUS=1 yarn test-reuse-node --verbose
+JEST_CIRCUS=1 yarn test-sync --verbose --runInBand
+JEST_CIRCUS=1 yarn test-async --verbose --runInBand
+JEST_CIRCUS=1 yarn test-reuse --verbose --runInBand
+JEST_CIRCUS=1 yarn test-early-teardown --verbose --runInBand
+JSET_CIRCUS=1 yarn test-global-api --verbose --runInBand

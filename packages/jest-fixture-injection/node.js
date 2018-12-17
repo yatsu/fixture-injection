@@ -40,28 +40,56 @@ class fixtureInjectionEnvironment extends NodeEnvironment {
       return super.runScript(script)
     }
 
+    // Define fixture-injection globals and verride Jest globals here
+    // Jest globals: https://jestjs.io/docs/en/api
+    // See also: jest-jasmine2/src/index.js
+    //           jest-circus/src/index.js
+
     if (!this.fixtureContext) {
       const {
-        describe, it, test, xtest, beforeAll, afterAll
+        describe,
+        fdescribe,
+        xdescribe,
+        beforeAll,
+        afterAll,
+        it,
+        test,
+        xtest,
+        fit,
+        xit
       } = this.global
       const context = vm.createContext(Object.assign({}, this.global))
+
       context.fixture = (name, fn) => this.injector.defineFixture(name, fn, beforeAll, afterAll)
       context.nonuse = () => null
-      context.describe = (desc, fn) => {
+
+      const defineDesc = origDesc => (desc, fn) => {
         this.ancestors.push(desc)
+
         // eslint-disable-next-line max-len
         context.beforeAll = f => this.injector.beforeAll(f, beforeAll, afterAll, this.ancestors.slice())
-        context.it = this.injector.injectableFn(it, this.ancestors.slice())
-        context.it.skip = this.injector.injectableFn(it.skip, this.ancestors.slice())
-        context.it.only = this.injector.injectableFn(it.only, this.ancestors.slice())
-        context.test = this.injector.injectableFn(test, this.ancestors.slice())
-        context.test.skip = this.injector.injectableFn(test.skip, this.ancestors.slice())
-        context.test.only = this.injector.injectableFn(test.only, this.ancestors.slice())
-        context.xtest = this.injector.injectableFn(xtest, this.ancestors.slice())
-        // eslint-disable-next-line jest/valid-describe
-        describe(desc, fn)
+
+        const defineTest = origFn => this.injector.injectableFn(origFn, this.ancestors.slice())
+
+        context.test = defineTest(test)
+        context.test.only = defineTest(test.only)
+        context.test.skip = defineTest(test.skip)
+        context.it = defineTest(it)
+        context.it.only = defineTest(it.only)
+        context.it.skip = defineTest(it.skip)
+        context.xtest = defineTest(xtest)
+        context.fit = defineTest(fit)
+        context.xit = defineTest(xit)
+
+        origDesc(desc, fn)
+
         this.ancestors.pop()
       }
+
+      context.describe = defineDesc(describe)
+      context.fdescribe = defineDesc(fdescribe)
+      context.xdescribe = defineDesc(xdescribe)
+
       this.fixtureContext = context
     }
 

@@ -5,7 +5,8 @@ module.exports = {
   },
   globals: {
     fixture: true,
-    nonuse: true
+    nonuse: true,
+    fdescribe: true
   },
   extends: ['airbnb-base', 'plugin:jest/recommended', 'plugin:node/recommended'],
   rules: {
@@ -21,6 +22,9 @@ module.exports = {
     'import/no-unresolved': ['error', { commonjs: true }],
     'import/prefer-default-export': 'off',
     'node/no-missing-require': ['error', { allowModules: ['jest-fixture-injection'] }],
-    'node/no-unpublished-require': ['error', { allowModules: ['jest-fixture-injection'] }]
+    'node/no-unpublished-require': ['error', { allowModules: ['jest-fixture-injection'] }],
+    'jest/no-disabled-tests': 'off',
+    'jest/no-focused-tests': 'off',
+    'jest/no-test-prefixes': 'off'
   }
 }

@@ -5,12 +5,10 @@
   "scripts": {
     "test": "scripty",
     "test-ci": "scripty",
-    "test-sync-jsdom": "scripty",
-    "test-async-jsdom": "scripty",
-    "test-reuse-jsdom": "scripty",
-    "test-sync-node": "scripty",
-    "test-async-node": "scripty",
-    "test-reuse-node": "scripty",
+    "test-sync": "scripty",
+    "test-async": "scripty",
+    "test-reuse": "scripty",
+    "test-global-api": "scripty",
     "test-early-teardown": "scripty",
     "pre-commit": "lint-staged && yarn test"
   },
