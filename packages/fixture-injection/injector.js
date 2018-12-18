@@ -9,6 +9,7 @@ const {
   fixturePromise,
   fixtureObjects
 } = require('./common')
+const { LocalLogger, RemoteLogger } = require('./logger')
 
 class FixtureInjector {
   constructor(rootDir, useGlobalFixtureServer = false, ipcOptions = {}) {
@@ -28,6 +29,11 @@ class FixtureInjector {
       this.globalFinished = resolve
     })
     this.ipcResolvers = {}
+    if (this.useGlobalFixtureServer) {
+      this.logger = new RemoteLogger()
+    } else {
+      this.logger = new LocalLogger()
+    }
   }
 
   load(globalFixtures, fixtures) {
@@ -93,7 +99,7 @@ class FixtureInjector {
     })
   }
 
-  injectableFn(origFn, ancestors = []) {
+  injectableFn(origFn, ancestors) {
     return (desc, fn) => origFn(desc, async () => {
       const fixtures = fixtureArguments(fn)
       const finish = await this.callWithFixtures(
@@ -291,44 +297,23 @@ class FixtureInjector {
   }
 
   fixtureLog(operation, event, scope, name) {
-    if (!this.useGlobalFixtureServer) return
-
-    ipc.of[IPC_SERVER_ID].emit('log', {
-      type: 'fixture',
-      payload: {
-        operation,
-        event,
-        scope,
-        name
-      }
-    })
+    this.logger.fixtureLog(operation, event, scope, name)
   }
 
-  fnLog(label, desc, ancestors, fixtures, event) {
-    if (!this.useGlobalFixtureServer) return
-
-    ipc.of[IPC_SERVER_ID].emit('log', {
-      type: 'function',
-      payload: {
-        label,
-        desc,
-        ancestors,
-        fixtures,
-        event
-      }
-    })
+  functionLog(label, desc, ancestors, fixtures, event) {
+    this.logger.functionLog(label, desc, ancestors, fixtures, event)
   }
 
   testLog(desc, ancestors, fixtures, event) {
-    this.fnLog('T', desc, ancestors, fixtures, event)
+    this.functionLog('T', desc, ancestors, fixtures, event)
   }
 
   beforeAllLog(ancestors, fixtures, event) {
-    this.fnLog('B', 'beforeAll', ancestors, fixtures, event)
+    this.functionLog('B', 'beforeAll', ancestors, fixtures, event)
   }
 
   afterAllLog(ancestors, fixtures, event) {
-    this.fnLog('B', 'afterAll', ancestors, fixtures, event)
+    this.functionLog('B', 'afterAll', ancestors, fixtures, event)
   }
 }
 
