@@ -4,14 +4,9 @@
 
 __Note: fixture-injection is still in alpha stage.__
 
-fixture-injection is a test helper tool for [Jest](https://jestjs.io/) and
-[Jasmine](https://jasmine.github.io/) to define and use fixtures easily by
-leveraging [dependency
-injection](https://www.wikiwand.com/en/Dependency_injection<Paste>).
+fixture-injection is a test helper tool for [Jest](https://jestjs.io/) and [Jasmine](https://jasmine.github.io/) to define and use fixtures easily by leveraging [dependency injection](https://www.wikiwand.com/en/Dependency_injection<Paste>).
 
-Fixtures are code that sets up test subjects and the testing environment
-defined as a value or a function. These fixtures can be injected to
-`beforeAll()`, `it()`, `test()`, etc. as arguments.
+Fixtures are code that sets up test subjects and the testing environment defined as a value or a function. These fixtures can be injected to `beforeAll()`, `it()`, `test()`, etc. as arguments.
 
 ## Usage
 
@@ -67,15 +62,12 @@ describe('My test suite', () => {
 ## Features
 
 1. The code in the fixture function can do whatever you want
-2. Fixture function can be asynchronous and can have setup and teardown
-   code around `await provide()` 
-3. Fixtures are also available in other fixtures, and the dependencies are
-   automatically resolved
+2. Fixture function can be asynchronous and can have setup and teardown code around `await provide()` 
+3. Fixtures are also available in other fixtures, and the dependencies are automatically resolved
    * Asynchronous fixtures are initialized concurrently as much as possible
 4. Local fixtures are initialized every time in each injected context
 5. Global fixtures are singletons and initialized only once
-   * [Jest] They are initialized by Jest runner and will be sent to individual
-     test workers via IPC
+   * [Jest] They are initialized by Jest runner and will be sent to individual test workers via IPC
 6. In-line fixtures are also available by `fixture()` in each test file
 
 
@@ -95,11 +87,11 @@ See the documentation of each test framework extension.
 * [jest-fixture-injection](https://github.com/yatsu/fixture-injection/tree/master/packages/jest-fixture-injection)
 * [jasmine-fixture-injection](https://github.com/yatsu/fixture-injection/tree/master/packages/jasmine-fixture-injection)
 
+## Limitations
+
+Don't use Babel [transform-async-to-generator plugin](https://babeljs.io/docs/en/babel-plugin-transform-async-to-generator) because it modifies function arguments and fixture-injection can't handle it.
+
 ## Related Work
 
 * [pytest](https://docs.pytest.org/en/latest/)
-  * pytest is a popular testing framework for Python. fixture-injection
-    was inspired by its
-    [fixtures](https://docs.pytest.org/en/latest/fixture.html). pytest fixture
-    has a scope (session/module/function) to manage its lifecycle and can be
-    a generator to have setup/teardown logic in it.
+  * pytest is a popular testing framework for Python. fixture-injection was inspired by its [fixtures](https://docs.pytest.org/en/latest/fixture.html). pytest fixture    has a scope (session/module/function) to manage its lifecycle and can be a generator to have setup/teardown logic in it.

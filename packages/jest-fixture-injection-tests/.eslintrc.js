@@ -25,6 +25,7 @@ module.exports = {
     'node/no-unpublished-require': ['error', { allowModules: ['jest-fixture-injection'] }],
     'jest/no-disabled-tests': 'off',
     'jest/no-focused-tests': 'off',
+    'jest/no-identical-title': 'off',
     'jest/no-test-prefixes': 'off'
   }
 }

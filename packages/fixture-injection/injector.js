@@ -313,7 +313,7 @@ class FixtureInjector {
   }
 
   afterAllLog(ancestors, fixtures, event) {
-    this.functionLog('B', 'afterAll', ancestors, fixtures, event)
+    this.functionLog('A', 'afterAll', ancestors, fixtures, event)
   }
 }
 
