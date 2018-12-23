@@ -1,16 +1,10 @@
 # jasmine-fixture-injection
 
-[Jasmine](https://jasmine.github.io/) extension to use
-[fixture-injection](https://github.com/yatsu/fixture-injection).
+[Jasmine](https://jasmine.github.io/) extension to use [fixture-injection](https://github.com/yatsu/fixture-injection).
 
 __Note: jasmine-fixture-injection is still in alpha stage.__
 
-fixture-injection is a test helper tool to define and use fixtures easily by
-leveraging [dependency
-injection](https://www.wikiwand.com/en/Dependency_injection<Paste>). Fixtures
-are code that sets up test subjects and the testing environment defined as
-a value or a function. These fixtures can be injected to `beforeAll()`, `it()`,
-`test()`, etc. as arguments.
+fixture-injection is a test helper tool to define and use fixtures easily by leveraging [dependency injection](https://www.wikiwand.com/en/Dependency_injection<Paste>). Fixtures are code that sets up test subjects and the testing environment defined as a value or a function. These fixtures can be injected to `beforeAll()`, `it()`, `test()`, etc. as arguments.
 
 ## Usage
 
@@ -63,17 +57,22 @@ describe('My test suite', () => {
 })
 ```
 
+Set environment variable `FI_LOGGING=1` to print the log.
+
+```sh
+FI_LOGGING=1 yarn tests
+```
+
 ## Features
 
 1. The code in the fixture function can do whatever you want
-2. Fixture function can be asynchronous and can have setup and teardown
-   code around `await provide()` 
-3. Fixtures are also available in other fixtures, and the dependencies are
-   automatically resolved
+2. Fixture function can be asynchronous and can have setup and teardown code around `await provide()` 
+3. Fixtures are also available in other fixtures, and the dependencies are automatically resolved
    * Asynchronous fixtures are initialized concurrently as much as possible
 4. Local fixtures are initialized every time in each injected context
 5. Global fixtures are singletons and initialized only once
 6. In-line fixtures are also available by `fixture()` in each test file
+7. Detailed setup/teardown log of fixtures, test functions, beforeAll and afterAll.
 
 # Prerequisite
 
@@ -129,8 +128,7 @@ const command = new Command(path.resolve(), examplesDir, console.log)
 command.run(jasmine, process.argv.slice(2))
 ```
 
-You can use [scripty](https://www.npmjs.com/package/scripty) to run this by
-`yarn test` or `npm run test`.
+You can use [scripty](https://www.npmjs.com/package/scripty) to run this by `yarn test` or `npm run test`.
 
 `package.json`:
 
@@ -141,6 +139,10 @@ You can use [scripty](https://www.npmjs.com/package/scripty) to run this by
   }
 }
 ```
+
+## Limitations
+
+Don't use Babel [transform-async-to-generator plugin](https://babeljs.io/docs/en/babel-plugin-transform-async-to-generator) because it modifies asy/await function's arguments and fixture-injection cannot handle it.
 
 ## Examples
 
