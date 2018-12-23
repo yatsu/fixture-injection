@@ -8,11 +8,12 @@ describe('Global value fixture', () => {
 
     test('does not allow modification', () => {
       const { a } = fixtures
-      a.foo = 1
+      expect(() => {
+        a.foo = 1
+      }).toThrow('Cannot add property foo')
 
       expect(a.name).toEqual('a')
       expect(a.id.length).toEqual(10)
-      expect(a.foo).toBeUndefined()
     })
   })
 
@@ -21,18 +22,18 @@ describe('Global value fixture', () => {
 
     test('does not allow modification', (a) => {
       fixtures.lastA = a
-      a.foo = 1
+      expect(() => {
+        a.foo = 1
+      }).toThrow('Cannot add property foo')
 
       expect(a.name).toEqual('a')
       expect(a.id.length).toEqual(10)
-      expect(a.foo).toBeUndefined()
     })
 
     test('is identical among test cases', (a) => {
       expect(a).toBe(fixtures.lastA)
       expect(a.name).toEqual('a')
       expect(a.id.length).toEqual(10)
-      expect(a.foo).toBeUndefined()
     })
   })
 })
@@ -47,7 +48,9 @@ describe('Global synchronous function fixture', () => {
 
     test('does not allow modification', () => {
       const { b } = fixtures
-      b.foo = 1
+      expect(() => {
+        b.foo = 1
+      }).toThrow('Cannot add property foo')
 
       expect(b.name).toEqual('b')
       expect(b.id.length).toEqual(10)
@@ -63,14 +66,12 @@ describe('Global synchronous function fixture', () => {
 
       expect(b.name).toEqual('b')
       expect(b.id.length).toEqual(10)
-      expect(b.foo).toBeUndefined()
     })
 
     test('is identical among test cases', (b) => {
       expect(b).toBe(fixtures.lastB)
       expect(b.name).toEqual('b')
       expect(b.id.length).toEqual(10)
-      expect(b.foo).toBeUndefined()
     })
   })
 })
@@ -85,11 +86,12 @@ describe('Global asynchronous function fixture', () => {
 
     test('does not allow modification', () => {
       const { c } = fixtures
-      c.foo = 1
+      expect(() => {
+        c.foo = 1
+      }).toThrow('Cannot add property foo')
 
       expect(c.name).toEqual('c')
       expect(c.id.length).toEqual(10)
-      expect(c.foo).toBeUndefined()
     })
   })
 
@@ -101,14 +103,12 @@ describe('Global asynchronous function fixture', () => {
 
       expect(c.name).toEqual('c')
       expect(c.id.length).toEqual(10)
-      expect(c.foo).toBeUndefined()
     })
 
     test('is identical among test cases', (c) => {
       expect(c).toBe(fixtures.lastC)
       expect(c.name).toEqual('c')
       expect(c.id.length).toEqual(10)
-      expect(c.foo).toBeUndefined()
     })
   })
 })
