@@ -1,7 +1,7 @@
 {
   "name": "jasmine-fixture-injection-example",
   "description": "Example: Node + Express + Jasmine + jasmine-fixture-injection",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "main": "index.js",
   "scripts": {
     "start": "scripty",
@@ -42,7 +42,7 @@
     "eslint-plugin-node": "^8.0.0",
     "jasmine": "^3.3.0",
     "jasmine-console-reporter": "^3.1.0",
-    "jasmine-fixture-injection": "^0.1.3",
+    "jasmine-fixture-injection": "^0.1.4",
     "jasmine-reporters": "^2.3.2",
     "lint-staged": "^8.0.4",
     "prettier-eslint-cli": "^4.7.1",
