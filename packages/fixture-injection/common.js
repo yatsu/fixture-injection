@@ -44,6 +44,7 @@ function fixturePromise(
 
   if (typeof fixtureDef === 'function') {
     const provideWithLogging = (fixture) => {
+      if (onSetupEnd) onSetupEnd()
       const fnFinish = provide(fixture)
       fnFinish.then(() => {
         if (onTeardownStart) onTeardownStart()
@@ -58,8 +59,6 @@ function fixturePromise(
         provideWithLogging,
         ...dependencies.slice(index)
       )
-
-    if (onSetupEnd) onSetupEnd()
 
     if (typeof result.then === 'function') {
       if (index < 0) {
@@ -79,6 +78,8 @@ function fixturePromise(
         })
       })
     }
+
+    if (onSetupEnd) onSetupEnd()
 
     const obj = freezeOrCopy(result, freeze)
     return new Promise((resolve) => {
