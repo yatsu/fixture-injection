@@ -9,7 +9,7 @@ fixture-injection is a test helper tool for [Jest](https://jestjs.io/) and [Jasm
 * Test functions use fixtures by declaring the fixture names as arguments.
 * Fixtures can use other fixtures and fixture-injection manages the dependencies.
 * Fixtures can have asynchronous setup and teardown in it.
-* Global fixtures are instantiated in the global scope and shared by multiple test suites (independent workers in Jest) and used as a singleton, whereas local fixtures are instantiated in each local scope.
+* Global fixtures are instantiated in the global scope and shared by multiple test suites (independent workers of Jest) and used as a singleton, whereas local fixtures are instantiated in each local scope.
 
 ## Usage (Jest)
 
@@ -72,7 +72,7 @@ FI_LOGGING=1 yarn tests
 
 * [fixture-injection](https://github.com/yatsu/fixture-injection/tree/master/packages/fixture-injection)
   * Core package of fixture-injection
-  * This package is used internally; You don't need to install this directly
+  * This package is used internally; You don't need to install this manually
 * [jest-fixture-injection](https://github.com/yatsu/fixture-injection/tree/master/packages/jest-fixture-injection)
   * Jest extension to use fixture-injection
   * Use this package for Jest
@@ -84,12 +84,19 @@ FI_LOGGING=1 yarn tests
 
 See the documentation of each test framework extension.
 
-* [jest-fixture-injection](https://github.com/yatsu/fixture-injection/tree/master/packages/jest-fixture-injection)
-* [jasmine-fixture-injection](https://github.com/yatsu/fixture-injection/tree/master/packages/jasmine-fixture-injection)
+* for Jest &rarr; [jest-fixture-injection](https://github.com/yatsu/fixture-injection/tree/master/packages/jest-fixture-injection)
+* for Jasmine &rarr; [jasmine-fixture-injection](https://github.com/yatsu/fixture-injection/tree/master/packages/jasmine-fixture-injection)
 
 ## Limitations
 
-Don't use transpiler plugins/settings which modify function arguments such as [transform-async-to-generator plugin](https://babeljs.io/docs/en/babel-plugin-transform-async-to-generator) for Babel because fixture-injection parses the argument names at runtime to determine which fixtures to inject.
+* `done()` is not available to define asynchronous tests; Use async/await instead
+* Don't use transpiler plugins/settings which modify function arguments such as [transform-async-to-generator plugin](https://babeljs.io/docs/en/babel-plugin-transform-async-to-generator) for Babel because fixture-injection parses the argument names at runtime to determine which fixtures to inject.
+
+## FAQ
+
+#### 1) Why not make `describe()` injectable same as `test()` and `it()` instead of manually assigning variables in `beforeAll()`?
+
+Fixture functions can be asynchronous and fixture objects must be resolved before executing test functions. That means `describe()` must work asynchronously in this case, but it is not possible. Only `beforeEach()`, `afterEach()`, `beforeAll()` and `afterAll()` can work asynchronously because [test suites must be defined statically](https://jasmine.github.io/tutorials/async). So `beforeAll()` is the only place to share fixture objects between test functions.
 
 ## Related Work
 

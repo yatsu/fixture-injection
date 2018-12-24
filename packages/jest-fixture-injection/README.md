@@ -185,7 +185,9 @@ Setting `--env` is required here because verwriting `testEnvironment` by craco d
 
 ## Limitations
 
-Don't use transpiler plugins/settings which modify function arguments such as [transform-async-to-generator plugin](https://babeljs.io/docs/en/babel-plugin-transform-async-to-generator) for Babel because fixture-injection parses the argument names at runtime to determine which fixtures to inject.
+* `done()` is not available to define asynchronous tests; Use async/await instead
+* 
+* Don't use transpiler plugins/settings which modify function arguments such as [transform-async-to-generator plugin](https://babeljs.io/docs/en/babel-plugin-transform-async-to-generator) for Babel because fixture-injection parses the argument names at runtime to determine which fixtures to inject.
 
 ## Examples
 
