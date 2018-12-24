@@ -84,7 +84,7 @@ FI_LOGGING=1 yarn tests
 
 See the documentation of each test framework extension.
 
-* for Jest &rarr; [jest-fixture-injection](https://github.com/yatsu/fixture-injection/tree/master/packages/jest-fixture-injection)
+* for Jest &rarr; [jest-fixture-injection](https://github.com/yatsu/fixture-injection/tree/master/packages/jest-fixture-injection)
 * for Jasmine &rarr; [jasmine-fixture-injection](https://github.com/yatsu/fixture-injection/tree/master/packages/jasmine-fixture-injection)
 
 ## Limitations
