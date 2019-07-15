@@ -1,7 +1,7 @@
 {
   "name": "fixture-injection",
   "description": "A JavaScript test helper to inject fixtures",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "license": "MIT",
   "homepage": "https://github.com/yatsu/fixture-injection",
   "repository": {
@@ -20,19 +20,6 @@
     "test": "scripty",
     "test-ci": "scripty",
     "pre-commit": "lint-staged && yarn test"
-  },
-  "lint-staged": {
-    "linters": {
-      "*.js": [
-        "prettier-eslint --write",
-        "eslint",
-        "git add"
-      ]
-    },
-    "ignore": [
-      "*.config.js",
-      ".eslintrc.js"
-    ]
   },
   "scripty": {
     "silent": true

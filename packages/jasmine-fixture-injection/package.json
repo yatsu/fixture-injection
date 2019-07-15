@@ -1,7 +1,7 @@
 {
   "name": "jasmine-fixture-injection",
   "description": "fixture-injection helper for Jasmine",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "license": "MIT",
   "homepage": "https://github.com/yatsu/fixture-injection/packages/jasmine-fixture-injection",
   "repository": {
@@ -20,19 +20,6 @@
   "scripts": {
     "pre-commit": "lint-staged"
   },
-  "lint-staged": {
-    "linters": {
-      "*.js": [
-        "prettier-eslint --write",
-        "eslint",
-        "git add"
-      ]
-    },
-    "ignore": [
-      "*.config.js",
-      ".eslintrc.js"
-    ]
-  },
   "engines": {
     "node": ">=10"
   },
@@ -40,7 +27,7 @@
     "jasmine": ">=3 <4"
   },
   "dependencies": {
-    "fixture-injection": "^0.1.4"
+    "fixture-injection": "^0.1.5"
   },
   "devDependencies": {
     "eslint": "^5.16.0",
