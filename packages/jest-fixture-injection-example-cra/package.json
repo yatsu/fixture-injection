@@ -1,18 +1,13 @@
 {
   "name": "jest-fixture-injection-example-cra",
   "version": "0.1.4",
+  "license": "MIT",
   "private": true,
-  "dependencies": {
-    "@craco/craco": "^3.1.0",
-    "react": "^16.6.3",
-    "react-dom": "^16.6.3",
-    "react-scripts": "2.1.1"
-  },
   "scripts": {
     "start": "craco start",
     "build": "craco build",
     "test": "craco test --env=jest-fixture-injection/jsdom",
-    "test-ci": "JEST_JUNIT_OUTPUT=reports/jest/results.xml craco test --coverage --env=jest-fixture-injection/jsdom --ci --reporters=default --reporters=jest-junit --runInBand",
+    "test-ci": "CI=1 JEST_JUNIT_OUTPUT=reports/jest/results.xml craco test --coverage --env=jest-fixture-injection/jsdom --ci --reporters=default --reporters=jest-junit --runInBand",
     "eject": "react-scripts eject",
     "pre-commit": "lint-staged && yarn test --coverage"
   },
@@ -29,10 +24,8 @@
       ".eslintrc.js"
     ]
   },
-  "author": "fixture-injection Development Team",
-  "license": "MIT",
   "engines": {
-    "node": ">=8"
+    "node": ">=10"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -43,10 +36,16 @@
     "not ie <= 11",
     "not op_mini all"
   ],
+  "dependencies": {
+    "@craco/craco": "^5.2.4",
+    "react": "^16.6.6",
+    "react-dom": "^16.6.6",
+    "react-scripts": "3.0.1"
+  },
   "devDependencies": {
     "jest-fixture-injection": "^0.1.4",
-    "jest-junit": "^5.2.0",
-    "lint-staged": "^8.0.5",
-    "prettier-eslint-cli": "^4.7.1"
+    "jest-junit": "^6.4.0",
+    "lint-staged": "^9.2.0",
+    "prettier-eslint-cli": "^5.0.0"
   }
 }

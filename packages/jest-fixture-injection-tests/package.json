@@ -2,6 +2,7 @@
   "name": "jest-fixture-injection-tests",
   "description": "jest-fixture-injection tests",
   "version": "0.1.4",
+  "license": "MIT",
   "scripts": {
     "test": "scripty",
     "test-ci": "scripty",
@@ -31,10 +32,8 @@
     "silent": true
   },
   "engines": {
-    "node": ">=8"
+    "node": ">=10"
   },
-  "author": "fixture-injection Development Team",
-  "license": "MIT",
   "dependencies": {
     "babel-core": "^6.23.1",
     "babel-plugin-external-helpers": "^6.22.0",
@@ -53,20 +52,20 @@
     "babel-preset-react": "^6.24.1",
     "babel-preset-react-native": "^4.0.0",
     "babel-register": "^6.26.0",
-    "express": "^4.16.4",
-    "jest": "^23.6.0",
-    "jest-circus": "^23.6.0",
+    "express": "^4.17.1",
+    "jest": "24.8.0",
+    "jest-circus": "^24.8.0",
     "jest-fixture-injection": "^0.1.4",
-    "nanoid": "^2.0.0"
+    "nanoid": "^2.0.3"
   },
   "devDependencies": {
-    "eslint": "^5.8.0",
-    "eslint-config-airbnb-base": "^13.1.0",
-    "eslint-plugin-import": "^2.14.0",
-    "eslint-plugin-jest": "^22.0.0",
-    "eslint-plugin-node": "^8.0.0",
-    "lint-staged": "^8.0.4",
-    "prettier-eslint-cli": "^4.7.1",
-    "scripty": "^1.8.0"
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb-base": "^13.2.0",
+    "eslint-plugin-import": "^2.18.0",
+    "eslint-plugin-jest": "^22.7.2",
+    "eslint-plugin-node": "^8.0.1",
+    "lint-staged": "^9.2.0",
+    "prettier-eslint-cli": "^5.0.0",
+    "scripty": "^1.9.1"
   }
 }
