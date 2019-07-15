@@ -1,20 +1,19 @@
 # jest-fixture-injection
 
-[Jest](https://jestjs.io/) extension to use
-[fixture-injection](https://github.com/yatsu/fixture-injection).
+[Jest](https://jestjs.io/) extension to use [fixture-injection](https://github.com/yatsu/fixture-injection).
 
 __Note: jest-fixture-injection is still in alpha stage.__
 
-fixture-injection is a test helper tool to define and use fixtures easily by
-leveraging [dependency
-injection](https://www.wikiwand.com/en/Dependency_injection<Paste>). Fixtures
-are code that sets up test subjects and the testing environment defined as
-a value or a function. These fixtures can be injected to `beforeAll()`, `it()`,
-`test()`, etc. as arguments.
+fixture-injection is a test helper tool for [Jest](https://jestjs.io/) and [Jasmine](https://jasmine.github.io/) to inject fixtures into test functions and `beforeAll()` by leveraging [dependency injection](https://www.wikiwand.com/en/Dependency_injection).
+
+* Test functions use fixtures by declaring the fixture names as arguments.
+* Fixtures can use other fixtures and fixture-injection manages the dependencies.
+* Fixtures can have asynchronous setup and teardown in it.
+* Global fixtures are instantiated in the global scope and shared by multiple test suites (independent workers in Jest) and used as a singleton, whereas local fixtures are instantiated in each local scope.
 
 ## Usage
 
-`tests/__fixtures__.js`:
+Define fixtures in `__fixtures__.js`:
 
 ```js
 // Example 1) Simple value
@@ -38,7 +37,7 @@ module.exports = {
 }
 ```
 
-`example.test.js`:
+Use fixtures in test functions or `beforeAll()`:
 
 ```js
 describe('My test suite', () => {
@@ -63,19 +62,11 @@ describe('My test suite', () => {
 })
 ```
 
-## Features
+Set environment variable `FI_LOGGING=1` to print the log.
 
-1. The code in the fixture function can do whatever you want
-2. Fixture function can be asynchronous and can have setup and teardown
-   code around `await provide()` 
-3. Fixtures are also available in other fixtures, and the dependencies are
-   automatically resolved
-   * Asynchronous fixtures are initialized concurrently as much as possible
-4. Local fixtures are initialized every time in each injected context
-5. Global fixtures are singletons and initialized only once
-   * They are initialized by Jest runner and will be sent to individual test
-    workers via IPC
-6. In-line fixtures are also available by `fixture()` in each test file
+```sh
+FI_LOGGING=1 jest
+```
 
 # Prerequisite
 
@@ -144,21 +135,15 @@ module.exports = {
 * Create your global fixtures in `tests/__global_fixtures__.js` or
   `tests/__global_fixtures__/index.js`
 * Set `ipc.appspace`
-  * It must be unique when you use jest-fixture-injection in multiple processes
-    at a time
-  * It will be used as the socket file name prefix
-    (e.g., socket file: `/tmp/my-app-fixutre-injection-server`)
-* You can set other IPC options; See [node-ipc/IPC
-  Config](https://www.npmjs.com/package/node-ipc#ipc-config)
+  * It must be unique when you use jest-fixture-injection in multiple processes at a time
+  * It will be used as the socket file name prefix (e.g., socket file: `/tmp/my-app-fixutre-injection-server`)
+* You can set other IPC options; See [node-ipc/IPC Config](https://www.npmjs.com/package/node-ipc#ipc-config)
 
 ### Create React App
 
-The easiest way to overwrite CRA's Jest configuration is to use
-[craco](https://github.com/sharegate/craco).
+The easiest way to overwrite CRA's Jest configuration is to use [craco](https://github.com/sharegate/craco).
 
-Follow the [craco
-Installation](https://github.com/sharegate/craco/blob/master/packages/craco/README.md#installation)
-and edit `craco.config.js` as follows:
+Follow the [craco Installation](https://github.com/sharegate/craco/blob/master/packages/craco/README.md#installation) and edit `craco.config.js` as follows:
 
 ```js
 module.exports = {
@@ -196,8 +181,13 @@ Or, if you use `node` environment:
 }
 ```
 
-Setting `--env` is required here because verwriting `testEnvironment` by craco
-does work (at 2018-11-20).
+Setting `--env` is required here because verwriting `testEnvironment` by craco does work (at 2018-11-20).
+
+## Limitations
+
+* `done()` is not available to define asynchronous tests; Use async/await instead
+* 
+* Don't use transpiler plugins/settings which modify function arguments such as [transform-async-to-generator plugin](https://babeljs.io/docs/en/babel-plugin-transform-async-to-generator) for Babel because fixture-injection parses the argument names at runtime to determine which fixtures to inject.
 
 ## Examples
 

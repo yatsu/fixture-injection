@@ -1,7 +1,8 @@
 {
   "name": "jasmine-fixture-injection-example",
   "description": "Example: Node + Express + Jasmine + jasmine-fixture-injection",
-  "version": "0.1.3",
+  "version": "0.1.4",
+  "license": "MIT",
   "main": "index.js",
   "scripts": {
     "start": "scripty",
@@ -29,23 +30,21 @@
   "engines": {
     "node": ">=8"
   },
-  "author": "fixture-injection Development Team",
-  "license": "MIT",
   "dependencies": {
-    "express": "^4.16.4"
+    "express": "^4.17.1"
   },
   "devDependencies": {
     "eslint": "^5.8.0",
-    "eslint-config-airbnb-base": "^13.1.0",
-    "eslint-plugin-import": "^2.14.0",
+    "eslint-config-airbnb-base": "^13.2.0",
+    "eslint-plugin-import": "^2.18.0",
     "eslint-plugin-jasmine": "^2.10.1",
     "eslint-plugin-node": "^8.0.0",
-    "jasmine": "^3.3.0",
+    "jasmine": "3.4.0",
     "jasmine-console-reporter": "^3.1.0",
-    "jasmine-fixture-injection": "^0.1.3",
+    "jasmine-fixture-injection": "^0.1.4",
     "jasmine-reporters": "^2.3.2",
-    "lint-staged": "^8.0.4",
-    "prettier-eslint-cli": "^4.7.1",
-    "scripty": "^1.8.0"
+    "lint-staged": "^9.2.0",
+    "prettier-eslint-cli": "^5.0.0",
+    "scripty": "^1.9.1"
   }
 }

@@ -16,6 +16,7 @@ class FixtureInjectionReporter {
 
   async jasmineDone() {
     await global.fixtureInjector.teardown()
+    global.fixtureInjector.logger.writeAll(console.log)
   }
 }
 
