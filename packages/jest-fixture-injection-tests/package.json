@@ -1,7 +1,7 @@
 {
   "name": "jest-fixture-injection-tests",
   "description": "jest-fixture-injection tests",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "license": "MIT",
   "scripts": {
     "test": "scripty",
@@ -12,20 +12,7 @@
     "test-global-api": "scripty",
     "test-early-teardown": "scripty",
     "test-e2e": "scripty",
-    "pre-commit": "lint-staged && yarn test"
-  },
-  "lint-staged": {
-    "linters": {
-      "*.js": [
-        "prettier-eslint --write",
-        "eslint",
-        "git add"
-      ]
-    },
-    "ignore": [
-      "*.config.js",
-      ".eslintrc.js"
-    ]
+    "pre-commit": "lint-staged && yarn test-ci"
   },
   "private": true,
   "scripty": {
@@ -55,7 +42,7 @@
     "express": "^4.17.1",
     "jest": "24.8.0",
     "jest-circus": "^24.8.0",
-    "jest-fixture-injection": "^0.1.4",
+    "jest-fixture-injection": "^0.1.5",
     "nanoid": "^2.0.3"
   },
   "devDependencies": {

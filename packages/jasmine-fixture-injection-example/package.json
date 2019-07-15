@@ -1,7 +1,7 @@
 {
   "name": "jasmine-fixture-injection-example",
   "description": "Example: Node + Express + Jasmine + jasmine-fixture-injection",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "license": "MIT",
   "main": "index.js",
   "scripts": {
@@ -9,19 +9,6 @@
     "test": "scripty",
     "test-ci": "scripty",
     "pre-commit": "lint-staged && yarn test"
-  },
-  "lint-staged": {
-    "linters": {
-      "*.js": [
-        "prettier-eslint --write",
-        "eslint",
-        "git add"
-      ]
-    },
-    "ignore": [
-      "*.config.js",
-      ".eslintrc.js"
-    ]
   },
   "private": true,
   "scripty": {
@@ -41,7 +28,7 @@
     "eslint-plugin-node": "^8.0.0",
     "jasmine": "3.4.0",
     "jasmine-console-reporter": "^3.1.0",
-    "jasmine-fixture-injection": "^0.1.4",
+    "jasmine-fixture-injection": "^0.1.5",
     "jasmine-reporters": "^2.3.2",
     "lint-staged": "^9.2.0",
     "prettier-eslint-cli": "^5.0.0",
