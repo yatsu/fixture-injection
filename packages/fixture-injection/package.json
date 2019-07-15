@@ -38,7 +38,7 @@
     "silent": true
   },
   "engines": {
-    "node": ">=8"
+    "node": ">=10"
   },
   "dependencies": {
     "es-arguments": "^1.0.2",

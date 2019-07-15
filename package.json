@@ -39,7 +39,7 @@
     "silent": true
   },
   "engines": {
-    "node": ">=8"
+    "node": ">=10"
   },
   "devDependencies": {
     "eslint": "^5.16.0",

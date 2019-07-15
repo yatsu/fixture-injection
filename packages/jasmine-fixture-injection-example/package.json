@@ -28,7 +28,7 @@
     "silent": true
   },
   "engines": {
-    "node": ">=8"
+    "node": ">=10"
   },
   "dependencies": {
     "express": "^4.17.1"

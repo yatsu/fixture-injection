@@ -32,7 +32,7 @@
     "silent": true
   },
   "engines": {
-    "node": ">=8"
+    "node": ">=10"
   },
   "dependencies": {
     "babel-core": "^6.23.1",
