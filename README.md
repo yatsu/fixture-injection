@@ -96,7 +96,7 @@ See the documentation of each test framework extension.
 
 #### 1) Why not make `describe()` injectable same as `test()` and `it()` instead of manually assigning variables in `beforeAll()`?
 
-Fixture functions can be asynchronous and fixture objects must be resolved before executing the code defined in a function. That means `describe()` must work asynchronously in this case, but it is not possible because [test suites must be defined statically](https://jasmine.github.io/tutorials/async). So `beforeAll()` is the only place to share fixture objects between test functions.
+Fixture functions can be asynchronous and fixture objects must be resolved before executing test functions. However `describe()` does not work asynchronously as expected. So `beforeAll()` is the only place to share fixture objects between test functions.
 
 ## Related Work
 
