@@ -3,7 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# [0.1.4](https://github.com/yatsu/fixture-injection/compare/v0.1.3...v0.1.4) (2018-12-23)
+## v0.1.5 (2019-07-15)
+
+#### :house: Internal
+* `fixture-injection`, `jasmine-fixture-injection-example`, `jasmine-fixture-injection-tests`, `jasmine-fixture-injection`, `jest-fixture-injection-example-cra`, `jest-fixture-injection-example`, `jest-fixture-injection-tests`, `jest-fixture-injection`
+  * [#4](https://github.com/yatsu/fixture-injection/pull/4) Update deps ([@yatsu](https://github.com/yatsu))
+
+#### Committers: 1
+- Masaki Yatsu ([@yatsu](https://github.com/yatsu))
 
 ## 0.1.4 (2018-12-23)
 
