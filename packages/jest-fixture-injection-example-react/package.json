@@ -1,6 +1,6 @@
 {
   "name": "jest-fixture-injection-example-react",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "scripts": {
     "start": "react-scripts start",
@@ -37,7 +37,7 @@
     "@babel/preset-env": "^7.5.5",
     "@babel/preset-typescript": "^7.3.3",
     "debug": "^4.1.1",
-    "jest-fixture-injection": "^0.1.5",
+    "jest-fixture-injection": "^0.2.0",
     "tslint": "^5.18.0",
     "tslint-config-prettier": "^1.18.0",
     "tslint-config-standard": "^8.0.1",
