@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## v0.2.0 (2019-08-10)
+
+#### :rocket: Enhancement
+* `fixture-injection`, `jest-fixture-injection-example-react`, `jest-fixture-injection-example`, `jest-fixture-injection-tests`, `jest-fixture-injection`
+  * [#6](https://github.com/yatsu/fixture-injection/pull/6) Typescript Support for Jest ([@yatsu](https://github.com/yatsu))
+
+#### Committers: 1
+- Masaki Yatsu ([@yatsu](https://github.com/yatsu))
+
 ## v0.1.5 (2019-07-15)
 
 #### :house: Internal
