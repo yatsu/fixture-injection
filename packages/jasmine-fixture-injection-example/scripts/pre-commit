@@ -1,8 +1,0 @@
-#!/bin/bash -eu
-
-repo_top=$(git rev-parse --show-toplevel)
-cd "${repo_top}/packages/jasmine-fixture-injection-example"
-
-yarn lint-staged
-
-yarn test

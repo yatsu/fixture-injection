@@ -18,7 +18,8 @@
     "test"
   ],
   "scripts": {
-    "pre-commit": "lint-staged"
+    "test": "true",
+    "test-ci": "true"
   },
   "engines": {
     "node": ">=10"
@@ -36,7 +37,7 @@
     "eslint-plugin-jasmine": "^2.10.1",
     "eslint-plugin-node": "^8.0.1",
     "jasmine": "3.4.0",
-    "lint-staged": "^9.2.0",
+    "lint-staged": "^9.2.1",
     "prettier-eslint-cli": "^5.0.0"
   }
 }

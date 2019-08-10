@@ -1,0 +1,6 @@
+#!/bin/bash -eu
+
+yarn lerna run build --scope=fixture-injection
+yarn lerna run build --scope=jest-fixture-injection
+
+yarn test-ci

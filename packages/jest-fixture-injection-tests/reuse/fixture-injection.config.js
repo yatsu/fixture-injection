@@ -1,6 +1,6 @@
 module.exports = {
-  fixtures: '<rootDir>/__fixtures__',
-  globalFixtures: '<rootDir>/__global_fixtures__',
+  fixtures: '<rootDir>/reuse/__fixtures__.ts',
+  globalFixtures: '<rootDir>/reuse/__global_fixtures__.ts',
   ipc: {
     appspace: 'reuse'
   }

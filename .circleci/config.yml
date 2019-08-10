@@ -21,7 +21,7 @@ jobs:
       - restore_cache:
           key: v1-jest-example-modules-{{ checksum "packages/jest-fixture-injection-example/yarn.lock" }}-
       - restore_cache:
-          key: v1-jest-example-cra-modules-{{ checksum "packages/jest-fixture-injection-example-cra/yarn.lock" }}-
+          key: v1-jest-example-react-modules-{{ checksum "packages/jest-fixture-injection-example-react/yarn.lock" }}-
       - restore_cache:
           key: v1-jest-tests-modules-{{ checksum "packages/jest-fixture-injection-tests/yarn.lock" }}-
       - run:
@@ -59,13 +59,16 @@ jobs:
           paths:
             - packages/jest-fixture-injection-example/node_modules
       - save_cache:
-          key: v1-jest-example-cra-modules-{{ checksum "packages/jest-fixture-injection-example-cra/yarn.lock" }}-
+          key: v1-jest-example-react-modules-{{ checksum "packages/jest-fixture-injection-example-react/yarn.lock" }}-
           paths:
-            - packages/jest-fixture-injection-example-cra/node_modules
+            - packages/jest-fixture-injection-example-react/node_modules
       - save_cache:
           key: v1-jest-tests-modules-{{ checksum "packages/jest-fixture-injection-tests/yarn.lock" }}-
           paths:
             - packages/jest-fixture-injection-tests/node_modules
+      - run:
+          name: Test
+          command: yarn build
       - run:
           name: Test
           command: yarn test-ci
@@ -82,6 +85,6 @@ jobs:
       - store_artifacts:
           path: packages/jest-fixture-injection-example/reports/jest
       - store_test_results:
-          path: packages/jest-fixture-injection-example-cra/reports/jest
+          path: packages/jest-fixture-injection-example-react/reports/jest
       - store_artifacts:
-          path: packages/jest-fixture-injection-example-cra/reports/jest
+          path: packages/jest-fixture-injection-example-react/reports/jest

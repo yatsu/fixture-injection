@@ -8,8 +8,7 @@
     "test-ci": "scripty",
     "test-sync": "scripty",
     "test-async": "scripty",
-    "test-reuse": "scripty",
-    "pre-commit": "lint-staged && yarn test"
+    "test-reuse": "scripty"
   },
   "private": true,
   "scripty": {
@@ -31,7 +30,7 @@
     "jasmine": "3.4.0",
     "jasmine-console-reporter": "^3.1.0",
     "jasmine-fixture-injection": "^0.1.5",
-    "lint-staged": "^9.2.0",
+    "lint-staged": "^9.2.1",
     "prettier-eslint-cli": "^5.0.0",
     "scripty": "^1.9.1"
   }

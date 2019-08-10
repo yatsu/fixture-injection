@@ -1,6 +1,6 @@
 module.exports = {
-  fixtures: '<rootDir>/__fixtures__',
-  globalFixtures: '<rootDir>/__global_fixtures__',
+  fixtures: '<rootDir>/early-teardown/__fixtures__.ts',
+  globalFixtures: '<rootDir>/early-teardown/__global_fixtures__.ts',
   ipc: {
     appspace: 'early-teardown'
   }

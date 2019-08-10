@@ -16,8 +16,12 @@
     "test"
   ],
   "scripts": {
-    "lint": "eslint packages/*/*.js",
-    "format": "prettier-eslint --write 'packages/*/*.js'",
+    "build": "scripty",
+    "build:core": "scripty",
+    "build:jest": "scripty",
+    "clean": "scripty",
+    "clean:core": "scripty",
+    "clean:jest": "scripty",
     "changelog": "scripty",
     "add:core": "scripty",
     "add:jasmine": "scripty",
@@ -26,13 +30,14 @@
     "add:jest": "scripty",
     "add:jest-tests": "scripty",
     "add:jest-example": "scripty",
-    "add:jest-example-cra": "scripty",
+    "add:jest-example-react": "scripty",
     "test": "scripty",
-    "test-ci": "scripty"
+    "test-ci": "scripty",
+    "pre-commit": "scripty"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lerna run --concurrency 1 --stream pre-commit"
+      "pre-commit": "yarn pre-commit"
     }
   },
   "scripty": {
@@ -41,13 +46,21 @@
   "engines": {
     "node": ">=10"
   },
+  "importSort": {
+    ".js, .jsx, .mjs, .ts, .tsx": {
+      "parser": "babylon",
+      "style": "module"
+    }
+  },
   "devDependencies": {
     "eslint": "^5.16.0",
-    "husky": "^1.3.1",
-    "lerna": "^3.15.0",
+    "husky": "^3.0.3",
+    "import-sort-cli": "^6.0.0",
+    "import-sort-style-module": "^6.0.0",
+    "lerna": "^3.16.4",
     "lerna-changelog": "^0.8.2",
     "lerna-update-wizard": "^0.16.0",
-    "prettier-eslint-cli": "^5.0.0",
+    "prettier": "^1.18.2",
     "scripty": "^1.9.1"
   }
 }

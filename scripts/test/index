@@ -1,0 +1,3 @@
+#!/bin/bash -eu
+
+CI="true" lerna run test --parallel --bail

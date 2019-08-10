@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "target": "es2017",
+    "module": "commonjs",
+    "lib": ["dom", "es2017"],
+    "declaration": true,
+    "declarationMap": true,
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "resolveJsonModule": true,
+    "inlineSourceMap": true,
+    "typeRoots": ["node_modules/@types"],
+    "plugins": [{ "name": "typescript-tslint-plugin" }],
+    "types": ["node", "jest"],
+    "outDir": "dist",
+    "declarationDir": "dist",
+    "rootDir": "ts"
+  },
+  "include": ["ts/*.ts"],
+  "exclude": ["node_modules"]
+}

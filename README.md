@@ -11,29 +11,25 @@ fixture-injection is a test helper tool for [Jest](https://jestjs.io/) and [Jasm
 * Fixtures can have asynchronous setup and teardown in it.
 * Global fixtures are instantiated in the global scope and shared by multiple test suites (independent workers of Jest) and used as a singleton, whereas local fixtures are instantiated in each local scope.
 
-## Usage (Jest)
+## Usage (Jest/TypeScript)
 
-Define fixtures in `__fixtures__.js`:
+Define fixtures in `__fixtures__.ts`:
 
-```js
+```ts
+import { Provide } from 'jest-fixture-injection'
+
 // Example 1) Simple value
-const foo = 'FOO'
+export const foo = 'FOO'
 
 // Example 2) Fixture function to provide a value which requires another fixture `foo`
-const bar = (foo) => `BAR(${foo})`
+export const bar = (foo: string) => `BAR(${foo})`
 
 // Example 3) Asynchronous fixture function to provide a value
-const baz = async (provide, bar) => { // requires another fixture `bar`
+export const baz = async (provide: Provide, bar: string) => { // requires another fixture `bar`
   // Write setup code here
   await provide(`BAZ(${bar}`) // provide the value
   // `await` above waits until the context (test case or suite) finishes
   // Write teardown code here
-}
-
-module.exports = {
-  foo,
-  bar,
-  baz
 }
 ```
 
@@ -41,13 +37,13 @@ Use fixtures in test functions or `beforeAll()`:
 
 ```js
 describe('My test suite', () => {
-  let fixtures = {}
+  let fixtures: { foo?: string } = {}
 
-  beforeAll((foo) => { // Inject fixtures to *a suite* by beforeAll()
+  beforeAll((foo: string) => { // Inject fixtures to *a suite* by beforeAll()
     fixtures.foo = foo
   })
 
-  test('with fixtures', (bar, baz) => { // Inject fixtures to *a test case*
+  test('with fixtures', (bar: string, baz: string) => { // Inject fixtures to *a test case*
     // bar and baz are initialized just before this block
     const { foo } = fixtures // Get fixtures from the suite
 

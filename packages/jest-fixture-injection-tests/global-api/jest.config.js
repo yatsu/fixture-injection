@@ -3,13 +3,13 @@ module.exports = {
   projects: [
     {
       displayName: 'jsdom',
-      testEnvironment: 'jest-fixture-injection/jsdom',
-      testMatch: ['<rootDir>/jsdom/**/*.test.js']
+      testEnvironment: 'jest-fixture-injection/dist/jsdom',
+      testMatch: ['<rootDir>/global-api/jsdom/*.test.ts']
     },
     {
       displayName: 'node',
-      testEnvironment: 'jest-fixture-injection/node',
-      testMatch: ['<rootDir>/node/**/*.test.js']
+      testEnvironment: 'jest-fixture-injection/dist/node',
+      testMatch: ['<rootDir>/global-api/node/*.test.ts']
     }
   ]
 }

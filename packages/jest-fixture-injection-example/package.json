@@ -7,8 +7,7 @@
   "scripts": {
     "start": "scripty",
     "test": "scripty",
-    "test-ci": "scripty",
-    "pre-commit": "lint-staged && yarn test"
+    "test-ci": "scripty"
   },
   "private": true,
   "scripty": {
@@ -17,20 +16,31 @@
   "engines": {
     "node": ">=10"
   },
-  "dependencies": {
-    "express": "^4.17.1"
+  "importSort": {
+    ".ts": {
+      "parse": "babylon",
+      "style": "module"
+    }
   },
   "devDependencies": {
-    "eslint": "^5.16.0",
-    "eslint-config-airbnb-base": "^13.2.0",
-    "eslint-plugin-import": "^2.18.0",
-    "eslint-plugin-jest": "^22.7.2",
-    "eslint-plugin-node": "^8.0.1",
+    "@babel/preset-env": "^7.5.5",
+    "@babel/preset-typescript": "^7.3.3",
+    "@types/debug": "^4.1.5",
+    "@types/node": "^12.7.1",
+    "debug": "^4.1.1",
+    "import-sort-cli": "^6.0.0",
+    "import-sort-style-module": "^6.0.0",
     "jest": "24.8.0",
     "jest-fixture-injection": "^0.1.5",
-    "jest-junit": "^6.4.0",
-    "lint-staged": "^9.2.0",
-    "prettier-eslint-cli": "^5.0.0",
-    "scripty": "^1.9.1"
+    "jest-junit": "^7.0.0",
+    "lint-staged": "^9.2.1",
+    "prettier": "^1.18.2",
+    "scripty": "^1.9.1",
+    "tslint": "^5.18.0",
+    "tslint-config-prettier": "^1.18.0",
+    "tslint-config-standard": "^8.0.1",
+    "tslint-plugin-prettier": "^2.0.1",
+    "typescript": "^3.5.3",
+    "typescript-tslint-plugin": "^0.5.4"
   }
 }
