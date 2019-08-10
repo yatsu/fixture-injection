@@ -15,7 +15,7 @@ fixture-injection is a test helper tool for [Jest](https://jestjs.io/) and [Jasm
 
 Define fixtures in `__fixtures__.ts`:
 
-```js
+```ts
 import { Provide } from 'jest-fixture-injection'
 
 // Example 1) Simple value
@@ -37,13 +37,13 @@ Use fixtures in test functions or `beforeAll()`:
 
 ```js
 describe('My test suite', () => {
-  let fixtures = {}
+  let fixtures: { foo?: string } = {}
 
-  beforeAll((foo) => { // Inject fixtures to *a suite* by beforeAll()
+  beforeAll((foo: string) => { // Inject fixtures to *a suite* by beforeAll()
     fixtures.foo = foo
   })
 
-  test('with fixtures', (bar, baz) => { // Inject fixtures to *a test case*
+  test('with fixtures', (bar: string, baz: string) => { // Inject fixtures to *a test case*
     // bar and baz are initialized just before this block
     const { foo } = fixtures // Get fixtures from the suite
 
