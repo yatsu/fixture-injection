@@ -7,8 +7,7 @@
   "scripts": {
     "start": "scripty",
     "test": "scripty",
-    "test-ci": "scripty",
-    "pre-commit": "lint-staged && yarn test"
+    "test-ci": "scripty"
   },
   "private": true,
   "scripty": {

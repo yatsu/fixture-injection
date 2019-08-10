@@ -8,8 +8,7 @@
     "test-ci": "scripty",
     "test-sync": "scripty",
     "test-async": "scripty",
-    "test-reuse": "scripty",
-    "pre-commit": "scripty"
+    "test-reuse": "scripty"
   },
   "private": true,
   "scripty": {

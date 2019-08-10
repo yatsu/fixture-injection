@@ -18,7 +18,8 @@
     "test"
   ],
   "scripts": {
-    "pre-commit": "lint-staged"
+    "test": "true",
+    "test-ci": "true"
   },
   "engines": {
     "node": ">=10"

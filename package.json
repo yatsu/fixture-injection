@@ -18,9 +18,10 @@
   "scripts": {
     "build": "scripty",
     "build:core": "scripty",
-    "build:jasmine": "scripty",
     "build:jest": "scripty",
-    "lint": "scripty",
+    "clean": "scripty",
+    "clean:core": "scripty",
+    "clean:jest": "scripty",
     "changelog": "scripty",
     "add:core": "scripty",
     "add:jasmine": "scripty",
@@ -31,11 +32,12 @@
     "add:jest-example": "scripty",
     "add:jest-example-react": "scripty",
     "test": "scripty",
-    "test-ci": "scripty"
+    "test-ci": "scripty",
+    "pre-commit": "scripty"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lerna run --concurrency 1 --stream pre-commit"
+      "pre-commit": "yarn pre-commit"
     }
   },
   "scripty": {

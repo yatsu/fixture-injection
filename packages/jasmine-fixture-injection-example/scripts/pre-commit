@@ -1,4 +1,0 @@
-#!/bin/bash -eu
-
-yarn lint-staged
-yarn test-ci

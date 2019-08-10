@@ -11,8 +11,7 @@
     "test-reuse": "scripty",
     "test-global-api": "scripty",
     "test-early-teardown": "scripty",
-    "test-e2e": "scripty",
-    "pre-commit": "scripty"
+    "test-e2e": "scripty"
   },
   "private": true,
   "scripty": {

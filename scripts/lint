@@ -1,3 +1,0 @@
-#!/bin/bash
-
-tslint  --project tsconfig.json -t codeFrame 'packages/*/*.ts'

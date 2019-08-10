@@ -24,6 +24,7 @@
   ],
   "scripts": {
     "build": "scripty",
+    "clean": "scripty",
     "test": "scripty",
     "test-ci": "scripty",
     "pre-commit": "scripty"
