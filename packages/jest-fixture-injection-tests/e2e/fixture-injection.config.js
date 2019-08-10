@@ -1,7 +1,7 @@
 module.exports = {
-  fixtures: '<rootDir>/__fixtures__',
-  globalFixtures: '<rootDir>/__global_fixtures__',
+  fixtures: '<rootDir>/e2e/__fixtures__.ts',
+  globalFixtures: '<rootDir>/e2e/__global_fixtures__.ts',
   ipc: {
-    appspace: 'e2e'
+    appspace: 'e2e-logging'
   }
 }

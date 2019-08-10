@@ -16,10 +16,17 @@
     "javascript",
     "test"
   ],
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "ts"
+  ],
   "scripts": {
+    "build": "scripty",
     "test": "scripty",
     "test-ci": "scripty",
-    "pre-commit": "lint-staged && yarn test"
+    "pre-commit": "scripty"
   },
   "scripty": {
     "silent": true
@@ -27,22 +34,40 @@
   "engines": {
     "node": ">=10"
   },
+  "importSort": {
+    ".ts": {
+      "parse": "babylon",
+      "style": "module"
+    }
+  },
   "dependencies": {
     "es-arguments": "^1.0.2",
     "graph-data-structure": "^1.8.0",
-    "microtime": "^2.1.8",
+    "microtime": "^3.0.0",
     "node-ipc": "^9.1.1"
   },
   "devDependencies": {
-    "eslint": "^5.16.0",
-    "eslint-config-airbnb-base": "^13.2.0",
-    "eslint-plugin-import": "^2.18.0",
-    "eslint-plugin-jest": "^22.7.2",
-    "eslint-plugin-node": "^8.0.1",
-    "jest": "24.8.0",
-    "jest-junit": "^5.2.0",
+    "@babel/preset-env": "^7.5.5",
+    "@babel/preset-typescript": "^7.3.3",
+    "@types/debug": "^4.1.4",
+    "@types/jest": "^24.0.16",
+    "@types/microtime": "^2.1.0",
+    "@types/node": "^12.6.8",
+    "@types/node-ipc": "^9.1.1",
+    "debug": "^4.1.1",
+    "import-sort-cli": "^6.0.0",
+    "import-sort-style-module": "^6.0.0",
+    "jest": "^24.8.0",
+    "jest-junit": "^7.0.0",
     "lint-staged": "^9.2.0",
-    "prettier-eslint-cli": "^5.0.0",
-    "scripty": "^1.9.1"
+    "prettier": "^1.18.2",
+    "rimraf": "^2.6.3",
+    "scripty": "^1.9.1",
+    "tslint": "^5.18.0",
+    "tslint-config-prettier": "^1.18.0",
+    "tslint-config-standard": "^8.0.1",
+    "tslint-plugin-prettier": "^2.0.1",
+    "typescript": "^3.5.3",
+    "typescript-tslint-plugin": "^0.5.4"
   }
 }

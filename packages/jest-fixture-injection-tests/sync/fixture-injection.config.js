@@ -1,6 +1,6 @@
 module.exports = {
-  fixtures: '<rootDir>/__fixtures__',
-  globalFixtures: '<rootDir>/__global_fixtures__',
+  fixtures: '<rootDir>/sync/__fixtures__.ts',
+  globalFixtures: '<rootDir>/sync/__global_fixtures__.ts',
   ipc: {
     appspace: 'sync'
   }

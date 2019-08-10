@@ -1,0 +1,4 @@
+#!/bin/bash -eu
+
+lint-staged
+yarn test-ci

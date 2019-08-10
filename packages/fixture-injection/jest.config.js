@@ -1,3 +1,6 @@
 module.exports = {
-  testEnvironment: 'node'
+  testEnvironment: 'node',
+  testRegex: '/tests/.*\\.test\\.ts$',
+  collectCoverage: false,
+  verbose: true
 }

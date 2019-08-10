@@ -1,0 +1,47 @@
+{
+  "name": "jest-fixture-injection-example-react",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jest-fixture-injection/dist/jsdom --globalSetup=jest-fixture-injection/dist/setup --globalTeardown=jest-fixture-injection/dist/teardown",
+    "test-ci": "CI=true react-scripts test --env=jest-fixture-injection/dist/jsdom --globalSetup=jest-fixture-injection/dist/setup --globalTeardown=jest-fixture-injection/dist/teardown",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "dependencies": {
+    "@types/node": "12.6.9",
+    "@types/react": "16.8.24",
+    "@types/react-dom": "16.8.5",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-scripts": "3.0.1",
+    "typescript": "3.5.3"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.5.5",
+    "@babel/preset-typescript": "^7.3.3",
+    "debug": "^4.1.1",
+    "jest-fixture-injection": "^0.1.5",
+    "tslint": "^5.18.0",
+    "tslint-config-prettier": "^1.18.0",
+    "tslint-config-standard": "^8.0.1",
+    "tslint-plugin-prettier": "^2.0.1",
+    "typescript-tslint-plugin": "^0.5.4"
+  }
+}
