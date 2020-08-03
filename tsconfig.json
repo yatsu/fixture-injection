@@ -20,6 +20,18 @@
     "inlineSourceMap": true,
     "typeRoots": ["node_modules/@types"],
     "types": ["node"],
-    "plugins": [{ "name": "typescript-tslint-plugin" }]
+    "plugins": [
+      {
+        "name": "typescript-eslint-language-service",
+        "watchDirs": [
+          "packages/fixture-injection",
+          "packages/jest-fixture-injection",
+          "packages/jest-fixture-injection-tests",
+          "packages/jest-fixture-injection-example",
+          "packages/jest-fixture-injection-example-react",
+          "."
+        ]
+      }
+    ]
   }
 }

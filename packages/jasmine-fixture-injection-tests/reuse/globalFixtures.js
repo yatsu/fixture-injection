@@ -1,4 +1,4 @@
-const nanoid = require('nanoid')
+const { nanoid } = require('nanoid')
 const { sleep } = require('./helper')
 
 const a = { name: 'a', id: nanoid(10) }

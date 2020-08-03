@@ -17,8 +17,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "preserve",
-    "types": ["node", "react", "react-dom", "jest-fixture-injection"]
+    "jsx": "react"
   },
   "include": [
     "src"

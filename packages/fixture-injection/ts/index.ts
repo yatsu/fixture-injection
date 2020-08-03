@@ -3,4 +3,4 @@ export * from './injector'
 export * from './server'
 export * from './logger'
 
-export const nonuse = () => undefined
+export const nonuse = (..._: any[]) => undefined

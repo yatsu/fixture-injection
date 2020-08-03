@@ -1,5 +1,5 @@
 import { Provide } from 'jest-fixture-injection'
-import nanoid from 'nanoid'
+import { nanoid } from 'nanoid'
 
 import { sleep } from './helper'
 

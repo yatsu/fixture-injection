@@ -373,7 +373,7 @@ export class FixtureInjector {
   }
 
   private fixtureLog(operation: Operation, event: LogEvent, scope: Scope, name: string): void {
-    this.logger!.fixtureLog(operation, event, scope, name)
+    this.logger.fixtureLog(operation, event, scope, name)
   }
 
   private functionLog(
@@ -383,7 +383,7 @@ export class FixtureInjector {
     fixtureNames: string[],
     event: LogEvent
   ): void {
-    this.logger!.functionLog(label, desc, ancestors, fixtureNames, event)
+    this.logger.functionLog(label, desc, ancestors, fixtureNames, event)
   }
 
   private testLog(

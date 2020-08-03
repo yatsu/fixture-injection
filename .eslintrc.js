@@ -1,15 +1,36 @@
 module.exports = {
-  env: {
-    node: true
+  extends: [
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:@typescript-eslint/recommended-require-type-checking',
+    'plugin:prettier/recommended',
+    'prettier/@typescript-eslint',
+    'prettier/standard'
+  ]
+  plugins: [
+    '@typescript-eslint'
+  ],
+  parser: '@typescript-eslint/parser',
+  parserOptions: {
+    project: './tsconfig.json',
+    sourceType: 'module'
   },
-  extends: 'eslint:recommended',
+  env: {
+    node: true,
+    jest: true,
+    es2017: true
+  },
   globals: {
     Atomics: 'readonly',
     SharedArrayBuffer: 'readonly'
   },
-  parserOptions: {
-    ecmaVersion: 2018,
-    sourceType: 'module'
+  rules: {
+    'no-extra-semi': 'error',
+    quotes: ['error', 'single']
   },
-  rules: {}
+  ignorePatterns: [
+    '**/node_modules',
+    '**/.*',
+    '*.config.js',
+  ]
 }
