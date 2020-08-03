@@ -42,14 +42,17 @@
     }
   },
   "peerDependencies": {
-    "jest": ">=24 <25"
+    "jest": ">=26 <27"
   },
   "dependencies": {
+    "@babel/core": "^7.11.0",
+    "babel-jest": "^26.2.2",
     "fixture-injection": "^0.2.0",
     "jest-environment-jsdom": "^24.8.0",
     "jest-environment-node": "^24.8.0",
     "node-ipc": "^9.1.1",
-    "pirates": "^4.0.1"
+    "pirates": "^4.0.1",
+    "regenerator-runtime": "^0.13.7"
   },
   "devDependencies": {
     "@types/builtin-modules": "^3.1.1",
@@ -73,5 +76,6 @@
     "tslint-plugin-prettier": "^2.0.1",
     "typescript": "^3.5.3",
     "typescript-tslint-plugin": "^0.5.4"
-  }
+  },
+  "gitHead": "50bed6cd64449d0047f2461560511a53a4236d38"
 }

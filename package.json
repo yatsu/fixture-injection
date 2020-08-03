@@ -53,14 +53,26 @@
     }
   },
   "devDependencies": {
-    "eslint": "^5.16.0",
-    "husky": "^3.0.3",
+    "@typescript-eslint/eslint-plugin": "^3.7.1",
+    "@typescript-eslint/parser": "^3.7.1",
+    "@typescript-eslint/typescript-estree": "^3.7.1",
+    "eslint": "^7.6.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-config-standard-with-typescript": "^18.0.2",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
+    "husky": "^4.2.5",
     "import-sort-cli": "^6.0.0",
     "import-sort-style-module": "^6.0.0",
-    "lerna": "^3.16.4",
-    "lerna-changelog": "^0.8.2",
-    "lerna-update-wizard": "^0.16.0",
-    "prettier": "^1.18.2",
-    "scripty": "^1.9.1"
+    "lerna": "^3.22.1",
+    "lerna-changelog": "^1.0.1",
+    "lerna-update-wizard": "^0.17.8",
+    "prettier": "^2.0.5",
+    "scripty": "^2.0.0",
+    "typescript": "^3.9.7",
+    "typescript-eslint-language-service": "^3.0.0"
   }
 }
