@@ -1,7 +1,7 @@
 {
   "name": "jest-fixture-injection-example",
   "description": "Example: Node + Express + Jest + jest-fixture-injection",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "license": "MIT",
   "main": "index.js",
   "scripts": {
@@ -41,7 +41,7 @@
     "import-sort-cli": "^6.0.0",
     "import-sort-style-module": "^6.0.0",
     "jest": "26.2.2",
-    "jest-fixture-injection": "^0.2.0",
+    "jest-fixture-injection": "^0.3.0",
     "jest-junit": "^11.1.0",
     "lint-staged": "^10.2.11",
     "prettier": "^2.0.5",

@@ -1,7 +1,7 @@
 {
   "name": "jasmine-fixture-injection-tests",
   "description": "jasmine-fixture-injection tests",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "license": "MIT",
   "scripts": {
     "test": "scripty",
@@ -29,7 +29,7 @@
     "eslint-plugin-node": "^11.1.0",
     "jasmine": "3.6.1",
     "jasmine-console-reporter": "^3.1.0",
-    "jasmine-fixture-injection": "^0.2.0",
+    "jasmine-fixture-injection": "^0.3.0",
     "lint-staged": "^10.2.11",
     "prettier-eslint-cli": "^5.0.0",
     "scripty": "^2.0.0"

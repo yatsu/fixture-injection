@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## v0.3.0 (2020-08-04)
+
+#### :boom: Breaking Change
+* `jest-fixture-injection`
+  * [#29](https://github.com/yatsu/fixture-injection/pull/29) Now jest-fixture-injection requires
+    Jest >= 26 ([@yatsu](https://github.com/yatsu))
+
+#### :pushpin: Dependency
+* `fixture-injection`, `jasmine-fixture-injection-example`, `jasmine-fixture-injection-tests`, `jasmine-fixture-injection`, `jest-fixture-injection-example-react`, `jest-fixture-injection-example`, `jest-fixture-injection`
+  * [#30](https://github.com/yatsu/fixture-injection/pull/30) Chore Update dependencies and fix audit warnings ([@yatsu](https://github.com/yatsu))
+* `fixture-injection`, `jasmine-fixture-injection-example`, `jasmine-fixture-injection-tests`, `jasmine-fixture-injection`, `jest-fixture-injection-example-react`, `jest-fixture-injection-example`, `jest-fixture-injection-tests`, `jest-fixture-injection`
+  * [#29](https://github.com/yatsu/fixture-injection/pull/29) feat(deps): Update Jest (v26) and other libraries ([@yatsu](https://github.com/yatsu))
+
+#### Committers: 1
+- Masaki Yatsu ([@yatsu](https://github.com/yatsu))
+
 ## v0.2.0 (2019-08-10)
 
 #### :rocket: Enhancement

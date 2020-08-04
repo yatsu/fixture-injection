@@ -1,7 +1,7 @@
 {
   "name": "jasmine-fixture-injection",
   "description": "fixture-injection helper for Jasmine",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "license": "MIT",
   "homepage": "https://github.com/yatsu/fixture-injection/packages/jasmine-fixture-injection",
   "repository": {
@@ -28,7 +28,7 @@
     "jasmine": ">=3 <4"
   },
   "dependencies": {
-    "fixture-injection": "^0.2.0"
+    "fixture-injection": "^0.3.0"
   },
   "devDependencies": {
     "eslint": "^7.6.0",
