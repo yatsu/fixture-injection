@@ -52,6 +52,26 @@
       "style": "module"
     }
   },
+  "changelog": {
+    "labels": {
+      "Type: Feature": ":star: Features",
+      "Type: Bug": ":bug: Bug Fixes",
+      "Type: Security": ":lock: Security Fixes",
+      "Type: Performance": ":chart_with_upwards_trend: Performance Fixes",
+      "Type: Improvement": ":zap: Improvement Features",
+      "Type: Breaking": ":boom: Breaking Change",
+      "Type: Deprecated": ":warning: Deprecated Features",
+      "Type: I18n": ":globe_with_meridians: Internationalization",
+      "Type: A11y": ":wheelchair: Accessibility",
+      "Type: Documentation": ":pencil: Documentation",
+      "Type: Refactoring": ":shirt: Refactoring",
+      "Type: Testing": ":white_check_mark: Testing",
+      "Type: Maintenance": ":wrench: Maintenance",
+      "Type: Example": ":lollipop: Example or demo",
+      "Type: Dependency": ":pushpin: Dependency",
+      "Type: Build": ":package: Build"
+    }
+  },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^3.7.1",
     "@typescript-eslint/parser": "^3.7.1",
