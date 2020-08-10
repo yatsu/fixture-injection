@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## v0.3.1 (2020-08-10)
+
+#### :bug: Bug Fixes
+* `jest-fixture-injection`
+  * [#31](https://github.com/yatsu/fixture-injection/pull/31) fix: Work with Jest 26 ([@yatsu](https://github.com/yatsu))
+
+#### :pushpin: Dependency
+* `fixture-injection`, `jest-fixture-injection-example-react`, `jest-fixture-injection`
+  * [#31](https://github.com/yatsu/fixture-injection/pull/31) Update dependencies ([@yatsu](https://github.com/yatsu))
+
+#### Committers: 1
+- Masaki Yatsu ([@yatsu](https://github.com/yatsu))
+
 ## v0.3.0 (2020-08-04)
 
 #### :boom: Breaking Change
