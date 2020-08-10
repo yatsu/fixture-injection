@@ -51,7 +51,7 @@ export class FixtureServer {
         ipc.server.on('dependencies', (_, socket) => {
           debug('emitting dependencies')
           ipc.server.emit(socket, 'dependencies', this.dependencyMap)
-          debug('emitted dependencies')
+          debug('emitted dependencies - dependencyMap: %s', this.dependencyMap)
         })
 
         ipc.server.on('fixture', ({ name }, socket) => {

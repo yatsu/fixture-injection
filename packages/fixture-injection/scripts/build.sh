@@ -2,4 +2,4 @@
 
 rimraf dist
 
-tsc -d
+rollup -c rollup.config.js

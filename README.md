@@ -58,10 +58,10 @@ describe('My test suite', () => {
 })
 ```
 
-Set environment variable `FI_LOGGING=1` to print the log.
+Set environment variable `FI_LOGGING=true` to print the log.
 
 ```sh
-FI_LOGGING=1 yarn tests
+FI_LOGGING=true yarn tests
 ```
 
 ## Packages

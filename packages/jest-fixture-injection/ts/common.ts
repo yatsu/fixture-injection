@@ -1,34 +1,35 @@
 import fs from 'fs'
 import path from 'path'
 
+import { describe, expect, fdescribe, fit, it, jest, test, xdescribe, xit, xtest } from '@jest/globals'
 import { ScriptTransformer } from '@jest/transform'
 import { Config, Global } from '@jest/types'
 import createDebug from 'debug'
-import { Fixture, Lifecycle } from 'fixture-injection/ts/types'
+import { Fixture, Lifecycle } from 'fixture-injection'
 import { addHook } from 'pirates'
 
 const debug = createDebug('jest-fixture-injection:common')
 
-type Win = Pick<jest.Environment, 'global'>
+type Overwrite<T, U> = Pick<T, Exclude<keyof T, keyof U>> & U
 
-export type FIGlobal = Win &
-  Global.Global & {
-    expect: jest.Expect | undefined
-    beforeAll: Lifecycle | undefined
-    beforeEach: Lifecycle | undefined
-    afterAll: Lifecycle | undefined
-    afterEach: Lifecycle | undefined
-    describe: jest.Describe | undefined
-    fdescribe: jest.Describe | undefined
-    xdescribe: jest.Describe | undefined
-    it: jest.It | undefined
-    fit: jest.It | undefined
-    xit: jest.It | undefined
-    test: jest.It | undefined
-    xtest: jest.It | undefined
-    fixture: Fixture | undefined
-    nonuse: (...args: any[]) => void
-  }
+export type FIGlobal = Overwrite<Global.Global, {
+  jest: typeof jest
+  expect: typeof expect
+  beforeAll: Lifecycle
+  beforeEach: Lifecycle
+  afterAll: Lifecycle
+  afterEach: Lifecycle
+  describe: typeof describe
+  fdescribe: typeof fdescribe
+  xdescribe: typeof xdescribe
+  it: typeof it
+  fit: typeof fit
+  xit: typeof xit
+  test: typeof test
+  xtest: typeof xtest
+  fixture: Fixture | undefined
+  nonuse: (...args: any[]) => void
+}>
 
 function resolvePath(rootDir: string, fixturesPath: string): string {
   return path.isAbsolute(fixturesPath) ? fixturesPath : path.resolve(rootDir, fixturesPath)
@@ -81,7 +82,7 @@ async function requireAndTranspileModule<ModuleType = unknown>(
     {
       exts: [path.extname(moduleName)],
       ignoreNodeModules: false,
-      matcher: filename => {
+      matcher: (filename: string) => {
         if (transforming) {
           // Don't transform any dependency required by the transformer itself
           return false
