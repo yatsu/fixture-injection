@@ -1,32 +1,34 @@
 import process from 'process'
 import vm from 'vm'
 
-import { Config } from '@jest/types'
+import { Config, Global } from '@jest/types'
 import createDebug from 'debug'
-import { Describe, Fixture, FixtureInjector, nonuse } from 'fixture-injection'
+import { Fixture, FixtureInjector, nonuse } from 'fixture-injection'
 import NodeEnvironment from 'jest-environment-node'
 
 import { FIGlobal, loadFixtures } from './common'
 import { readConfig } from './config'
+import { defineTest, defineTestBase } from './env'
 
-const debug = createDebug('jest-fixture-injection:jsdom:debug')
+const debug = createDebug('jest-fixture-injection:node')
+
+debug('loading node environment')
 
 export default class FINodeEnvironment extends NodeEnvironment {
   config: Config.ProjectConfig
   ancestors: string[]
   injector: FixtureInjector | undefined
-  fixtureContext: vm.Context | undefined
 
   constructor(config: Config.ProjectConfig) {
     super(config)
     debug('config: %o', config)
 
     this.config = config
-    this.fixtureContext = undefined
     this.ancestors = []
   }
 
   async setup(): Promise<void> {
+    debug('setup')
     await super.setup()
 
     try {
@@ -48,14 +50,24 @@ export default class FINodeEnvironment extends NodeEnvironment {
       console.error(err)
       process.exit(1)
     }
+
+    // Set `getVmContext` undefined to let Jest call `runScript()`
+    // (See: jest-runtime/src/index.ts)
+    // @ts-ignore
+    this.getVmContext = undefined
+
+    debug('setup done')
   }
 
   async teardown(): Promise<void> {
+    debug('teardown')
     await super.teardown()
     await this.injector!.teardown()
+    debug('teardown done')
   }
 
-  runScript(script: vm.Script): any {
+  // TS infers the return type to be `any`, since that's what `runInContext` returns.
+  runScript<T = unknown>(script: vm.Script): T | null {
     const global = (this.global as unknown) as FIGlobal
 
     if (!global.expect) {
@@ -68,7 +80,7 @@ export default class FINodeEnvironment extends NodeEnvironment {
     // See also: jest-jasmine2/src/index.js
     //           jest-circus/src/index.js
 
-    if (!this.fixtureContext) {
+    if (!global.fixture) {
       const {
         describe,
         fdescribe,
@@ -88,39 +100,45 @@ export default class FINodeEnvironment extends NodeEnvironment {
         this.injector!.defineFixture(name, fn, beforeAll!, afterAll!)
       context.nonuse = nonuse
 
-      const defineDesc: (origDesc: Describe) => Describe = (origDesc: Describe) => (
-        desc: string,
-        fn: () => void
-      ) => {
-        this.ancestors.push(desc)
+      const defineDesc = <T extends Global.DescribeBase>(origDesc: T): T => {
+        const descFn = (desc: string, fn: () => void) => {
+          this.ancestors.push(desc)
 
-        context.beforeAll = (fn: () => void) =>
-          this.injector!.beforeAll(fn, beforeAll!, afterAll!, this.ancestors.slice())
+          context.beforeAll = (fn: () => void) =>
+            this.injector!.beforeAll(fn, beforeAll!, afterAll!, this.ancestors.slice())
 
-        const defineTest = (fn: jest.It) => this.injector!.injectableFn(fn, this.ancestors.slice())
+          const defTestBase = defineTestBase(this.injector!, this.ancestors)
+          const defTest = defineTest(this.injector!, this.ancestors)
 
-        context.test = defineTest(test)
-        context.test.only = defineTest(test.only)
-        context.test.skip = defineTest(test.skip)
-        context.it = defineTest(it)
-        context.it.only = defineTest(it.only)
-        context.it.skip = defineTest(it.skip)
-        context.xtest = defineTest(xtest)
-        context.fit = defineTest(fit)
-        context.xit = defineTest(xit)
+          context.it = defTest(it)
+          context.fit = defTestBase(fit)
+          context.xit = defTestBase(xit)
+          context.test = defTest(test)
+          context.xtest = defTestBase(xtest)
 
-        origDesc(desc, fn)
+          origDesc(desc, fn)
 
-        this.ancestors.pop()
+          this.ancestors.pop()
+        }
+        for (const key in origDesc) {
+          if (origDesc.hasOwnProperty(key)) {
+            // @ts-ignore
+            descFn[key] = origDesc[key]
+          }
+        }
+        return descFn as T
       }
 
       context.describe = defineDesc(describe)
       context.fdescribe = defineDesc(fdescribe)
       context.xdescribe = defineDesc(xdescribe)
 
-      this.fixtureContext = context
+      this.context = context
     }
 
-    return script.runInContext(this.fixtureContext)
+    if (this.context) {
+      return script.runInContext(this.context)
+    }
+    return null
   }
 }

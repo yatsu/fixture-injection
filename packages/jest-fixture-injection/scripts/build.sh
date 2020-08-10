@@ -2,7 +2,7 @@
 
 rimraf dist
 
-tsc -d
+rollup -c rollup.config.js
 
 grep -v '^declare var' node_modules/@types/jest/index.d.ts > dist/jest.d.ts
 

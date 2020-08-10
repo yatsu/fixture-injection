@@ -1,15 +1,18 @@
 import process from 'process'
 import vm from 'vm'
 
-import { Config } from '@jest/types'
+import { Config, Global } from '@jest/types'
 import createDebug from 'debug'
-import { Describe, Fixture, FixtureInjector, It, nonuse } from 'fixture-injection'
+import { Fixture, FixtureInjector, nonuse } from 'fixture-injection'
 import JSDOMEnvironment from 'jest-environment-jsdom'
 
 import { FIGlobal, loadFixtures } from './common'
 import { readConfig } from './config'
+import { defineTest, defineTestBase } from './env'
 
 const debug = createDebug('jest-fixture-injection:jsdom')
+
+debug('loading jsdom environment')
 
 export default class FIJSDOMEnvironment extends JSDOMEnvironment {
   config: Config.ProjectConfig
@@ -25,6 +28,7 @@ export default class FIJSDOMEnvironment extends JSDOMEnvironment {
   }
 
   async setup(): Promise<void> {
+    debug('setup')
     await super.setup()
 
     try {
@@ -47,6 +51,11 @@ export default class FIJSDOMEnvironment extends JSDOMEnvironment {
       console.error(err)
       process.exit(1)
     }
+
+    // Set `getVmContext` undefined to let Jest call `runScript()`
+    // (See: jest-runtime/src/index.ts)
+    // @ts-ignore
+    this.getVmContext = undefined
   }
 
   async teardown(): Promise<void> {
@@ -55,7 +64,8 @@ export default class FIJSDOMEnvironment extends JSDOMEnvironment {
     await this.injector!.teardown()
   }
 
-  runScript(script: vm.Script): any {
+  // TS infers the return type to be `any`, since that's what `runInContext` returns.
+  runScript<T = unknown>(script: vm.Script): T | null {
     const global = (this.global as unknown) as FIGlobal
 
     if (!this.dom || !global.expect) {
@@ -86,41 +96,41 @@ export default class FIJSDOMEnvironment extends JSDOMEnvironment {
         this.injector!.defineFixture(name, fn, beforeAll!, afterAll!)
       global.nonuse = nonuse
 
-      const defineDesc: (origDesc: Describe) => Describe = (origDesc: Describe) => (
-        desc: string,
-        fn: () => void
-      ) => {
-        this.ancestors.push(desc)
+      const defineDesc = <T extends Global.DescribeBase>(origDesc: T): T => {
+        const descFn = (desc: string, fn: () => void) => {
+          this.ancestors.push(desc)
 
-        global.beforeAll = (fn: () => void) =>
-          this.injector!.beforeAll(fn, beforeAll!, afterAll!, this.ancestors.slice())
+          global.beforeAll = (fn: () => void) =>
+            this.injector!.beforeAll(fn, beforeAll!, afterAll!, this.ancestors.slice())
 
-        const defineTest = (fn: It) => this.injector!.injectableFn(fn, this.ancestors.slice())
+          const defTestBase = defineTestBase(this.injector!, this.ancestors)
+          const defTest = defineTest(this.injector!, this.ancestors)
 
-        global.it = defineTest(it) as jest.It
-        global.it.only = defineTest(it.only) as jest.It
-        global.it.skip = defineTest(it.skip) as jest.It
-        global.it.todo = defineTest(it.todo) as jest.It
-        global.it.concurrent = defineTest(it.concurrent) as jest.It
-        global.fit = defineTest(fit) as jest.It
-        global.xit = defineTest(xit) as jest.It
-        global.test = defineTest(test) as jest.It
-        global.test.only = defineTest(test.only) as jest.It
-        global.test.skip = defineTest(test.skip) as jest.It
-        global.test.todo = defineTest(test.todo) as jest.It
-        global.test.concurrent = defineTest(test.concurrent) as jest.It
-        global.xtest = defineTest(xtest) as jest.It
+          global.it = defTest(it)
+          global.fit = defTestBase(fit)
+          global.xit = defTestBase(xit)
+          global.test = defTest(test)
+          global.xtest = defTestBase(xtest)
 
-        origDesc(desc, fn)
+          origDesc(desc, fn)
 
-        this.ancestors.pop()
+          this.ancestors.pop()
+        }
+        for (const key in origDesc) {
+          if (origDesc.hasOwnProperty(key)) {
+            // @ts-ignore
+            descFn[key] = origDesc[key]
+          }
+        }
+        return descFn as T
       }
 
-      global.describe = defineDesc(describe) as jest.Describe
-      global.fdescribe = defineDesc(fdescribe) as jest.Describe
-      global.xdescribe = defineDesc(xdescribe) as jest.Describe
+      global.describe = defineDesc(describe)
+      global.fdescribe = defineDesc(fdescribe)
+      global.xdescribe = defineDesc(xdescribe)
     }
 
-    return this.dom.runVMScript(script)
+    const context = this.dom.getInternalVMContext()
+    return script.runInContext(context)
   }
 }

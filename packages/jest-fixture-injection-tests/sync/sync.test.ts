@@ -1,5 +1,7 @@
 import { sleep } from './helper'
 
+jest.setTimeout(20000)
+
 describe('Single fixture in a test case', () => {
   fixture('m', (b: string, j: string) => `M(${b},${j})`)
 

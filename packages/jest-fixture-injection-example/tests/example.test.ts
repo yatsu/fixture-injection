@@ -2,6 +2,8 @@ import { Provide } from 'jest-fixture-injection'
 
 import { sleep } from './helper'
 
+jest.setTimeout(20000)
+
 describe('Foo', () => {
   const fixtures: { foo?: string; bar?: string } = {}
 

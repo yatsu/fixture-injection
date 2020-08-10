@@ -2,14 +2,13 @@ import createDebug from 'debug'
 import fs from 'fs'
 import path from 'path'
 import process from 'process'
-import ipc from 'node-ipc'
 
 const debug = createDebug('jest-fixture-injection:config')
 
 export interface JestFixtureInjectionConfig {
   fixtures?: string
   globalFixtures?: string
-  ipc?: typeof ipc.config
+  ipc?: any
 }
 
 const DEFAULT_CONFIG_PATHS = ['fixture-injection.config.js']

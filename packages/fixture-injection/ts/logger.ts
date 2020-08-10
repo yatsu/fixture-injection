@@ -128,7 +128,7 @@ export abstract class Logger {
   public enabled: boolean
 
   constructor() {
-    this.enabled = process.env.FI_LOGGING === '1'
+    this.enabled = process.env.FI_LOGGING === '1' || process.env.FI_LOGGING === 'true'
   }
 
   public abstract fixtureLog(

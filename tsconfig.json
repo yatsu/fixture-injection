@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "es2017",
     "module": "commonjs",
-    "lib": ["dom", "es2017"],
+    "lib": ["es2017"],
     "declaration": true,
     "declarationMap": true,
     "composite": true,
@@ -19,7 +19,6 @@
     "resolveJsonModule": true,
     "inlineSourceMap": true,
     "typeRoots": ["node_modules/@types"],
-    "types": ["node"],
     "plugins": [
       {
         "name": "typescript-eslint-language-service",

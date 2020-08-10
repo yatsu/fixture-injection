@@ -95,12 +95,13 @@ export class FixtureInjector {
   }
 
   public beforeAll(
-    fn: () => Promise<void> | void,
+    fn: Function,
     beforeAll: Lifecycle,
     afterAll: Lifecycle,
     ancestors: string[]
   ): void {
     const fixtureNames = fixtureArguments(fn)
+    debug('beforeAll - fixtureNames: %s', fixtureNames)
     let finish: () => Promise<void> | void = () => Promise.resolve()
     beforeAll(async () => {
       finish = await this.callWithFixtures(
@@ -121,12 +122,14 @@ export class FixtureInjector {
   }
 
   injectableFn(
-    origFn: (desc: string, fn: () => Promise<void> | void) => void,
+    origFn: Function,
     ancestors: string[]
-  ): (desc: string, fn: (...args: any[]) => Promise<void> | void) => void {
-    return (desc: string, fn: (...args: any[]) => Promise<void> | void) =>
+  ): Function {
+    debug('injectableFn - origFn: %s ancestors: %s', origFn, ancestors)
+    return (desc: string, fn: Function, timeout?: number) =>
       origFn(desc, async () => {
         const fixtureNames = fixtureArguments(fn)
+        debug('test fn - fixtureNames: %s', fixtureNames)
         const finish = await this.callWithFixtures(
           fn,
           () => {
@@ -137,7 +140,7 @@ export class FixtureInjector {
           }
         )
         await finish()
-      })
+      }, timeout)
   }
 
   public setup(): Promise<void> {
@@ -154,11 +157,11 @@ export class FixtureInjector {
           })
 
           ipc.of[IPC_SERVER_ID].on('dependencies', (dependencyMap: DependencyMap) => {
-            debug('receive dependencies')
             this.dependencyMap = {
               ...dependencyMap,
               ...constructDependencyMap(this.fixtures)
             }
+            debug('receive dependencies - dependencyMap: %s', this.dependencyMap)
             connectionResolve()
           })
 
@@ -209,7 +212,7 @@ export class FixtureInjector {
   }
 
   private async callWithFixtures(
-    fn: (...args: any[]) => Promise<void> | void,
+    fn: Function,
     onStart?: () => void,
     onEnd?: () => void
   ): Promise<() => Promise<void> | void> {
@@ -218,8 +221,8 @@ export class FixtureInjector {
       fnFinished = resolve
     })
     const finishPromises: Promise<void>[] = []
-
     const fixtureNames = fixtureArguments(fn)
+    debug('callWithFixtures - fixtureNames: %s', fixtureNames)
 
     const constructFixturePromise = (
       fixtureName: string,
