@@ -19,9 +19,8 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "files": [
-    "dist",
-    "env",
-    "ts"
+    "jest-preset.js",
+    "dist"
   ],
   "scripts": {
     "build": "scripty",

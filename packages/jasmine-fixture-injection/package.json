@@ -17,6 +17,12 @@
     "javascript",
     "test"
   ],
+  "main": "./index.js",
+  "files": [
+    "index.js",
+    "helper.js",
+    "reporter.js"
+  ],
   "scripts": {
     "test": "true",
     "test-ci": "true"
