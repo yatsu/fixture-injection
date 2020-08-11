@@ -1,7 +1,7 @@
 {
   "name": "jest-fixture-injection",
   "description": "fixture-injection helper for Jest",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "homepage": "https://github.com/yatsu/fixture-injection/packages/jest-fixture-injection",
   "repository": {
     "type": "git",
@@ -44,7 +44,7 @@
     "jest": ">= 26"
   },
   "dependencies": {
-    "fixture-injection": "^0.3.1",
+    "fixture-injection": "^0.3.2",
     "jest-environment-jsdom": "^26.2.0",
     "jest-environment-node": "^26.2.0",
     "pirates": "^4.0.1"
