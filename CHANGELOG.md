@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## v0.3.2 (2020-08-11)
+
+#### :package: Build
+* `fixture-injection`, `jasmine-fixture-injection`, `jest-fixture-injection`
+  * [#32](https://github.com/yatsu/fixture-injection/pull/32) Fix package to include required files ([@yatsu](https://github.com/yatsu))
+
+#### Committers: 1
+- Masaki Yatsu ([@yatsu](https://github.com/yatsu))
+
 ## v0.3.1 (2020-08-10)
 
 #### :bug: Bug Fixes
